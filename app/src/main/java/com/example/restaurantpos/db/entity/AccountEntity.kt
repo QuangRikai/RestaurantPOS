@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "account")
-data class AccountEntity (
+data class AccountEntity constructor(
 
         @PrimaryKey(autoGenerate= true)
         @ColumnInfo(name = "account_id")
@@ -25,7 +25,12 @@ data class AccountEntity (
         val password: String,
 
         @ColumnInfo(name = "role")
-        val role: Int
+        val role: Int,
+
+        @ColumnInfo(name = "status")
+        val status: Boolean
+
+
         /*
         1: Manager
         2: Receptionist

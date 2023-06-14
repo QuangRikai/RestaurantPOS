@@ -29,7 +29,7 @@ interface AccountDAO {
     fun getAccountName(user_name: String, password: String): String
 
     @Query("SELECT * from account WHERE user_name = :user_name AND password = :password")
-    fun checkLogin(user_name: String, password: String): AccountEntity
+    fun checkLogin(user_name: String, password: String): MutableList<AccountEntity>
 
 
 

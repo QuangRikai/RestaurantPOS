@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "item")
-data class ItemEntity(
+data class ItemEntity constructor(
 
     @PrimaryKey(autoGenerate= true)
     @ColumnInfo(name = "item_id")

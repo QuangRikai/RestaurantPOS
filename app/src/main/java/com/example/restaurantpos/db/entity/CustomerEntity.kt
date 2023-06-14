@@ -10,7 +10,7 @@ import java.sql.Date
 
 @Parcelize
 @Entity(tableName = "customer")
-data class CustomerEntity(
+data class CustomerEntity constructor(
 
     @PrimaryKey(autoGenerate= true)
     @ColumnInfo(name = "category_id")

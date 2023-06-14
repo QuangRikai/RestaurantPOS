@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "shift")
-data class ShiftEntity (
+data class ShiftEntity constructor(
 
     @PrimaryKey(autoGenerate= true)
     @ColumnInfo(name = "shift_id")

@@ -1,38 +1,34 @@
 package com.example.restaurantpos.ui.splash
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import com.example.restaurantpos.R
+import android.view.LayoutInflater
+import com.example.restaurantpos.base.BaseActivity
 import com.example.restaurantpos.databinding.ActivitySplashBinding
-import com.example.restaurantpos.ui.main.MainActivity
-import com.example.restaurantpos.util.openActivity
+import com.example.restaurantpos.ui.login.LoginActivity
 
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
-    private val DELAY_TIME = 1000L
-    private lateinit var binding: ActivitySplashBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+    private val DELAY_TIME = 1500L
+    override fun initOnCreate() {
         checkLogin()
-
-
     }
 
     private fun checkLogin() {
-
+        startLoginActivity()
     }
 
-    private fun startMain(){
+    private fun startLoginActivity(){
         Handler(Looper.getMainLooper()).postDelayed({
-            openActivity(MainActivity::class.java, true)
+            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
         }, DELAY_TIME)
+    }
+
+    override fun getInflaterViewBinding(layoutInflater: LayoutInflater): ActivitySplashBinding {
+        return ActivitySplashBinding.inflate(layoutInflater)
     }
 }

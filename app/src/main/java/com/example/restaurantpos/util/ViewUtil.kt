@@ -4,6 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 // 1. Change Activity by Intent
@@ -28,4 +32,8 @@ fun View.show() {
 
 fun View.gone() {
     this.visibility = View.GONE
+}
+
+fun Context.showToast(string: String){
+        Toast.makeText(this,string,Toast.LENGTH_SHORT).show()
 }

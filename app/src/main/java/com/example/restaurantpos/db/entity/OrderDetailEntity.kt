@@ -7,15 +7,15 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "orderdetail")
-data class OrderDetailEntity(
+@Entity(tableName = "order_detail")
+data class OrderDetailEntity constructor(
 
     @PrimaryKey(autoGenerate= true)
     @ColumnInfo(name = "order_detail_id")
     val order_detail_id: Int,
-
+    
     @ColumnInfo(name = "order_quantity")
-    val order_date: String
+    val order_quantity: Int
 
 
 ): Parcelable {
