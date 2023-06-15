@@ -3,18 +3,13 @@ package com.example.restaurantpos.ui.login
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.view.View
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
-import com.example.restaurantpos.R
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 import com.example.restaurantpos.ui.main.MainManagerActivity
 import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
-import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,14 +34,21 @@ class LoginViewModel : ViewModel() {
                     1 -> {
                         SharedPreferencesUtils.setUserName(acc.user_name)
                         SharedPreferencesUtils.setPassword(acc.password)
+                        SharedPreferencesUtils.setAccountName(acc.account_name)
                         context.startActivity(Intent(context, MainManagerActivity::class.java))
                     }
 
                     2 -> {
+                        SharedPreferencesUtils.setUserName(acc.user_name)
+                        SharedPreferencesUtils.setPassword(acc.password)
+                        SharedPreferencesUtils.setAccountName(acc.account_name)
                         context.openActivity(MainManagerActivity::class.java)
                     }
 
                     3 -> {
+                        SharedPreferencesUtils.setUserName(acc.user_name)
+                        SharedPreferencesUtils.setPassword(acc.password)
+                        SharedPreferencesUtils.setAccountName(acc.account_name)
                         context.openActivity(MainManagerActivity::class.java)
                     }
                 }
@@ -56,10 +58,10 @@ class LoginViewModel : ViewModel() {
 
     fun addFirstManager(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
-/*            PosRoomDatabase.getInstance(context).accountDAO().addAccount(
+            PosRoomDatabase.getInstance(context).accountDAO().addAccount(
                 AccountEntity(1, "Manager Quang", "quang", "123", 1, true)
-            )*/
-            DatabaseUtil.addAccount(AccountEntity(1, "Manager Quang", "quang", "123", 1, true))
+            )
+//            DatabaseUtil.addAccount(AccountEntity(1, "Manager Quang", "quang", "123", 1, true))
         }
     }
     /*    private fun addAccount() {

@@ -27,7 +27,7 @@ object SharedPreferencesUtils {
     // User Name
     @SuppressLint("CommitPrefEdits")
     fun setUserName(data: String) {
-        pref.edit().putString(Constant.USER_NAME, data)
+        pref.edit().putString(Constant.USER_NAME, data).apply()
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -38,12 +38,23 @@ object SharedPreferencesUtils {
     // Password
     @SuppressLint("CommitPrefEdits")
     fun setPassword(data: String) {
-        pref.edit().putString(Constant.PASSWORD, data)
+        pref.edit().putString(Constant.PASSWORD, data).apply()
     }
 
     @SuppressLint("CommitPrefEdits")
     fun getPassword(): String {
         return pref.getString(Constant.PASSWORD, "").toString()
+    }
+
+    // Account Name
+    @SuppressLint("CommitPrefEdits")
+    fun setAccountName(data: String) {
+        pref.edit().putString(Constant.NAME, data).apply()
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun getAccountName(): String {
+        return pref.getString(Constant.NAME, "").toString()
     }
 
 

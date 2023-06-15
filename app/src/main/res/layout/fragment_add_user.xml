@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.manager.user.AddUserFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/text_blue">
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/img_back"
+                app:tint="@color/white" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edtAddUserName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:paddingStart="@dimen/_8sdp"
+            android:hint="@string/username"
+            tools:ignore="RtlSymmetry" />
+
+        <EditText
+            android:id="@+id/edtAddAccountName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingStart="@dimen/_8sdp"
+            android:hint="@string/staff_s_name"
+            tools:ignore="RtlSymmetry" />
+
+        <Spinner
+            android:id="@+id/spnRole"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingStart="@dimen/_8sdp"
+            android:hint="@string/role"
+            tools:ignore="RtlSymmetry" />
+
+
+        <TextView
+            android:id="@+id/txtAdd"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/bg_txt_login"
+            android:fontFamily="@font/inter_500"
+            android:gravity="center"
+            android:text="@string/add"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

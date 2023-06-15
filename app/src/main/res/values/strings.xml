@@ -18,5 +18,11 @@
     <string name="nav_food">Food</string>
     <string name="nav_drink">Drink</string>
     <string name="nav_dessert">Dessert</string>
+    <string name="user_s_name">User\'s Name</string>
+    <string name="role">Role</string>
+    <string name="user_management">User Management</string>
+    <string name="add">ADD</string>
+    <string name="staff_s_name">Staff\'s Name</string>
+    <string name="loginaccount_name">LoginAccount Name</string>
 
 </resources>

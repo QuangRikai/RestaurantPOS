@@ -16,4 +16,6 @@ object DatabaseUtil {
     // New Skill: Gán hàm bằng hàm
     // Tốn công đưa các lệnh DAO vào đây nhưng lại dễ nhìn hơn.
     fun addAccount(accountEntity: AccountEntity) = appDAO.addAccount(accountEntity)
+    fun getAllUser() = appDAO.getAllUser()
+
 }

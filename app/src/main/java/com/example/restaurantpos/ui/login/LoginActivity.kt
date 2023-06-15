@@ -15,7 +15,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     override fun initOnCreate() {
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        viewModel.addFirstManager(this@LoginActivity)
+        viewModel.addFirstManager(this)
         initListener()
     }
 
