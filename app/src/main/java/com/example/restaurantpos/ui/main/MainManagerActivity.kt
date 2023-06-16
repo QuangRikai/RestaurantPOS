@@ -25,25 +25,35 @@ class MainManagerActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         // ToolBar
+        // 1. Get Account's Name
         binding.txtLoginAccountName.text = SharedPreferencesUtils.getAccountName()
-        binding.imgMenuToolBar.setOnClickListener {
-
-
-            val popupMenu = PopupMenu(this, it)
+        // 2. Logout Button
+        binding.imgMenuToolBar.setOnClickListener { it ->
+            val popupMenu = PopupMenu(this@MainManagerActivity, it)
             popupMenu.inflate(R.menu.popup_menu_main_manager)
             popupMenu.setOnMenuItemClickListener {
-                when(it.itemId){
+                when (it.itemId) {
                     R.id.menu_logout -> {
-                        openActivity(LoginActivity::class.java,true)
+                        openActivity(LoginActivity::class.java, true)
                         true
                     }
+
                     else -> true
                 }
             }
+
+            try {
+                val popup = popupMenu::class.java.getDeclaredField("qPopup")
+                popup.isAccessible = true
+                val menu = popup.get(popupMenu)
+                menu.javaClass
+                    .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                    .invoke(menu, true)
+            } catch (e: Exception){
+                e.printStackTrace()
+            } finally {
+              popupMenu.show()
+            }
         }
-
     }
-
-
-
 }

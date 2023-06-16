@@ -24,5 +24,6 @@
     <string name="add">ADD</string>
     <string name="staff_s_name">Staff\'s Name</string>
     <string name="loginaccount_name">LoginAccount Name</string>
+    <string name="lock_this_account">Lock this Account</string>
 
 </resources>

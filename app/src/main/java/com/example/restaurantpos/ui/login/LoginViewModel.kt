@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 import com.example.restaurantpos.ui.main.MainManagerActivity
-import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 import com.example.restaurantpos.util.showToast

@@ -12,6 +12,12 @@ import kotlinx.coroutines.launch
 class UserViewModel : ViewModel() {
     fun getAllUser() = DatabaseUtil.getAllUser()
 
+    fun getAllUser(context: Context) {
+        CoroutineScope(Dispatchers.IO).launch {
+            PosRoomDatabase.getInstance(context).accountDAO().getAllAccount()
+        }
+    }
+
     fun addUser(context: Context, user: AccountEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             PosRoomDatabase.getInstance(context).accountDAO().addAccount(user)

@@ -61,8 +61,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:src="@drawable/img_edit_user" />
+            android:src="@drawable/img_edit_user"
+            android:visibility="invisible" />
 
 
     </LinearLayout>
@@ -76,8 +76,8 @@
         android:paddingTop="@dimen/_12sdp"
         android:scrollbars="none"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/imgAddUser"
         app:layout_constraintTop_toBottomOf="@+id/llUserListTitle2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:spanCount="1"
         tools:listitem="@layout/item_user" />
 
@@ -88,8 +88,8 @@
         android:layout_margin="@dimen/_12sdp"
         android:src="@drawable/img_add_user"
         app:layout_constraintBottom_toBottomOf="@id/llUserListTitle2"
-        app:layout_constraintTop_toTopOf="@id/llUserListTitle2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/llUserListTitle2"
         app:tint="@color/text_blue" />
 
 

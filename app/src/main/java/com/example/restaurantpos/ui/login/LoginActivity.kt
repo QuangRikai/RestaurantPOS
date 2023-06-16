@@ -37,6 +37,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             }
         }
     }
+
+
     private fun showLoginInform() {
         binding.txtInformLogin.text = "Username & password must not be empty!"
         binding.txtInformLogin.show()

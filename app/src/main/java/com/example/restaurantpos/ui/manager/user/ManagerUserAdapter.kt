@@ -19,28 +19,28 @@ class ManagerUserAdapter(
 
     // class ViewHolder --> đại diện cho mỗi item view trong RecyclerView.
     // Thường chứa các thành phần của View --> Để hiển thị cho mỗi item
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var txtUserName = view.findViewById<TextView>(R.id.txtUserName)
-        var txtUserRole = view.findViewById<TextView>(R.id.txtUserName)
-        var imgEditUser = view.findViewById<ImageView>(R.id.imgEditUser)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var txtAccountName = itemView.findViewById<TextView>(R.id.txtUserName)
+        var txtUserRole = itemView.findViewById<TextView>(R.id.txtUserRole)
+        var imgEditUser = itemView.findViewById<ImageView>(R.id.imgEditUser)
     }
 
-    // Tạo View
+    //Method 1: Main in Adapter: XML Layout ==> View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        val convertedView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_user, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(convertedView)
     }
 
     override fun getItemCount(): Int {
         return listData.size
     }
 
-    // Hiển thị Data cho View
+    // Method 2: Bind Each Element in List RESOURCE DATA (OutData Format) ==> Element in designed Layout ==> Display in Screen
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemUser = listData[position]
 
-        holder.txtUserName.text = itemUser.account_name
+        holder.txtAccountName.text = itemUser.account_name
         holder.txtUserRole.text = if (itemUser.role == 1) {
             "Receptionist"
         } else {
@@ -61,6 +61,6 @@ class ManagerUserAdapter(
     }
 
     interface EventClickItemUserListener {
-        fun clickEditUser(itemUser: AccountEntity  )
+        fun clickEditUser(itemUser: AccountEntity)
     }
 }

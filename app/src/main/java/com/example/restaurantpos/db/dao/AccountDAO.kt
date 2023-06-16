@@ -1,5 +1,6 @@
 package com.example.restaurantpos.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -20,7 +21,7 @@ interface AccountDAO {
     fun deleteAccount(account: AccountEntity): Int
 
     @Query("SELECT * from account")
-    fun getAllAccount(): MutableList<AccountEntity>
+    fun getAllAccount(): LiveData<MutableList<AccountEntity>>
 
     @Query("SELECT * from account WHERE account_id = :id")
     fun getAccountById(id: Int): AccountEntity

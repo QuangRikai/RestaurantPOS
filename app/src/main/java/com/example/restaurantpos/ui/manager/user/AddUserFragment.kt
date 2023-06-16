@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentAddUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
-import kotlinx.coroutines.NonDisposableHandle.parent
+import java.util.Optional
 
 class AddUserFragment : Fragment() {
 
@@ -26,44 +27,22 @@ class AddUserFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Xử lý role trong spinner
+     */
     private var role = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // adapter for Spinner
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            listOf("Receptionist", "Kitchen")
-        )
+        /**
+         * Xử lý role trong spinner
+         */
+        handleUserRole()
 
-        // Layout for All ROWs of Spinner. (Optional for ArrayAdapter).
-
-        // Layout for All ROWs of Spinner. (Optional for ArrayAdapter).
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        binding.spnRole.adapter = adapter
-
-        // When user select a list-Item
-        binding.spnRole.setOnClickListener {
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    role = position + 1
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-
-                }
-
-            }
-        }
-
+        /**\
+         * Khai báo viewModel --> Dùng phương thức addUser --> set ADD Button
+         */
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -72,28 +51,43 @@ class AddUserFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-
         binding.imgBack.setOnClickListener {
             onBack()
         }
 
-
         binding.txtAdd.setOnClickListener {
             viewModel.addUser(
-                requireContext(), AccountEntity(
+                requireActivity(), AccountEntity(
                     0,
-                    binding.edtAddAccountName.toString().trim(),
-                    binding.edtAddUserName.toString().trim(),
+                    binding.edtAddAccountName.text.toString().trim(),
+                    binding.edtAddUserName.text.toString().trim(),
                     "123",
                     role,
                     true
-
                 )
             )
             onBack()
         }
 
 
+    }
+
+    private fun handleUserRole() {
+        val listUserRole = listOf("Receptionist", "Kitchen")
+        binding.spnRole.adapter = UserRoleSpinnerAdapter(requireActivity(), listUserRole)
+        binding.spnRole.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                role = position + 1
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
     }
 
     private fun onBack() {
