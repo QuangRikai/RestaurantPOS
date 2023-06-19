@@ -26,9 +26,6 @@ interface AccountDAO {
     @Query("SELECT * from account WHERE account_id = :id")
     fun getAccountById(id: Int): AccountEntity
 
-    @Query("SELECT account_name from account WHERE user_name = :user_name AND password = :password")
-    fun getAccountName(user_name: String, password: String): String
-
     @Query("SELECT * from account WHERE user_name = :user_name AND password = :password")
     fun checkLogin(user_name: String, password: String): MutableList<AccountEntity>
 

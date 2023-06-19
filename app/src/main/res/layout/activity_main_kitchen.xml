@@ -4,20 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainReceptionistActivity">
+    tools:context=".ui.main.MainKitchenActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fontFamily="@font/inter_600"
-        android:text="This is RECEPTIONIST's SCREEN"
+        android:text="This is KITCHEN's SCREEN"
+        android:background="@color/text_blue"
         android:gravity="center"
-        android:textColor="@color/text_red"
-        android:background="#9DADDC"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

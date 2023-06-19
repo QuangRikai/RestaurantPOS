@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentMainManagerBinding
-import com.example.restaurantpos.ui.adapter.TabMainManagerAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainManagerFragment : Fragment() {

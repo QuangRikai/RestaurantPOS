@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.adapter
+package com.example.restaurantpos.ui.main
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

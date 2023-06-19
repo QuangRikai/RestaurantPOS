@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.restaurantpos.db.dao.AccountDAO
 import com.example.restaurantpos.db.dao.AppDAO
+import com.example.restaurantpos.db.dao.CategoryDAO
 import com.example.restaurantpos.db.dao.TableDAO
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
@@ -33,6 +34,7 @@ public abstract class PosRoomDatabase: RoomDatabase (){
 
     abstract fun appDAO(): AppDAO
     abstract fun accountDAO(): AccountDAO
+    abstract fun categoryDAO(): CategoryDAO
     abstract fun tableDAO(): TableDAO
 
     companion object{

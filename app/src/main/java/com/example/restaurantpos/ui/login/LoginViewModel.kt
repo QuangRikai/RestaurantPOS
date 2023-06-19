@@ -2,19 +2,26 @@ package com.example.restaurantpos.ui.login
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
+import android.view.View
+import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.restaurantpos.R
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.roomdb.PosRoomDatabase
+import com.example.restaurantpos.ui.main.MainKitchenActivity
 import com.example.restaurantpos.ui.main.MainManagerActivity
+import com.example.restaurantpos.ui.main.MainReceptionistActivity
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
+import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
+//    private val view: MutableLiveData<View> = MutableLiveData()
     @SuppressLint("StaticFieldLeak")
     fun checkLogin(context: Context, userName: String, password: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -23,32 +30,29 @@ class LoginViewModel : ViewModel() {
             if (loginAccountList.size < 1) {
                 CoroutineScope(Dispatchers.Main).launch {
                     context.showToast("Username or password is wrong!")
-/*                    findViewById<TextView>(R.id.txtInformLogin).text =
+
+/*                    view.value?.findViewById<TextView>(R.id.txtInformLogin)?.text =
                         "Username or password is wrong!"
-                    findViewById<TextView>(R.id.txtInformLogin).show()*/
+                    view.value?.findViewById<TextView>(R.id.txtInformLogin)?.show()*/
                 }
             } else {
                 val acc = loginAccountList[0]
                 when (acc.role) {
-                    1 -> {
-                        SharedPreferencesUtils.setUserName(acc.user_name)
-                        SharedPreferencesUtils.setPassword(acc.password)
+                    0 -> {
+ /*                       SharedPreferencesUtils.setUserName(acc.user_name)
+                        SharedPreferencesUtils.setPassword(acc.password)*/
                         SharedPreferencesUtils.setAccountName(acc.account_name)
-                        context.startActivity(Intent(context, MainManagerActivity::class.java))
+                        context.openActivity(MainManagerActivity::class.java)
+                    }
+
+                    1 -> {
+                        SharedPreferencesUtils.setAccountName(acc.account_name)
+                        context.openActivity(MainReceptionistActivity::class.java)
                     }
 
                     2 -> {
-                        SharedPreferencesUtils.setUserName(acc.user_name)
-                        SharedPreferencesUtils.setPassword(acc.password)
                         SharedPreferencesUtils.setAccountName(acc.account_name)
-                        context.openActivity(MainManagerActivity::class.java)
-                    }
-
-                    3 -> {
-                        SharedPreferencesUtils.setUserName(acc.user_name)
-                        SharedPreferencesUtils.setPassword(acc.password)
-                        SharedPreferencesUtils.setAccountName(acc.account_name)
-                        context.openActivity(MainManagerActivity::class.java)
+                        context.openActivity(MainKitchenActivity::class.java)
                     }
                 }
             }
@@ -58,7 +62,7 @@ class LoginViewModel : ViewModel() {
     fun addFirstManager(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             PosRoomDatabase.getInstance(context).accountDAO().addAccount(
-                AccountEntity(1, "Manager Quang", "quang", "123", 1, true)
+                AccountEntity(1, "Le Thanh Quang", "quang", "123", 0, true)
             )
 //            DatabaseUtil.addAccount(AccountEntity(1, "Manager Quang", "quang", "123", 1, true))
         }
