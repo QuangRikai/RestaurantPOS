@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.manager.user
+package com.example.restaurantpos.ui.manager.category
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,16 +13,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentAddUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.ui.manager.user.UserRoleSpinnerAdapter
+import com.example.restaurantpos.ui.manager.user.UserViewModel
 import java.util.Optional
 
-class AddUserFragment : Fragment() {
+class AddCategoryItemFragment : Fragment() {
 
     private lateinit var viewModel: UserViewModel
     lateinit var binding: FragmentAddUserBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAddUserBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,7 +51,6 @@ class AddUserFragment : Fragment() {
                 onBack()
             }
         }
-
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         binding.imgBack.setOnClickListener {

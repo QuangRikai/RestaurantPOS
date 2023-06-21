@@ -33,9 +33,7 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
             })
         binding.rcyUserManagement.adapter = adapter
 
-        /**
-         * Set data getAllUser() for adapter
-         */
+        /**  Set data getAllUser() for adapter  */
         viewModel = ViewModelProvider(this)[UserViewModel::class.java]
         viewModel.getAllUser().observe(viewLifecycleOwner) {
             adapter.setListData(it)

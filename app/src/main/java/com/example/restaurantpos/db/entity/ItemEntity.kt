@@ -3,6 +3,7 @@ package com.example.restaurantpos.db.entity
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
@@ -21,10 +22,13 @@ data class ItemEntity constructor(
     val price: Float,
 
     @ColumnInfo(name = "image")
-    val image: Int,
+    val image: String,
 
     @ColumnInfo(name = "inventory_quantity")
-    val inventory_quantity: Int
+    val inventory_quantity: Int,
+
+    @ColumnInfo(name = "category_id")
+    val category_id: Int
 
 ): Parcelable {
 }

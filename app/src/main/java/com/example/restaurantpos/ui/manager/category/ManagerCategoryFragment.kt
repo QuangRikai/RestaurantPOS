@@ -29,10 +29,9 @@ class ManagerCategoryFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[CategoryViewModel::class.java]
 
-        viewModel.addCategory(CategoryEntity(1, "FOODS"))
+        /*viewModel.addCategory(CategoryEntity(1, "FOODS"))
         viewModel.addCategory(CategoryEntity(2, "DRINKS"))
-        viewModel.addCategory(CategoryEntity(3, "DESSERTS"))
-
+        viewModel.addCategory(CategoryEntity(3, "DESSERTS"))*/
 
         viewModel.getAllCategory().observe(viewLifecycleOwner) { listCategory ->
             binding.tabCategory.removeAllTabs()

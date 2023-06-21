@@ -13,6 +13,7 @@
         android:paddingVertical="@dimen/_50sdp">
 
         <LinearLayout
+            android:id="@+id/llLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -36,10 +37,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:textColor="@color/text_red"
                 android:fontFamily="@font/inter_300"
-                android:visibility="invisible"
-                android:text="Username or Password is wrong/empty!"/>
+                android:text="Username or Password is wrong/empty!"
+                android:textColor="@color/text_red"
+                android:visibility="invisible" />
 
             <EditText
                 android:id="@+id/edtUsername"
@@ -49,8 +50,8 @@
                 android:background="@drawable/bg_edt_login"
                 android:fontFamily="@font/inter_400"
                 android:hint="@string/username"
-                android:minHeight="48dp"
                 android:maxLines="1"
+                android:minHeight="48dp"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_5sdp"
                 android:textSize="@dimen/_18ssp" />
@@ -63,11 +64,11 @@
                 android:background="@drawable/bg_edt_login"
                 android:fontFamily="@font/inter_400"
                 android:hint="@string/password"
-                android:minHeight="48dp"
                 android:inputType="textPassword"
-                android:singleLine="true"
+                android:minHeight="48dp"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_5sdp"
+                android:singleLine="true"
                 android:textSize="@dimen/_18ssp" />
 
             <TextView

@@ -23,7 +23,10 @@ data class CustomerEntity constructor(
     val phone: Int,
 
     @ColumnInfo(name = "birthday")
-    val birthday: String
+    val birthday: String,
+
+    @ColumnInfo(name = "created_by_account_id")
+    val created_by_account_id: Int
 
 /*    @ForeignKey (
         entity = AccountEntity::class,

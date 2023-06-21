@@ -15,7 +15,10 @@ data class OrderDetailEntity constructor(
     val order_detail_id: Int,
     
     @ColumnInfo(name = "order_quantity")
-    val order_quantity: Int
+    val order_quantity: Int,
+
+    @ColumnInfo(name = "item_id")
+    val item_id: Int
 
 
 ): Parcelable {

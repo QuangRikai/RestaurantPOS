@@ -1,5 +1,6 @@
 package com.example.restaurantpos.db.roomdb
 
+import android.content.ClipData.Item
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -7,6 +8,7 @@ import androidx.room.RoomDatabase
 import com.example.restaurantpos.db.dao.AccountDAO
 import com.example.restaurantpos.db.dao.AppDAO
 import com.example.restaurantpos.db.dao.CategoryDAO
+import com.example.restaurantpos.db.dao.ItemDAO
 import com.example.restaurantpos.db.dao.TableDAO
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
@@ -35,8 +37,8 @@ public abstract class PosRoomDatabase: RoomDatabase (){
     abstract fun appDAO(): AppDAO
     abstract fun accountDAO(): AccountDAO
     abstract fun categoryDAO(): CategoryDAO
+    abstract fun itemDAO(): ItemDAO
     abstract fun tableDAO(): TableDAO
-
     companion object{
         @Volatile
         private  var INSTANCE: PosRoomDatabase? = null

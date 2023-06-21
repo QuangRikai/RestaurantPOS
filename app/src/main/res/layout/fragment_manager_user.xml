@@ -20,10 +20,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:fontFamily="@font/inter_600"
+            android:fontFamily="@font/inter_700"
             android:gravity="center"
             android:text="@string/user_management"
-            android:textColor="@color/black"
+            android:textColor="@color/text_blue"
             android:textSize="@dimen/_14sdp" />
 
     </LinearLayout>
@@ -43,9 +43,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
-            android:fontFamily="@font/inter_500"
+            android:fontFamily="@font/inter_600"
             android:text="@string/user_s_name"
-            android:textColor="@color/black"
+            android:textColor="@color/text_blue"
             android:textSize="@dimen/_14sdp" />
 
         <TextView
@@ -53,9 +53,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:fontFamily="@font/inter_500"
+            android:fontFamily="@font/inter_600"
             android:text="@string/role"
-            android:textColor="@color/black"
+            android:textColor="@color/text_blue"
             android:textSize="@dimen/_14sdp" />
 
         <ImageView

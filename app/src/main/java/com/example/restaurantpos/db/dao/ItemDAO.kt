@@ -6,12 +6,23 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.TableEntity
 
 @Dao
-interface TableDAO {
+interface ItemDAO {
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addCategoryItem(data: ItemEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addListCategoryItem(listData: List<ItemEntity>): List<Long>
+
+    @Query("SELECT * from `item` WHERE category_id = :id")
+    fun getListCategoryComponentItem(id: Int): LiveData<MutableList<ItemEntity>>
+
+   /* @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addTable(table: TableEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -21,10 +32,13 @@ interface TableDAO {
     fun deleteTable(table: TableEntity): Int
 
     @Query("SELECT * from `table`")
-    fun getAllTable(): LiveData<MutableList<TableEntity>>
+    fun getAllTable(): MutableList<TableEntity>
 
     @Query("SELECT * from `table` WHERE table_id = :id")
-    fun getTableById(id: Int): TableEntity
+    fun getTableById(id: Int): TableEntity*/
+
+
+
 
 
 

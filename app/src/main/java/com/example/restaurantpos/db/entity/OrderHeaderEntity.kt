@@ -18,7 +18,10 @@ data class OrderHeaderEntity constructor(
     val customer_order_time: String,
 
     @ColumnInfo(name = "payment_amount")
-    val payment_amount: String
+    val payment_amount: String,
+
+    @ColumnInfo(name = "created_by_account_id")
+    val created_by_account_id: String
 
 
 ): Parcelable {

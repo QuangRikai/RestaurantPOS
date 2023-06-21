@@ -37,7 +37,6 @@ class MainManagerActivity : AppCompatActivity() {
                         openActivity(LoginActivity::class.java, true)
                         true
                     }
-
                     else -> true
                 }
             }

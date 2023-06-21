@@ -11,7 +11,7 @@ class TabCategoryAdapter(fm: FragmentManager, var totalTabs : MutableList<Catego
     // --> Tạo 1 frament chung sau đó truyền trọng số vị trí vào là được.
     // --> TypeOfCategoryFragment
     override fun getItem(position: Int): Fragment {
-        return TypeOfCategoryFragment(position, totalTabs[position])
+        return ManagerCategoryComponentFragment(position, totalTabs[position])
     }
 
     // Lầy từ DB, sau này có thể thay đổi Category

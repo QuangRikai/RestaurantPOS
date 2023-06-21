@@ -6,18 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainReceptionistActivity">
 
-    <TextView
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_receptionist"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="@font/inter_600"
-        android:text="This is RECEPTIONIST's SCREEN"
-        android:gravity="center"
-        android:textColor="@color/text_red"
-        android:background="#9DADDC"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:navGraph="@navigation/nav_main_receptionist" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
