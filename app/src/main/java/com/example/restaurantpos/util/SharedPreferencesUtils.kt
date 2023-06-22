@@ -57,5 +57,16 @@ object SharedPreferencesUtils {
         return pref.getString(Constant.NAME, "").toString()
     }
 
+    // Account ID
+    @SuppressLint("CommitPrefEdits")
+    fun setAccountId(data: Int) {
+        pref.edit().putInt(Constant.ID, data).apply()
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun getAccountId(): Int {
+        return pref.getInt(Constant.ID, 0)
+    }
+
 
 }

@@ -29,10 +29,36 @@ class MainReceptionistActivity : AppCompatActivity() {
 
 
         /** Navigation */
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_receptionist) as NavHostFragment
-        navController = navHostFragment.navController
 
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_receptionist) as NavHostFragment
+        val inflater = navHostFragment.navController.navInflater
+        val graph = inflater.inflate(R.navigation.nav_main_receptionist)
+
+        // Use bundle from Login to separate
+        if(intent.getIntExtra("NavigateByRole", 1) == 1){
+            graph.setStartDestination(R.id.tableFragment)
+        } else{
+            graph.setStartDestination(R.id.kitchenFragment)
+        }
+
+/*        if (isTrue){
+            graph.startDestinationId = R.id.kitchenFragment
+        }else {
+            graph.startDestination = R.id.OtherDetailsFragment
+        }*/
+
+        val navController = navHostFragment.navController
+        navController.setGraph(graph, intent.extras)
+
+
+        /*        val navHostFragment = supportFragmentManager
+                    .findFragmentById(R.id.nav_host_receptionist) as NavHostFragment
+                navController = navHostFragment.navController*/
+
+        /*
+                val navGraph = navController.graph
+                navGraph.setStartDestination(R.id.kitchenFragment)
+                navController.graph = navGraph*/
     }
 
 

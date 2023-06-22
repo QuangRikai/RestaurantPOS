@@ -55,18 +55,6 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Add Item Data vao Database
-        /*        viewModel.addCategoryItem(
-                    ItemEntity(
-                        0,
-                        "Mon Nhau 1",
-                        11.1f,
-                        "", // Tạo chuỗi để chốc nữa có được số lượng
-                        5,
-                        category.category_id
-                    )
-                )*/
-
         // Chuc nang Add Category Item
 //        val imgAddItem = binding.imgAddCategoryItem
         binding.imgAddCategoryItem.setOnClickListener {

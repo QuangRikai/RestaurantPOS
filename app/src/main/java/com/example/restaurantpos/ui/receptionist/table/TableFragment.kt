@@ -11,7 +11,6 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentTableBinding
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.login.LoginActivity
-import com.example.restaurantpos.ui.manager.user.UserViewModel
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 
@@ -32,15 +31,6 @@ class TableFragment : Fragment(), TableAdapter.EventClickTableListener{
         super.onViewCreated(view, savedInstanceState)
         /** ViewModel --> Handle Database */
         viewModel = ViewModelProvider(this).get(TableViewModel::class.java)
-        viewModel.addTable(requireContext(),TableEntity(1, "Table 01"))
-        viewModel.addTable(requireContext(),TableEntity(2, "Table 02"))
-        viewModel.addTable(requireContext(),TableEntity(3, "Table 03"))
-        viewModel.addTable(requireContext(),TableEntity(4, "Table 04"))
-        viewModel.addTable(requireContext(),TableEntity(5, "Table 05"))
-        viewModel.addTable(requireContext(),TableEntity(6, "Table 06"))
-        viewModel.addTable(requireContext(),TableEntity(7, "Table 07"))
-        viewModel.addTable(requireContext(),TableEntity(8, "Table 08"))
-        viewModel.addTable(requireContext(),TableEntity(9, "Table 09"))
 
         viewModel.getAllTable().observe(viewLifecycleOwner) {
             adapter.setListData(it)
@@ -82,9 +72,6 @@ class TableFragment : Fragment(), TableAdapter.EventClickTableListener{
             }
         }
     }
-
-    override fun clickTable(itemUser: TableEntity) {
-
-
+    override fun clickTable(itemUser: TableEntity, status: Int) {
     }
 }

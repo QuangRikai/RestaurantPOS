@@ -15,7 +15,16 @@ data class TableEntity constructor(
     val table_id: Int,
 
     @ColumnInfo(name = "table_name")
-    val table_name: String
+    val table_name: String,
+
+    @ColumnInfo(name = "status")
+    val status: Int
+
+    /*
+    2. Unable, Problem
+    1. Used
+    0. Empty
+     */
 
 ):Parcelable {
 

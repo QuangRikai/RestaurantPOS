@@ -9,15 +9,12 @@ import com.example.restaurantpos.db.entity.AccountEntity
 
 @Dao
 interface AppDAO {
+/*
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAccount(account: AccountEntity): Long
+*/
 
-    @Query("SELECT * from account WHERE role != 0")
-    fun getAllUser(): LiveData<MutableList<AccountEntity>>
-
-    @Query("SELECT * from account WHERE role != 0 AND status = 1")
-    fun getAllUserActive(): LiveData<MutableList<AccountEntity>>
 
     /*@Query("SELECT * FROM meme")
 fun getAllMeme(): MutableList<MemeEntity>

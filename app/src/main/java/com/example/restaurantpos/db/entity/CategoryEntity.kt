@@ -10,12 +10,17 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "category")
 data class CategoryEntity constructor(
 
-    @PrimaryKey(autoGenerate= true)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "category_id")
     val category_id: Int,
 
     @ColumnInfo(name = "category_name")
     val category_name: String
+    /*
+    1. Foods
+    2. Drinks
+    3. Desserts
+     */
 
-): Parcelable {
+) : Parcelable {
 }

@@ -16,14 +16,15 @@ import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 
 object DatabaseUtil {
 
-    lateinit var appDAO: AppDAO
+//    lateinit var appDAO: AppDAO
     lateinit var accountDAO: AccountDAO
     lateinit var categoryDAO: CategoryDAO
     lateinit var itemDAO: ItemDAO
     lateinit var tableDAO: TableDAO
 
     fun init(context: Context){
-        appDAO = PosRoomDatabase.getInstance(context).appDAO()
+//        appDAO = PosRoomDatabase.getInstance(context).appDAO()
+        accountDAO = PosRoomDatabase.getInstance(context).accountDAO()
         categoryDAO = PosRoomDatabase.getInstance(context).categoryDAO()
         itemDAO = PosRoomDatabase.getInstance(context).itemDAO()
         tableDAO = PosRoomDatabase.getInstance(context).tableDAO()
@@ -31,8 +32,10 @@ object DatabaseUtil {
 
     /** 1. USER MANAGEMENT  */
 
-    fun addAccount(accountEntity: AccountEntity) = appDAO.addAccount(accountEntity)
-    fun getAllUser() = appDAO.getAllUser()
+    fun addAccount(accountEntity: AccountEntity) = accountDAO.addAccount(accountEntity)
+
+    fun addListAccount(listAccount: List<AccountEntity>) = accountDAO.addListAccount(listAccount)
+    fun getAllUser() = accountDAO.getAllUser()
 
     /** 2. CATEGORY, ITEM MANAGEMENT  */
 

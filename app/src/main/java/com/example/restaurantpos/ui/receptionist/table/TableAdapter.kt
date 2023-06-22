@@ -2,11 +2,13 @@ package com.example.restaurantpos.ui.receptionist.table
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
 import com.example.restaurantpos.db.entity.TableEntity
@@ -36,15 +38,23 @@ class TableAdapter(
     }
 
     // Method 2: Bind Each Element in List RESOURCE DATA (OutData Format) ==> Element in designed Layout ==> Display in Screen
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemTable = listData[position]
-
+        /** Set Text --> Table */
         holder.txtTableName.text = itemTable.table_name
-
-        holder.viewRootTableItem.setOnClickListener {
-            listenerClickEditUser.clickTable(itemTable)
+        /** Set Trang Thai cho Table*/
+        if (itemTable.status == 0){
+            holder.viewRootTableItem.background = context.getDrawable(R.drawable.bg_table_empty)
+        } else if (itemTable.status == 1){
+            holder.viewRootTableItem.background = context.getDrawable(R.drawable.bg_table_used)
         }
 
+        /** Click Table */
+        holder.viewRootTableItem.setOnClickListener {
+            listenerClickEditUser.clickTable(itemTable, itemTable.status)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -55,6 +65,6 @@ class TableAdapter(
     }
 
     interface EventClickTableListener {
-        fun clickTable(itemUser: TableEntity)
+        fun clickTable(itemUser: TableEntity, status: Int)
     }
 }

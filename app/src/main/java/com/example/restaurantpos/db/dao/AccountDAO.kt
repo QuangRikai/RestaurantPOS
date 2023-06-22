@@ -20,18 +20,20 @@ interface AccountDAO {
     @Delete
     fun deleteAccount(account: AccountEntity): Int
 
-    @Query("SELECT * from account")
-    fun getAllAccount(): LiveData<MutableList<AccountEntity>>
-
     @Query("SELECT * from account WHERE account_id = :id")
     fun getAccountById(id: Int): AccountEntity
 
     @Query("SELECT * from account WHERE user_name = :user_name AND password = :password")
     fun checkLogin(user_name: String, password: String): MutableList<AccountEntity>
 
+    @Query("SELECT * from account WHERE role != 0")
+    fun getAllUser(): LiveData<MutableList<AccountEntity>>
 
+    @Query("SELECT * from account")
+    fun getAllAccount(): LiveData<MutableList<AccountEntity>>
 
-
+    @Query("SELECT * from account WHERE role != 0 AND status = 1")
+    fun getAllUserActive(): LiveData<MutableList<AccountEntity>>
 
 
 

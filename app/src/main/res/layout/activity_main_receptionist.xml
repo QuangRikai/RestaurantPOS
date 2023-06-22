@@ -11,7 +11,10 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:navGraph="@navigation/nav_main_receptionist" />
+        app:navGraph="@navigation/nav_main_receptionist"/>
+
+<!--    Mấy thằng app: mà override thì autu bị Crash nhé. Cẩn trong!-->
+<!--    app:navGraph="@navigation/nav_main_receptionist"-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
