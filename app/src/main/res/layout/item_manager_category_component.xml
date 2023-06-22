@@ -7,13 +7,13 @@
     android:paddingVertical="@dimen/_8sdp"
     android:layout_marginTop="@dimen/_8sdp"
     android:paddingHorizontal="@dimen/_8sdp"
-    android:id="@+id/viewItemCategory">
+    android:id="@+id/viewRootItemCategory">
 
     <ImageView
-        android:id="@+id/imgCategoryItem"
-        android:layout_width="@dimen/_84sdp"
+        android:id="@+id/imgCategoryItemImage"
+        android:layout_width="@dimen/_83sdp"
         android:layout_height="@dimen/_84sdp"
-        android:background="@drawable/bg_txt_login"
+        android:background="@drawable/bg_edt_login"
         android:src="@drawable/img_cake_coffee"/>
 
     <LinearLayout

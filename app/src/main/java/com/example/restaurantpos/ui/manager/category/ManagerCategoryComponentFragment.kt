@@ -21,7 +21,6 @@ import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.util.RealPathUtil
 import com.example.restaurantpos.util.showToast
 import java.io.IOException
-import java.math.RoundingMode
 
 /**
  * Truyền vào position: Int để chuyển tab
@@ -34,6 +33,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
     private lateinit var adapter: ManagerCategoryComponentAdapter
     private lateinit var viewModel: CategoryViewModel
     lateinit var dialog: AlertDialog
+    private var itemImagePath = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,9 +68,9 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                 )*/
 
         // Chuc nang Add Category Item
-        val imgAddItem = binding.imgAddCategoryItem
+//        val imgAddItem = binding.imgAddCategoryItem
         binding.imgAddCategoryItem.setOnClickListener {
-            showAddCategoryItemDialog(imgAddItem)
+            showAddCategoryItemDialog()
         }
 
         viewModel.getListCategoryComponentItem(category.category_id).observe(viewLifecycleOwner) {
@@ -78,7 +78,8 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         }
     }
 
-    private fun showAddCategoryItemDialog(imgAddItem: ImageView) {
+    private fun showAddCategoryItemDialog() {
+        itemImagePath = ""
         // 1.  Build Dialog
         val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
         // 2.  Designed XML --> View
@@ -97,12 +98,13 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         }
 
         // 6.  Code cho ADD Button
-//        view.findViewById<Button>(R.id.btnChoseImage).setOnClickListener {
-//            val intent = Intent()
-//            intent.type = "image/*"
-//            intent.action = Intent.ACTION_GET_CONTENT
-//            startActivityForResult(Intent.createChooser(intent, "Select Photo, Quang"), 111)
-//        }
+        /** Hàm này chưa hiểu rõ */
+        view.findViewById<Button>(R.id.btnChoseImage).setOnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Photo Quang"), 101)
+        }
 
 
         // 7.  Code cho AddItem Button
@@ -111,12 +113,12 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                 ItemEntity(
                     0,
                     dialog.findViewById<EditText>(R.id.edtItemName)?.text.toString(),
-                    dialog.findViewById<EditText>(R.id.edtItemPrice)?.text.toString().toFloat().toBigDecimal().setScale(2, RoundingMode.HALF_UP).toFloat(),
+                    dialog.findViewById<EditText>(R.id.edtItemPrice)?.text.toString().toFloat(),
 //                    DataUtil.getStringFromList(listItemImage),
-                    "Quang",
+                    itemImagePath,
                     dialog.findViewById<EditText>(R.id.edtItemInventoryQuantity)?.text.toString()
                         .toInt(),
-                    category.category_id,
+                    category.category_id
                 )
             )
             dialog.dismiss()
@@ -127,22 +129,23 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         dialog.show()
     }
 
-    private var listItemImage = ArrayList<String>()
 
+    /** Hàm này chưa hiểu rõ */
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, dataIntent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, dataIntent)
 
-        if (requestCode == 111 && resultCode == AppCompatActivity.RESULT_OK ) {
-            if (data != null && data.data != null) {
+        if (requestCode == 101 && resultCode == AppCompatActivity.RESULT_OK) {
+            if ((dataIntent != null) && (dataIntent.data != null)) {
                 try {
                     dialog.findViewById<ImageView>(R.id.imgShow)?.setImageBitmap(
                         MediaStore.Images.Media.getBitmap(
                             requireContext().contentResolver,
-                            data.data   // URI cung cấp cho bên dưới
+                            dataIntent.data   // URI cung cấp cho bên dưới
                         )
                     )
-                    listItemImage.add(RealPathUtil.getRealPath(requireContext(), data.data))
+                    itemImagePath = RealPathUtil.getRealPath(requireContext(), dataIntent.data)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

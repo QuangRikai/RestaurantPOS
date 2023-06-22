@@ -2,6 +2,7 @@ package com.example.restaurantpos.ui.manager.category
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,15 +23,17 @@ class ManagerCategoryComponentAdapter(
     // Thường chứa các thành phần của View --> Để hiển thị cho mỗi item
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Item Components
-        var imgCategoryItemImage = itemView.findViewById<ImageView>(R.id.imgCategoryItem)
+        var imgCategoryItemImage = itemView.findViewById<ImageView>(R.id.imgCategoryItemImage)
         var txtItemName = itemView.findViewById<TextView>(R.id.txtItemName)
         var txtItemPrice = itemView.findViewById<TextView>(R.id.txtItemPrice)
         var txtItemInventoryQuantity = itemView.findViewById<TextView>(R.id.txtItemInventoryQuantity)
-        // Add + ImageView
-//        var imgAddCategoryItem = itemView.findViewById<ImageView>(R.id.imgAddCategoryItem)
-        // Whole Item
-        var viewItemCategory = itemView.findViewById<LinearLayout>(R.id.viewItemCategory)
 
+        // Whole Item
+        var viewRootItemCategory = itemView.findViewById<LinearLayout>(R.id.viewRootItemCategory)
+
+
+        /** BỎ: AddImageView Ở trong Adapter + Bỏ luôn viewPager ở hình ảnh. */
+//        var imgAddCategoryItem = itemView.findViewById<ImageView>(R.id.imgAddCategoryItem)
         // A Lot of Images of Item
 //        var vpgCategory = itemView.findViewById<ViewPager>(R.id.vpgCategory)
 
@@ -56,23 +59,25 @@ class ManagerCategoryComponentAdapter(
         val itemCategory = listData[position]
 
         // Set data from Database for Item
-//        holder.imgCategoryItemImage.setImageResource(R.drawable.img_cake_coffee)
+        holder.imgCategoryItemImage.setImageBitmap(BitmapFactory.decodeFile(itemCategory.image))
         holder.txtItemName.text = itemCategory.item_name
         holder.txtItemPrice.text = itemCategory.price.toString()
         holder.txtItemInventoryQuantity.text = itemCategory.inventory_quantity.toString()
 
+        holder.viewRootItemCategory.setOnLongClickListener {
+            listener.longClickCategoryItem(itemCategory)
+            true
+        }
 
 
-        // User the Interface below
+
+        /** BỎ: User the Interface below */
 
 /*          holder.imgAddCategoryItem.setOnClickListener {
             listener.clickCategoryItem(itemCategory)
         }*/
 
-        holder.viewItemCategory.setOnLongClickListener {
-            listener.longClickCategoryItem(itemCategory)
-            true
-        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -83,6 +88,7 @@ class ManagerCategoryComponentAdapter(
     }
 
     interface EventClickItemCategoryListener {
+        /** BỎ: fun clickCategoryItem */
 //        fun clickCategoryItem(itemCategory: ItemEntity)
         fun longClickCategoryItem(itemCategory: ItemEntity)
 
