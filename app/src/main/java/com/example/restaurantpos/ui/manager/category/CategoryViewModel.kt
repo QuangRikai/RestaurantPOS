@@ -9,8 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CategoryViewModel: ViewModel() {
-    fun getAllCategory() = DatabaseUtil.getAllCategory()
-
     fun addCategory(data: CategoryEntity) {
       CoroutineScope(Dispatchers.IO).launch {
           DatabaseUtil.addCategory(data)
@@ -28,6 +26,10 @@ class CategoryViewModel: ViewModel() {
           DatabaseUtil.addListCategoryItem(listCategoryItem)
       }
     }
+
+
+    fun getAllCategory() = DatabaseUtil.getAllCategory()
+
     fun getListCategoryComponentItem(categoryComponentId: Int) = DatabaseUtil.getListCategoryComponentItem(categoryComponentId)
 
 

@@ -27,8 +27,8 @@ data class AccountEntity constructor(
     @ColumnInfo(name = "role")
     val role: Int,
 
-    @ColumnInfo(name = "status")
-    val status: Boolean
+    @ColumnInfo(name = "account_status")
+    val account_status: Boolean
 
 
     /*

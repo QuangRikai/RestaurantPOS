@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentTableBinding
 import com.example.restaurantpos.db.entity.TableEntity
@@ -72,6 +74,16 @@ class TableFragment : Fragment(), TableAdapter.EventClickTableListener{
             }
         }
     }
-    override fun clickTable(itemUser: TableEntity, status: Int) {
+    /** clickTable --> Navigate to Order/Ordered Fragment */
+    /** bundleOf(26 and 55) */
+    override fun clickTable(itemTable: TableEntity, status: Int) {
+        if(status == 0){
+            findNavController().navigate(R.id.action_tableFragment_to_orderFragment,
+                bundleOf("data" to itemTable.toJson()))
+        }
+        if(status == 1){
+            findNavController().navigate(R.id.orderedTableFragment,
+                bundleOf("data" to itemTable.toJson()))
+        }
     }
 }

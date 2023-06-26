@@ -32,7 +32,7 @@ interface AccountDAO {
     @Query("SELECT * from account")
     fun getAllAccount(): LiveData<MutableList<AccountEntity>>
 
-    @Query("SELECT * from account WHERE role != 0 AND status = 1")
+    @Query("SELECT * from account WHERE role != 0 AND account_status = 1")
     fun getAllUserActive(): LiveData<MutableList<AccountEntity>>
 
 

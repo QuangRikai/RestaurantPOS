@@ -17,10 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RestaurantPOS"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.main.MainKitchenActivity"
-            android:exported="false"
-            android:screenOrientation="landscape"/>
+
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true">

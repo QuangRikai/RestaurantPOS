@@ -1,13 +1,11 @@
 package com.example.restaurantpos.ui.kitchen
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.restaurantpos.R
+import androidx.fragment.app.Fragment
 import com.example.restaurantpos.databinding.FragmentKitchenBinding
-import com.example.restaurantpos.databinding.FragmentOrderedTableBinding
 
 class KitchenFragment : Fragment() {
 

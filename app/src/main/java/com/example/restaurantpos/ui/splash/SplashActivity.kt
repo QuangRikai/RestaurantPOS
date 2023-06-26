@@ -58,8 +58,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         /** 4. Item */
 /*        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 1", 11.1f, "", 5, 1))
-        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 1", 11.1f, "", 5, 2))
-        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 1", 11.1f, "", 5, 3))*/
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 2", 11.1f, "", 1, 2))
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 3", 11.1f, "", 3, 3))*/
     }
 
     private fun startLoginActivity() {

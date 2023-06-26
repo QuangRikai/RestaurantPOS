@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_100sdp"
+    android:layout_height="@dimen/_80sdp"
     android:background="@drawable/bg_edt_login"
     android:orientation="horizontal"
-    android:paddingVertical="@dimen/_8sdp"
-    android:layout_marginTop="@dimen/_8sdp"
-    android:paddingHorizontal="@dimen/_8sdp"
-    android:id="@+id/viewRootItemCategory">
+    android:layout_marginTop="@dimen/_5sdp"
+    android:paddingVertical="@dimen/_5sdp"
+    android:paddingHorizontal="@dimen/_5sdp"
+    android:id="@+id/viewRootOrderItem">
 
     <ImageView
         android:id="@+id/imgCategoryItemImage"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_80sdp"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
         android:scaleType="centerCrop"
         android:padding="@dimen/_3sdp"
         android:background="@drawable/bg_category_item"
-        android:src="@drawable/img_back"/>
+        android:src="@drawable/img_cake_coffee"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -102,5 +102,15 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_6sdp"
+        android:text="Add"
+        android:background="@drawable/bg_txt_login"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_launcher_background"/>
 
 </LinearLayout>

@@ -2,21 +2,10 @@ package com.example.restaurantpos.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.example.restaurantpos.R
-import com.example.restaurantpos.base.BaseActivity
-import com.example.restaurantpos.databinding.ActivityMainManagerBinding
 import com.example.restaurantpos.databinding.ActivityMainReceptionistBinding
-import com.example.restaurantpos.ui.login.LoginActivity
-import com.example.restaurantpos.util.SharedPreferencesUtils
-import com.example.restaurantpos.util.openActivity
 
 class MainReceptionistActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainReceptionistBinding
@@ -32,7 +21,7 @@ class MainReceptionistActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_receptionist) as NavHostFragment
         val inflater = navHostFragment.navController.navInflater
-        val graph = inflater.inflate(R.navigation.nav_main_receptionist)
+        val graph = inflater.inflate(R.navigation.nav_main_staff)
 
         // Use bundle from Login to separate
         if(intent.getIntExtra("NavigateByRole", 1) == 1){

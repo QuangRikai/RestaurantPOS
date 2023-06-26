@@ -45,15 +45,15 @@ class TableAdapter(
         /** Set Text --> Table */
         holder.txtTableName.text = itemTable.table_name
         /** Set Trang Thai cho Table*/
-        if (itemTable.status == 0){
+        if (itemTable.table_status == 0){
             holder.viewRootTableItem.background = context.getDrawable(R.drawable.bg_table_empty)
-        } else if (itemTable.status == 1){
+        } else if (itemTable.table_status == 1){
             holder.viewRootTableItem.background = context.getDrawable(R.drawable.bg_table_used)
         }
 
-        /** Click Table */
+        /** Click Table (Kèm theo itemTable.status để hứng dữ liệu) */
         holder.viewRootTableItem.setOnClickListener {
-            listenerClickEditUser.clickTable(itemTable, itemTable.status)
+            listenerClickEditUser.clickTable(itemTable, itemTable.table_status)
         }
     }
 
@@ -65,6 +65,6 @@ class TableAdapter(
     }
 
     interface EventClickTableListener {
-        fun clickTable(itemUser: TableEntity, status: Int)
+        fun clickTable(itemTable: TableEntity, status: Int)
     }
 }

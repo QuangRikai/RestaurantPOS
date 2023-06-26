@@ -59,7 +59,8 @@ class ManagerCategoryComponentAdapter(
         val itemCategory = listData[position]
 
         // Set data from Database for Item
-        holder.imgCategoryItemImage.setImageBitmap(BitmapFactory.decodeFile(itemCategory.image))
+        setImage( holder.imgCategoryItemImage, itemCategory.image)
+//       holder.imgCategoryItemImage.setImageBitmap(BitmapFactory.decodeFile(itemCategory.image))
         holder.txtItemName.text = itemCategory.item_name
         holder.txtItemPrice.text = itemCategory.price.toString()
         holder.txtItemInventoryQuantity.text = itemCategory.inventory_quantity.toString()
@@ -78,6 +79,10 @@ class ManagerCategoryComponentAdapter(
         }*/
 
 
+    }
+
+    private fun setImage(imageView: ImageView, path: String) {
+        imageView.setImageBitmap(BitmapFactory.decodeFile(path))
     }
 
     @SuppressLint("NotifyDataSetChanged")

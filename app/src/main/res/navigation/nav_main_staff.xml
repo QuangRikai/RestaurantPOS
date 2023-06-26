@@ -9,7 +9,7 @@
         android:id="@+id/tableFragment"
         android:name="com.example.restaurantpos.ui.receptionist.table.TableFragment"
         android:label="fragment_table"
-        tools:layout="@layout/fragment_table" >
+        tools:layout="@layout/fragment_table">
         <action
             android:id="@+id/action_tableFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
@@ -19,22 +19,20 @@
     </fragment>
     <fragment
         android:id="@+id/orderFragment"
-        android:name="com.example.restaurantpos.ui.receptionist.order.OrderFragment"
+        android:name="com.example.restaurantpos.ui.receptionist.order.NewOrderFragment"
         android:label="fragment_order"
-        tools:layout="@layout/fragment_order" >
-        <action
-            android:id="@+id/action_orderFragment_to_tableFragment"
-            app:destination="@id/tableFragment" />
+        tools:layout="@layout/fragment_new_order">
+        <!-- Giải thích cho phần này-->
+        <argument
+            android:name="data"
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/orderedTableFragment"
-        android:name="com.example.restaurantpos.ui.receptionist.order.OrderedTableFragment"
+        android:name="com.example.restaurantpos.ui.receptionist.order.OldOrderFragment"
         android:label="fragment_ordered_table"
-        tools:layout="@layout/fragment_ordered_table" >
-        <action
-            android:id="@+id/action_orderedTableFragment_to_tableFragment"
-            app:destination="@id/tableFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_old_order" />
     <fragment
         android:id="@+id/kitchenFragment"
         android:name="com.example.restaurantpos.ui.kitchen.KitchenFragment"

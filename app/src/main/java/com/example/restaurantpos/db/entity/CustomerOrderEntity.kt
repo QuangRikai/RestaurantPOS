@@ -7,12 +7,12 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "customer_order_table")
-data class CustomerOrderTableEntity constructor(
+@Entity(tableName = "customer_order")
+data class CustomerOrderEntity constructor(
 
     @PrimaryKey(autoGenerate= true)
-    @ColumnInfo(name = "customer_order_table_id")
-    val customer_order_table_id: Int,
+    @ColumnInfo(name = "customer_order_id")
+    val customer_order_id: Int,
 
     @ColumnInfo(name = "customer_id")
     val customer_id: Int,

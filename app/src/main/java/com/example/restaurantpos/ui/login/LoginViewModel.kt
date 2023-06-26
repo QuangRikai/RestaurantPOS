@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
-import com.example.restaurantpos.db.entity.AccountEntity
-import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.db.roomdb.PosRoomDatabase
-import com.example.restaurantpos.ui.main.MainKitchenActivity
 import com.example.restaurantpos.ui.main.MainManagerActivity
 import com.example.restaurantpos.ui.main.MainReceptionistActivity
 import com.example.restaurantpos.util.SharedPreferencesUtils
