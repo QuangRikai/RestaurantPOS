@@ -137,7 +137,7 @@
                 android:text="ADD Customer?" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rycOrderList"
+                android:id="@+id/rycCartItemList"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"

@@ -25,23 +25,23 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun initOnCreate() {
         viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
         /** Set Data for DB */
-        createDataFirst()
+//        createDataFirst()
         /** Start Login Screen */
         startLoginActivity()
     }
 
     private fun createDataFirst() {
         /** 1. Account */
-/*        viewModel.addListAccount(
+        viewModel.addListAccount(
             listOf(
                 AccountEntity(1, "Quang Test Manager", "quang0", "123", 0, true),
                 AccountEntity(2, "Quang Test Receptionist", "quang1", "123", 1, true),
                 AccountEntity(3, "Quang Test Kitchen", "quang2", "123", 2, true)
             )
-        )*/
+        )
 
         /** 2. Table */
-/*        viewModel.addTable(this, TableEntity(1, "Table 01", 0))
+        viewModel.addTable(this, TableEntity(1, "Table 01", 0))
         viewModel.addTable(this, TableEntity(2, "Table 02", 0))
         viewModel.addTable(this, TableEntity(3, "Table 03", 0))
         viewModel.addTable(this, TableEntity(4, "Table 04", 0))
@@ -49,17 +49,17 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         viewModel.addTable(this, TableEntity(6, "Table 06", 0))
         viewModel.addTable(this, TableEntity(7, "Table 07", 0))
         viewModel.addTable(this, TableEntity(8, "Table 08", 0))
-        viewModel.addTable(this, TableEntity(9, "Table 09", 0))*/
+        viewModel.addTable(this, TableEntity(9, "Table 09", 0))
 
         /** 3. Category */
-/*        viewModel.addCategory(CategoryEntity(1, "FOODS"))
+        viewModel.addCategory(CategoryEntity(1, "FOODS"))
         viewModel.addCategory(CategoryEntity(2, "DRINKS"))
-        viewModel.addCategory(CategoryEntity(3, "DESSERTS"))*/
+        viewModel.addCategory(CategoryEntity(3, "DESSERTS"))
 
         /** 4. Item */
-/*        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 1", 11.1f, "", 5, 1))
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 1", 11.1f, "", 5, 1))
         viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 2", 11.1f, "", 1, 2))
-        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 3", 11.1f, "", 3, 3))*/
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 3", 11.1f, "", 3, 3))
     }
 
     private fun startLoginActivity() {

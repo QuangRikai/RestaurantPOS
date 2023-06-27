@@ -12,17 +12,18 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
-import com.example.restaurantpos.db.entity.CartEntity
+import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.util.DatabaseUtil
 
 
 /** Adapter mày: CategoryItem --> ItemOfCategory ở phía dưới OrderFragment*/
 class CartItemAdapter(
-    var context: Context,
-    private var listData: MutableList<CartEntity>,
+    var context: Fragment,
+    private var listData: MutableList<CartItemEntity>,
     var lifecycleOwner: LifecycleOwner,
     val listenerClickOrderItem: EventClickCartItemListener
 
@@ -35,7 +36,7 @@ class CartItemAdapter(
         var imgCategoryItemImage = itemView.findViewById<ImageView>(R.id.imgCategoryItemImage)
         var txtItemName = itemView.findViewById<TextView>(R.id.txtItemName)
         var imgMinus = itemView.findViewById<ImageView>(R.id.imgMinus)
-        var txtCount = itemView.findViewById<TextView>(R.id.txtCount)
+        var txtOrderQuantity = itemView.findViewById<TextView>(R.id.txtOrderQuantity)
         var imgPlus = itemView.findViewById<ImageView>(R.id.imgPlus)
         var txtNote = itemView.findViewById<TextView>(R.id.txtNote)
         var btnDelete = itemView.findViewById<Button>(R.id.btnDelete)
@@ -57,9 +58,11 @@ class CartItemAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cartItem = listData[position]
         /** Đổ Data cho OrderItem */
-//        holder.txtItemName.text = itemOrderedItem.
-//        viewHolder.txtNote.text = item.note
-//        viewHolder.txtCount.text = item.count.toString()
+        holder.txtNote.text = cartItem.note
+        holder.txtOrderQuantity.text = cartItem.order_quantity.toString()
+        // Tên và Ảnh cần lấy từ ItemTable dựa theo item_id
+        /** Get Info of Item --> Set for OrderedItem  <-- By itemOrderedItem.item_id */
+        showInforItem(holder.txtItemName, holder.imgCategoryItemImage, cartItem.item_id)
 
 
         /** Click Minus Item */
@@ -83,34 +86,29 @@ class CartItemAdapter(
         holder.btnDelete.setOnClickListener {
             listenerClickOrderItem.clickDelete(cartItem, position)
         }
-
-        /** Get Info of Item --> Set for OrderedItem  <-- By itemOrderedItem.item_id */
-        showInforItem(holder.txtItemName, holder.imgCategoryItemImage, cartItem.item_id)
-
     }
 
-    private fun showInforItem(name : TextView, imgItem : ImageView, itemId: Int) {
-        DatabaseUtil.getListCategoryComponentItem(itemId).observe(lifecycleOwner) { item ->
-            name.text = item[0].item_name
-            imgItem.setImageBitmap(BitmapFactory.decodeFile(item[0].image))
+    private fun showInforItem(itemName : TextView, itemImg : ImageView, itemId: Int) {
+        DatabaseUtil.getItemOfCategory(itemId).observe(lifecycleOwner) { item ->
+            itemName.text = item[0].item_name
+            itemImg.setImageBitmap(BitmapFactory.decodeFile(item[0].image))
         }
 
     }
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setListData(newListData: MutableList<CartEntity>) {
+    fun setListData(newListData: MutableList<CartItemEntity>) {
         listData.clear()
         listData.addAll(newListData)
         notifyDataSetChanged()
     }
 
     interface EventClickCartItemListener {
-
-        fun clickMinus(orderedItem: CartEntity, pos: Int)
-        fun clickPlus(orderedItem: CartEntity, pos: Int)
-        fun clickNote(orderedItem: CartEntity, pos: Int)
-
-        fun clickDelete(orderedItem: CartEntity, pos: Int)
+        /** WHY cần có cả Vị trí?*/
+        fun clickMinus(orderedItem: CartItemEntity, pos: Int)
+        fun clickPlus(orderedItem: CartItemEntity, pos: Int)
+        fun clickNote(orderedItem: CartItemEntity, pos: Int)
+        fun clickDelete(orderedItem: CartItemEntity, pos: Int)
     }
 }

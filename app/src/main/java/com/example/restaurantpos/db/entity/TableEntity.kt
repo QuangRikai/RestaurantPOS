@@ -19,12 +19,13 @@ data class TableEntity constructor(
     val table_name: String,
 
     @ColumnInfo(name = "table_status")
-    val table_status: Int
+    var table_status: Int
 
     /*
     0. Empty
-    1. Used
-    2. Unable, Problem
+    1. New Order
+    2. Old Order
+    3. Problem
      */
 
 ) : Parcelable {

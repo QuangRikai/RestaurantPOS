@@ -19,8 +19,11 @@ interface ItemDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addListCategoryItem(listData: List<ItemEntity>): List<Long>
 
-    @Query("SELECT * from `item` WHERE category_id = :id")
-    fun getListCategoryComponentItem(id: Int): LiveData<MutableList<ItemEntity>>
+    // Lấy list Item--> Lấy Item cụ thể dựa vào index --> Lấy info của Item này.
+    @Query("SELECT * from `item` WHERE category_id = :category_id")
+    fun getListCategoryComponentItem(category_id: Int): LiveData<MutableList<ItemEntity>>
+    @Query("SELECT * from `item` WHERE item_id = :item_id")
+    fun getItemOfCategory(item_id: Int): LiveData<MutableList<ItemEntity>>
 
    /* @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addTable(table: TableEntity): Long

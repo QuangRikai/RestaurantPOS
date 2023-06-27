@@ -70,12 +70,13 @@
                 app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/txtCount"
+                android:id="@+id/txtOrderQuantity"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
                 android:background="@drawable/bg_edt_login"
                 android:gravity="center"
+                android:fontFamily="@font/inter_500"
                 android:text="1" />
 
             <ImageView
@@ -123,9 +124,5 @@
             android:text="Delete"
             android:textColor="@color/white" />
     </LinearLayout>
-
-
-
-
 
 </LinearLayout>

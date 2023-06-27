@@ -7,32 +7,33 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "cart")
-data class CartEntity constructor(
+@Entity(tableName = "cart_item")
+data class CartItemEntity constructor(
 
     @PrimaryKey(autoGenerate= true)
-    @ColumnInfo(name = "cart_id")
-    val cart_id: Int,
+    @ColumnInfo(name = "cart_item_id")
+    val cart_item_id: Int,
 
     @ColumnInfo(name = "item_id")
     val item_id: Int,
 
+    // Vì Order của mình String.
     @ColumnInfo(name = "order_id")
-    val order_id: Int,
+    val order_id: String,
     
     @ColumnInfo(name = "order_quantity")
-    val order_quantity: Int,
+    var order_quantity: Int,
 
     @ColumnInfo(name = "note")
     val note: String,
 
-    @ColumnInfo(name = "cart_status")
-    val cart_status: Int
+    @ColumnInfo(name = "cart_item_status")
+    val cart_item_status: Int
 
-    /*
-0: Manager
-1: Receptionist
-2: Kitchen
+    /* Status. Phục vụ cho Bếp?
+0: Wait
+1: In Process
+2: Done
  */
 
 ): Parcelable {

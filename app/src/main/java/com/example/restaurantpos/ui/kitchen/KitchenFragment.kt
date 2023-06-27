@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.restaurantpos.databinding.FragmentKitchenBinding
 
+// Nhận định: Thằng này sử dụng lại ViewModel của CartViewModel
 class KitchenFragment : Fragment() {
 
     lateinit var binding: FragmentKitchenBinding
@@ -14,7 +15,7 @@ class KitchenFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentKitchenBinding.inflate(inflater, container, false)
         return binding.root
     }

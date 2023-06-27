@@ -6,17 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.restaurantpos.db.dao.AccountDAO
 import com.example.restaurantpos.db.dao.AppDAO
-import com.example.restaurantpos.db.dao.CartDAO
+import com.example.restaurantpos.db.dao.CartItemDAO
 import com.example.restaurantpos.db.dao.CategoryDAO
+import com.example.restaurantpos.db.dao.CustomerDAO
 import com.example.restaurantpos.db.dao.ItemDAO
+import com.example.restaurantpos.db.dao.OrderDAO
 import com.example.restaurantpos.db.dao.TableDAO
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
-import com.example.restaurantpos.db.entity.CartEntity
-import com.example.restaurantpos.db.entity.CustomerOrderEntity
+import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.ShiftEntity
 import com.example.restaurantpos.db.entity.TableEntity
@@ -26,10 +27,9 @@ import com.example.restaurantpos.db.entity.TableEntity
     entities = [
         AccountEntity::class,
         AccountShiftEntity::class,
-        CartEntity::class,
+        CartItemEntity::class,
         CategoryEntity::class,
         CustomerEntity::class,
-        CustomerOrderEntity::class,
         ItemEntity::class,
         OrderEntity::class,
         ShiftEntity::class,
@@ -43,7 +43,9 @@ public abstract class PosRoomDatabase: RoomDatabase (){
     abstract fun categoryDAO(): CategoryDAO
     abstract fun itemDAO(): ItemDAO
     abstract fun tableDAO(): TableDAO
-    abstract fun cartDAO(): CartDAO
+    abstract fun cartItemDAO(): CartItemDAO
+    abstract fun orderDAO(): OrderDAO
+    abstract fun customerDAO(): CustomerDAO
 
     companion object{
         @Volatile

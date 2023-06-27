@@ -9,10 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentNewOrderBinding
-import com.example.restaurantpos.db.entity.CartEntity
+import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.ItemEntity
+import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.manager.category.CategoryViewModel
+import com.example.restaurantpos.ui.receptionist.table.TableViewModel
+import com.example.restaurantpos.util.DateFormatUtil
+import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.showToast
 
 class NewOrderFragment : Fragment() {
@@ -24,8 +28,16 @@ class NewOrderFragment : Fragment() {
 
     /** Lấy những ViewModel chứa các phương thức cần sử dụng */
     lateinit var viewModelCategory: CategoryViewModel
+    lateinit var viewModelCart: CartViewModel
+    lateinit var viewModelTable: TableViewModel
 
-    var data: TableEntity? = null
+
+    /** Tạo những đối tượng của Bảng để dễ thao tác */
+    var tableObject: TableEntity? = null
+    var orderObject: OrderEntity? = null
+    var listCartItem = ArrayList<CartItemEntity>()
+
+
     var chooseCategory: Int = 1
 
     private var listItemOfCategory = ArrayList<ItemEntity>()
@@ -35,18 +47,21 @@ class NewOrderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentNewOrderBinding.inflate(inflater, container, false)
-
-        /** Xử lý Biến data
-        Chuyển TableEntity String thành 1 đối tượng để chuyển dữ liệu --> gán đối tượng này cho data*/
-        data = TableEntity.toTableEntity(requireArguments().getString("data").toString())
-        if (data == null) {
+        /** ----------------------------------------------------------------------------*/
+        /** Xử lý Biến data*/
+        // Chuyển TableEntity String thành 1 đối tượng để chuyển dữ liệu --> gán đối tượng này cho data
+        tableObject = TableEntity.toTableEntity(requireArguments().getString("data").toString())
+        if (tableObject == null) {
             findNavController().popBackStack()
         }
 
-        /** Xử lý ViewModel */
+        /** Tạo Đối Tượng ViewModel */
         // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
         viewModelCategory = ViewModelProvider(this).get(CategoryViewModel::class.java)
+        viewModelCart = ViewModelProvider(this).get(CartViewModel::class.java)
+        viewModelTable = ViewModelProvider(this).get(TableViewModel::class.java)
 
+        /** ----------------------------------------------------------------------------*/
         return binding.root
     }
 
@@ -54,18 +69,42 @@ class NewOrderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /** Handle data Object: TableEntity above*/
-        data?.let { table ->
+        /** Handle data Object: tableEntity above*/
+        tableObject?.let { table ->
             // Code cho tên Table
             binding.apply {
                 txtTableNameInOrderList.text = table.table_name
             }
-            // Khi có Data thì mới thực hiện getListCategory. Lấy listData từ DB đổ lên View qua Adapter
+            // Khi có Data thì mới thực hiện getListCategory. Lấy listData từ DB đổ lên View MenuOrder
             getListCategory(chooseCategory)
+
+            // Khi có Table (Đã click chọn Table) mới bắt đầu tạo Order
+            orderObject = OrderEntity(
+                DateFormatUtil.getTimeForOrderId(),
+                0,
+                table.table_id,
+                SharedPreferencesUtils.getAccountId(),
+                DateFormatUtil.getTimeForOrderId(),
+                "",
+                0f,
+                0
+            )
+
+// Vừa vào NewOrder là đã phải thay đổi trạng thái của bàn rồi. Tránh việc 2 bàn cùng order 1 lúc
+            table.table_status = 1
+            // Thêm bàn vào mà làm gì?
+            viewModelTable.addTable(requireContext(), table)
+
         }
 
         /** Code for Back */
         binding.igmBackOfOrder.setOnClickListener {
+            // Nếu là bàn Order thêm (status = 2) thì không làm gì
+            if (tableObject!!.table_status == 1) {
+                tableObject!!.table_status = 0
+            }
+
+            viewModelTable.addTable(requireContext(), tableObject!!)
             findNavController().popBackStack()
         }
 
@@ -77,6 +116,27 @@ class NewOrderFragment : Fragment() {
             } else {
                 adapterOrderItem.setListData(listItemOfCategory)
             }
+        }
+        /** Code for Clear Button */
+        binding.txtClear.setOnClickListener {
+            // Không dùng listCartItem.clear(). Tránh Crash
+            listCartItem = ArrayList()
+            adapterCartItem.setListData(listCartItem)
+        }
+
+        /** Code for Order Button */
+        binding.txtOrder.setOnClickListener {
+            // Add Order (Bill) vào OrderEntity
+            orderObject?.let { order -> viewModelCart.addOrder(order) }
+            // Add list Item_in_Cart into CartItemEntity. Lúc này mới viết vào Database!
+            viewModelCart.addListCartItem(listCartItem)
+            // Cập nhập trạng thái cho Table
+            // Chú ý: 2 thằng không thể order cùng lúc cùng 1 cái bàn được
+            /** ------------------------------????????-------------------------*/
+            tableObject?.table_status = 1
+            viewModelTable.addTable(requireContext(), tableObject!!)
+
+            findNavController().popBackStack()
         }
 
 
@@ -109,9 +169,29 @@ class NewOrderFragment : Fragment() {
             ArrayList(),
             object : ItemOfCategoryInBottomOfOrderFragmentAdapter.EventClickOrderItemListener {
                 override fun clickAddOrderItem(itemInCategory: ItemEntity) {
-                    // Phần Add này còn kiểm soát cả số lượng nữa --> Tạo ViewModel riêng.
-                    context?.showToast("Add this Item to Cart")
+                    // Xử lý Nhấp Add tiếp thì sẽ tăng Order_Quantity ở Cart
+                    for (i in 0 until listCartItem.size) {
+                        if (listCartItem[i].item_id == itemInCategory.item_id) {
+                            listCartItem[i].order_quantity++
+                            adapterCartItem.setListData(listCartItem)
+                            return
+                        }
+                    }
 
+                    // Đưa OrderItem --> Cart
+                    listCartItem.add(
+                        CartItemEntity(
+                            0,
+                            itemInCategory.item_id,
+                            orderObject!!.order_id,
+                            1,
+                            "",
+                            0
+                        )
+                    )
+
+                    // Set Data (listCartItem) cho adapter --> Đổ lên View CartOrder
+                    adapterCartItem.setListData(listCartItem)
                 }
 
             }
@@ -122,31 +202,38 @@ class NewOrderFragment : Fragment() {
         /** Adapter 3 :CART ITEM:  Xử lý adapter, inflate for View*/
         // 1. Tạo 1 adapter
         adapterCartItem = CartItemAdapter(
-            requireContext(),
+            requireParentFragment(),
             ArrayList(),
             viewLifecycleOwner,
             object : CartItemAdapter.EventClickCartItemListener {
-                override fun clickMinus(orderedItem: CartEntity, pos: Int) {
-                    TODO("Not yet implemented")
+                override fun clickMinus(orderedItem: CartItemEntity, pos: Int) {
+                    if (listCartItem[pos].order_quantity == 1) {
+                        listCartItem.remove(orderedItem)
+                    } else {
+                        listCartItem[pos].order_quantity--
+                    }
+                    adapterCartItem.setListData(listCartItem)
                 }
 
-                override fun clickPlus(orderedItem: CartEntity, pos: Int) {
-                    TODO("Not yet implemented")
+                override fun clickPlus(orderedItem: CartItemEntity, pos: Int) {
+                    listCartItem[pos].order_quantity++
+                    adapterCartItem.setListData(listCartItem)
                 }
 
-                override fun clickNote(orderedItem: CartEntity, pos: Int) {
-                    TODO("Not yet implemented")
+                override fun clickNote(orderedItem: CartItemEntity, pos: Int) {
+                    // Xử lý Dialog
+                    context?.showToast("Xử lý Dialog")
+
                 }
 
-                override fun clickDelete(orderedItem: CartEntity, pos: Int) {
-                    TODO("Not yet implemented")
+                override fun clickDelete(orderedItem: CartItemEntity, pos: Int) {
+                    listCartItem.remove(orderedItem)
+                    adapterCartItem.setListData(listCartItem)
                 }
-
-
             }
         )
         // 2. Dùng adapter vừa tạo cho View cần dùng
-        binding.rycOrderItem.adapter = adapterOrderItem
+        binding.rycCartItemList.adapter = adapterCartItem
 
     }
 
@@ -158,7 +245,8 @@ class NewOrderFragment : Fragment() {
     private fun getListCategory(chooseCategory: Int) {
         viewModelCategory.getAllCategory().observe(viewLifecycleOwner) {
             adapterCategoryInBottomOfOrderFragment.setListData(it)
-//            getItemOfCategory(chooseCategory)
+            getItemOfCategory(chooseCategory)
+            // Không có cái này thì sẽ không hiện gì ở MenuOrder!
 
         }
     }
@@ -208,4 +296,17 @@ class NewOrderFragment : Fragment() {
 3. Thực hiện các event (Các Event này xem ở Item_Category_In_Order
    - Category Được chọn thì: Đổi màu cho CategoryName, getListItem của Category đó ra.
 4. Sử dụng ViewModel để đưa listData (Category) get được, lên View
+ */
+
+/** Xử lý Order */
+/*
+1. Tạo Order sau khi đã có Table, gắn vào biến orderEntity
+2. Tạo listCartItem = ArrayList<CartItemEntity>() --> Add CartItem --> Adapter đổ lên cho View CartItem
+3. Tạo CartViewModel để xử lý Cart and Order
+4.
+ */
+/** Xử lý Order */
+/*
+1. Những thứ không liên quan đến Adapter thì quăn lên trên xử lý cho dễ nhìn
+
  */
