@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 // Quản lý Các Order (Bill)
@@ -11,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "order")
 data class OrderEntity constructor(
 
-    // Không tự động tăng, dùng 1 cách ngẫu nhiên sinh ra tại thời điểm đấy. By Time
+    // Sử dụng order_create_time
     @PrimaryKey
     @ColumnInfo(name = "order_id")
     val order_id: String,
@@ -44,4 +45,16 @@ data class OrderEntity constructor(
     */
 
 ): Parcelable {
+    companion object {
+        fun toOrderObject(json: String): OrderEntity? {
+            return Gson().fromJson(json, OrderEntity::class.java)
+        }
+    }
+
+
+
+    fun toJson(): String {
+        return Gson().toJson(this)
+    }
+
 }

@@ -36,7 +36,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             listOf(
                 AccountEntity(1, "Quang Test Manager", "quang0", "123", 0, true),
                 AccountEntity(2, "Quang Test Receptionist", "quang1", "123", 1, true),
-                AccountEntity(3, "Quang Test Kitchen", "quang2", "123", 2, true)
+                AccountEntity(3, "Quang Test Kitchen", "quang2", "123", 2, true),
             )
         )
 
@@ -57,9 +57,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         viewModel.addCategory(CategoryEntity(3, "DESSERTS"))
 
         /** 4. Item */
-        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 1", 11.1f, "", 5, 1))
-        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 2", 11.1f, "", 1, 2))
-        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 3", 11.1f, "", 3, 3))
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 1", 131.1f, "", 5, 1))
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 2", 1111.1f, "", 1, 2))
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 3", 22.1f, "", 3, 3))
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 5", 13.1f, "", 5, 1))
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 6", 15.1f, "", 1, 2))
+        viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 7", 111.1f, "", 3, 3))
     }
 
     private fun startLoginActivity() {

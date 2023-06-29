@@ -8,21 +8,19 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.restaurantpos.databinding.FragmentNewOrderBinding
+import com.example.restaurantpos.databinding.FragmentAddMoreOrderBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.manager.category.CategoryViewModel
 import com.example.restaurantpos.ui.receptionist.table.TableViewModel
-import com.example.restaurantpos.util.DatabaseUtil.getItemOfCategory
-import com.example.restaurantpos.util.DateFormatUtil
-import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.showToast
 
-class NewOrderFragment : Fragment() {
 
-    lateinit var binding: FragmentNewOrderBinding
+class AddMoreOrderFragment : Fragment() {
+
+    lateinit var binding: FragmentAddMoreOrderBinding
     lateinit var adapterCategoryInBottomOfOrderFragment: CategoryInBottomOfOrderFragmentAdapter
     lateinit var adapterOrderItem: ItemOfCategoryInBottomOfOrderFragmentAdapter
     lateinit var adapterCartItem: CartItemAdapter
@@ -34,27 +32,46 @@ class NewOrderFragment : Fragment() {
 
 
     /** Tạo những đối tượng của Bảng để dễ thao tác */
-    var tableObject: TableEntity? = null
-    var orderObject: OrderEntity? = null
-    var listCartItem = ArrayList<CartItemEntity>()
+    private var tableObject: TableEntity? = null
+    private var orderObject: OrderEntity? = null
+    private var listItemOfCategory = ArrayList<ItemEntity>()
+    private var listCartItem = ArrayList<CartItemEntity>()
+
+    // Thực hiện xóa ở đây thì hãy cẩn thận.
+    // Cần lưu nó lại vì thao tác trên này không lưu vào Database nhưng khi mà xóa thì phải lưu nó vào lại cả dataBase nữa
+    // 1:46
+    // Khi Click Order thì cần Dọn sạch (Delete), không còn liên quan gì nữa
+    private var listCartItemDelete = ArrayList<CartItemEntity>()
 
     // Để so sánh với category_id
     var chooseCategory: Int = 1
 
-    private var listItemOfCategory = ArrayList<ItemEntity>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentNewOrderBinding.inflate(inflater, container, false)
+        binding = FragmentAddMoreOrderBinding.inflate(inflater, container, false)
         /** ----------------------------------------------------------------------------*/
-        /** Xử lý Biến tableObject (data từ fragment trước) */
-        // Chuyển TableEntity String thành 1 đối tượng để chuyển dữ liệu --> gán đối tượng này cho data
-        tableObject = TableEntity.toTableEntity(requireArguments().getString("data").toString())
+        /** Đáp Data từ Fragment trước sang */
+        tableObject =
+            TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
         if (tableObject == null) {
             findNavController().popBackStack()
         }
+
+        orderObject =
+            OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
+        if (orderObject == null) {
+            findNavController().popBackStack()
+        }
+
+        // Thằng này cần truyền sang 1 List<String>  --> Căng quá. Thay vì get từ Bếp, thì get từ order luôn.
+        /*        listCartItem =
+                    Gson().fromJson(requireArguments().getString("listCartItem").toString(), ArrayList<CartItemEntity>)
+                if (listCartItem == null) {
+                    findNavController().popBackStack()
+                }*/
 
         /** Tạo Đối Tượng ViewModel */
         // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
@@ -71,39 +88,30 @@ class NewOrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         /** Handle data Object: tableEntity above*/
+        // 1. tableObject
         tableObject?.let { table ->
-            // Code cho tên Table
-                binding.txtTableNameInOrderList.text = table.table_name
-            // Khi có Data thì mới thực hiện getListCategory. Lấy listData từ DB đổ lên View MenuOrder
+            /** Code for Table's Name */
+            binding.txtTableNameInOrderList.text = table.table_name
+
+            // Xử lý cho Category View
             getListCategory(chooseCategory)
 
-            // Khi có Table (Đã click chọn Table) mới bắt đầu tạo Order
-            // Tạo trước 1 order default
-            orderObject = OrderEntity(
-                DateFormatUtil.getTimeForOrderId(),
-                0,
-                table.table_id,
-                SharedPreferencesUtils.getAccountId(),
-                DateFormatUtil.getTimeForOrderId(),
-                "",
-                0f,
-                0
-            )
+//            table.table_status = 1
+//            viewModelTable.addTable(requireContext(), table)
+        }
 
-// Vừa vào NewOrder là đã phải thay đổi trạng thái của bàn rồi. Tránh việc 2 bàn cùng order 1 lúc
-            table.table_status = 1
-            // Thêm bàn vào mà làm gì?
-            viewModelTable.addTable(requireContext(), table)
-
+        // 2. orderObject --> Lấy listCartItem from Order. Dùng ... Lọc ra những thằng của Table AND status Waiting.
+        orderObject?.let { order ->
+            viewModelCart.getListCartItemOnWaiting(order.order_id)
+                .observe(viewLifecycleOwner) { listItem ->
+//                listCartItem.clear()
+                    listCartItem.addAll(listItem)
+                    adapterCartItem.setListData(listCartItem)
+                }
         }
 
         /** Code for Back */
         binding.igmBackOfOrder.setOnClickListener {
-            // Nếu là bàn Order thêm (status = 2) thì không làm gì
-            if (tableObject!!.table_status == 1) {
-                tableObject!!.table_status = 0
-            }
-            viewModelTable.addTable(requireContext(), tableObject!!)
             findNavController().popBackStack()
         }
 
@@ -178,7 +186,7 @@ class NewOrderFragment : Fragment() {
                     }
 
                     // Đưa OrderItem --> Cart
-                    listCartItem.add(
+/*                    listCartItem.add(
                         CartItemEntity(
                             0,
                             itemInCategory.item_id,
@@ -187,7 +195,7 @@ class NewOrderFragment : Fragment() {
                             "",
                             0
                         )
-                    )
+                    )*/
 
                     // Set Data (listCartItem) cho adapter --> Đổ lên View CartOrder
                     adapterCartItem.setListData(listCartItem)
@@ -202,7 +210,7 @@ class NewOrderFragment : Fragment() {
         // 1. Tạo 1 adapter
         adapterCartItem = CartItemAdapter(
             requireParentFragment(),
-            ArrayList(),
+            ArrayList(), // Đáp sẵn bên kia sang nên không cần tạo rỗng set lại các thứ.
             viewLifecycleOwner,
             object : CartItemAdapter.EventClickCartItemListener {
                 override fun clickMinus(orderedItem: CartItemEntity, pos: Int) {

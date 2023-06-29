@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewRootCartItemInOldOrder"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_35sdp"
+    android:layout_marginHorizontal="@dimen/_4sdp"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/text_blue" />
+
+    <TextView
+        android:id="@+id/txtNo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fontFamily="@font/inter_400"
+        android:gravity="center"
+        android:text="No."
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp" />
+
+
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/text_blue" />
+
+    <TextView
+        android:id="@+id/txtItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:fontFamily="@font/inter_400"
+        android:gravity="center_vertical"
+        android:text="Item"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/text_blue" />
+
+    <TextView
+        android:id="@+id/txtNote"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:fontFamily="@font/inter_400"
+        android:gravity="center_vertical"
+        android:text="Note"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/text_blue" />
+
+    <TextView
+        android:id="@+id/txtCartItemStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:fontFamily="@font/inter_400"
+        android:gravity="center"
+        android:text="Status"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/text_blue" />
+
+
+</LinearLayout>

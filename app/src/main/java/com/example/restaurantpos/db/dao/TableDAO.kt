@@ -24,7 +24,7 @@ interface TableDAO {
     fun getAllTable(): LiveData<MutableList<TableEntity>>
 
     @Query("SELECT * from `table` WHERE table_id = :id")
-    fun getTableById(id: Int): TableEntity
+    fun getTableById(id: Int):  LiveData<TableEntity>
 
 
 

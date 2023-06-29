@@ -76,12 +76,12 @@ class TableFragment : Fragment(), TableAdapter.EventClickTableListener{
     }
     /** clickTable --> Navigate to Order/Ordered Fragment */
     /** bundleOf(26 and 55) */
-    override fun clickTable(itemTable: TableEntity, status: Int) {
-        if(status == 0){
+    override fun clickTable(itemTable: TableEntity, table_status: Int) {
+        if(table_status == 0){
             findNavController().navigate(R.id.action_tableFragment_to_orderFragment,
                 bundleOf("data" to itemTable.toJson()))
         }
-        if(status == 1){
+        if(table_status == 2){
             findNavController().navigate(R.id.orderedTableFragment,
                 bundleOf("data" to itemTable.toJson()))
         }

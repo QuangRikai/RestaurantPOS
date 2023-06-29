@@ -32,11 +32,39 @@
         android:id="@+id/orderedTableFragment"
         android:name="com.example.restaurantpos.ui.receptionist.order.OldOrderFragment"
         android:label="fragment_ordered_table"
-        tools:layout="@layout/fragment_old_order" />
+        tools:layout="@layout/fragment_old_order">
+
+        <argument
+            android:name="data"
+            android:defaultValue=""
+            app:argType="string" />
+        <action
+            android:id="@+id/action_orderedTableFragment_to_addMoreOrderFragment2"
+            app:destination="@id/addMoreOrderFragment" />
+
+    </fragment>
+
     <fragment
         android:id="@+id/kitchenFragment"
         android:name="com.example.restaurantpos.ui.kitchen.KitchenFragment"
         android:label="fragment_kitchen"
         tools:layout="@layout/fragment_kitchen" />
+    <fragment
+        android:id="@+id/addMoreOrderFragment"
+        android:name="com.example.restaurantpos.ui.receptionist.order.AddMoreOrderFragment"
+        android:label="fragment_add_more_order"
+        tools:layout="@layout/fragment_add_more_order">
+
+        <argument
+            android:name="tableObject"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="orderObject"
+            android:defaultValue=""
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>

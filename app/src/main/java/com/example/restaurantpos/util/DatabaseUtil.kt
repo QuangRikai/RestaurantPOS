@@ -19,7 +19,7 @@ import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 
 object DatabaseUtil {
 
-//    lateinit var appDAO: AppDAO
+    //    lateinit var appDAO: AppDAO
     lateinit var accountDAO: AccountDAO
     lateinit var categoryDAO: CategoryDAO
     lateinit var itemDAO: ItemDAO
@@ -28,7 +28,7 @@ object DatabaseUtil {
     lateinit var orderDAO: OrderDAO
     lateinit var customerDAO: CustomerDAO
 
-    fun init(context: Context){
+    fun init(context: Context) {
 //        appDAO = PosRoomDatabase.getInstance(context).appDAO()
         accountDAO = PosRoomDatabase.getInstance(context).accountDAO()
         categoryDAO = PosRoomDatabase.getInstance(context).categoryDAO()
@@ -52,45 +52,51 @@ object DatabaseUtil {
     fun addCategory(data: CategoryEntity) = categoryDAO.addCategory(data)
     fun addCategoryItem(data: ItemEntity) = itemDAO.addCategoryItem(data)
     fun addListCategoryItem(listData: List<ItemEntity>) = itemDAO.addListCategoryItem(listData)
-    fun getListCategoryComponentItem(categoryComponentId: Int) = itemDAO.getListCategoryComponentItem(categoryComponentId)
+    fun getListCategoryComponentItem(categoryComponentId: Int) =
+        itemDAO.getListCategoryComponentItem(categoryComponentId)
+
     fun getItemOfCategory(item_id: Int) = itemDAO.getItemOfCategory(item_id)
 
 
     /** 3. TABLE MANAGEMENT  */
     fun addTable(data: TableEntity) = tableDAO.addTable(data)
+
+    fun getTableById(table_id: Int) = tableDAO.getTableById(table_id)
     fun getAllTable() = tableDAO.getAllTable()
 
 
     /** 4. CART MANAGEMENT  */
-    fun addCart(data : CartItemEntity) = cartItemDAO.addCartItem(data)
-    fun addListCart(data : ArrayList<CartItemEntity>) = cartItemDAO.addListCartItem(data)
+    fun addCartItem(data: CartItemEntity) = cartItemDAO.addCartItem(data)
+    fun addListCartItem(data: List<CartItemEntity>) = cartItemDAO.addListCartItem(data)
     fun deleteCart(data: CartItemEntity) = cartItemDAO.deleteCartItem(data)
-    fun getListCart(order_id : String) = cartItemDAO.getListCartItem(order_id)
+    fun getListCartItemByOrder(order_id: String) = cartItemDAO.getListCartItemByOrder(order_id)
 
     // 2 hàm dưới làm gì?
-    fun getListCartV0(order_id : String) = cartItemDAO.getListCartItemV0(order_id)
-    fun getListCartOfKit(sortTime : Int) = cartItemDAO.getListCartItemOfKit(sortTime)
+    fun getListCartItemOfKitchen() = cartItemDAO.getListCartItemOfKitchen()
+    fun getListCartItemOfKitchenBySortTime(sortByTimeOfOrder: Int) =
+        cartItemDAO.getListCartItemOfKitchenBySortTime(sortByTimeOfOrder)
+
+    fun getListCartItemOnWaiting(order_id: String) = cartItemDAO.getListCartItemOnWaiting(order_id)
 
     /** 5. ORDER MANAGEMENT  */
 
-    fun addOrder(data : OrderEntity) = orderDAO.addOrder(data)
+    fun addOrder(data: OrderEntity) = orderDAO.addOrder(data)
     fun deleteOrder(data: OrderEntity) = orderDAO.deleteOrder(data)
-    fun getOrder(order_id : String) = orderDAO.getOrder(order_id)
-    fun getOrderByTable(table_id : Int)  = orderDAO.getOrderByTable(table_id)
-    fun getListOrderOfCustomer(id : Int)  = orderDAO.getListOrderOfCustomer(id)
+    fun getOrder(order_id: String) = orderDAO.getOrder(order_id)
+    fun getOrderByTable(table_id: Int) = orderDAO.getOrderByTable(table_id)
+    fun getListOrderOfCustomer(id: Int) = orderDAO.getListOrderOfCustomer(id)
 
     /** 6. CUSTOMER MANAGEMENT  */
-    fun addCustomer(data : CustomerEntity)  = customerDAO.addCustomer(data)
+    fun addCustomer(data: CustomerEntity) = customerDAO.addCustomer(data)
 
     fun deleteCustomer(data: CustomerEntity) = customerDAO.deleteCustomer(data)
 
-    fun getCustomer(id : Int) = customerDAO.getCustomer(id)
+    fun getCustomer(id: Int) = customerDAO.getCustomer(id)
 
-    fun getListCustomer()  = customerDAO.getListCustomer()
+    fun getListCustomer() = customerDAO.getListCustomer()
 
     // Phục vụ cho việc tìm kiếm Khách
-    fun getListCustomerByPhone(phone : String)  = customerDAO.getListCustomerByPhone(phone)
-
+    fun getListCustomerByPhone(phone: String) = customerDAO.getListCustomerByPhone(phone)
 
 
 }

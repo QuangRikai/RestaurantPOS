@@ -38,8 +38,10 @@ data class AccountEntity constructor(
      */
 
 ) : Parcelable {
-    fun toAccount(json: String): AccountEntity? {
-        return Gson().fromJson(json, AccountEntity::class.java)
+    companion object {
+        fun toAccount(json: String): AccountEntity? {
+            return Gson().fromJson(json, AccountEntity::class.java)
+        }
     }
 
     fun toJson(): String {

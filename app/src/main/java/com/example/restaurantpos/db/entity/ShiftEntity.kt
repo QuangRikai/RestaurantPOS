@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,5 +19,15 @@ data class ShiftEntity constructor(
     val shift_name: Int
 
 ):Parcelable {
+    companion object {
+        fun toShiftObject(json: String): ShiftEntity? {
+            return Gson().fromJson(json, ShiftEntity::class.java)
+        }
+    }
+
+
+    fun toJson(): String {
+        return Gson().toJson(this)
+    }
 
 }

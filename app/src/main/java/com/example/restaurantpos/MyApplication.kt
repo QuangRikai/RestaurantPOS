@@ -14,5 +14,6 @@ class MyApplication: Application() {
         super.onCreate()
         DatabaseUtil.init(this)
         SharedPreferencesUtils.init(this)
+
     }
 }

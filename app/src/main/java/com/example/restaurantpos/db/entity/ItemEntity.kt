@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -31,4 +32,16 @@ data class ItemEntity constructor(
     val category_id: Int
 
 ): Parcelable {
+    companion object {
+        fun toItemObject(json: String): ItemEntity? {
+            return Gson().fromJson(json, ItemEntity::class.java)
+        }
+    }
+
+
+
+    fun toJson(): String {
+        return Gson().toJson(this)
+    }
+
 }

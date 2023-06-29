@@ -4,13 +4,15 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "cart_item")
 data class CartItemEntity constructor(
 
-    @PrimaryKey(autoGenerate= true)
+    // Sử dụng order_create_time
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "cart_item_id")
     val cart_item_id: Int,
 
@@ -28,14 +30,25 @@ data class CartItemEntity constructor(
     val note: String,
 
     @ColumnInfo(name = "cart_item_status")
-    val cart_item_status: Int
+    var cart_item_status: Int
 
-    /* Status. Phục vụ cho Bếp?
+    /* Status.
 0: Wait
 1: In Process
 2: Done
  */
 
 ): Parcelable {
+    companion object {
+        fun toCartItemObject(json: String): CartItemEntity? {
+            return Gson().fromJson(json, CartItemEntity::class.java)
+        }
+    }
+
+
+
+    fun toJson(): String {
+        return Gson().toJson(this)
+    }
 
 }

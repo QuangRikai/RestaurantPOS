@@ -98,7 +98,7 @@ class CartItemAdapter(
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setListData(newListData: MutableList<CartItemEntity>) {
+    fun setListData(newListData: ArrayList<CartItemEntity>) {
         listData.clear()
         listData.addAll(newListData)
         notifyDataSetChanged()

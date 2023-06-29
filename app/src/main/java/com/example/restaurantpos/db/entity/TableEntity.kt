@@ -22,9 +22,9 @@ data class TableEntity constructor(
     var table_status: Int
 
     /*
-    0. Empty
-    1. New Order
-    2. Old Order
+    0. Empty     (Order mới)
+    1. New Order (Người khác không chọn được)
+    2. Old Order (Click vào là hiện ra Order thêm or thanh toán)
     3. Problem
      */
 

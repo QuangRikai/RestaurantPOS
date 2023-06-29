@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
 
 @Dao
@@ -15,25 +16,38 @@ interface CartItemDAO {
     fun addCartItem(data: CartItemEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addListCartItem(data: ArrayList<CartItemEntity>): List<Long>
+    fun addListCartItem(data: List<CartItemEntity>): List<Long>
 
     @Delete
     fun deleteCartItem(data: CartItemEntity): Int
 
     // Get ListOrder Of OrderedTable, By order_id (Bill)
     @Query("SELECT * FROM cart_item WHERE order_id = :order_id")
-    fun getListCartItem(order_id: String): LiveData<MutableList<CartItemEntity>>
+    fun getListCartItemByOrder(order_id: String): LiveData<MutableList<CartItemEntity>>
 
+//    cart_item_status = 0: Những thứ vẫn chưa làm thì cho phép Edit/Delete
     @Query("SELECT * FROM cart_item WHERE order_id = :order_id AND cart_item_status = 0")
-    fun getListCartItemV0(order_id: String): LiveData<MutableList<CartItemEntity>>
+    fun getListCartItemOnWaiting(order_id: String): LiveData<MutableList<CartItemEntity>>
 
+    @Query("SELECT * FROM cart_item WHERE cart_item_status < 4")
+    fun getListCartItemOfKitchen(): LiveData<MutableList<CartItemEntity>>
+
+    // Đỉnh: Case ở đây chính là If-Else
+    /*
+    Sort theo Order_id (Order_create_id)
+    sortByTimeOfOrder = 0 --> Không Sort/Giữ nguyên tăng dần      Ascending
+    sortByTimeOfOrder = 1 --> Sort ngược (Giảm dần)               Descending
+    sortByTimeOfOrder = 2 --> Bỏ qua
+
+    Con số status có thể quyết định việc bỏ đi hoặc không á.
+    */
     @Query(
         "SELECT * FROM cart_item WHERE cart_item_status < 3  \n" +
                 "ORDER BY \n" +
-                "CASE WHEN :sortTime = 0 THEN order_id END ASC, \n" +
-                "CASE WHEN :sortTime = 1 THEN order_id END DESC"
+                "CASE WHEN :sortByTimeOfOrder = 0 THEN order_id END ASC, \n" +
+                "CASE WHEN :sortByTimeOfOrder = 1 THEN order_id END DESC"
     )
-    fun getListCartItemOfKit(sortTime: Int): LiveData<MutableList<CartItemEntity>>
+    fun getListCartItemOfKitchenBySortTime(sortByTimeOfOrder: Int): LiveData<MutableList<CartItemEntity>>
 
 
 }

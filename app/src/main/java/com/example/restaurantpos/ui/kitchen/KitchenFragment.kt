@@ -4,19 +4,130 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentKitchenBinding
+import com.example.restaurantpos.db.entity.CartItemEntity
+import com.example.restaurantpos.ui.login.LoginActivity
+import com.example.restaurantpos.ui.receptionist.order.CartViewModel
+import com.example.restaurantpos.util.SharedPreferencesUtils
+import com.example.restaurantpos.util.openActivity
 
 // Nhận định: Thằng này sử dụng lại ViewModel của CartViewModel
 class KitchenFragment : Fragment() {
 
     lateinit var binding: FragmentKitchenBinding
 
+    lateinit var viewModelCart: CartViewModel
+
+    lateinit var adapterCartItemInKitchen: CartItemInKitchenAdapter
+
+    /*
+    Sort theo Order_id (Order_create_id)
+    sortByTimeOfOrder = 0 --> Không Sort/Giữ nguyên tăng dần      Ascending
+    sortByTimeOfOrder = 1 --> Sort ngược (Giảm dần)               Descending
+    sortByTimeOfOrder = 2 --> Bỏ qua
+
+    Chuyển sortByTimeOfOrder sang MutableLiveData --> Lắng nghe
+    */
+    private var sortByTimeOfOrder = MutableLiveData(0)
+
+//    var listCartItem = ArrayList<CartItemEntity>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentKitchenBinding.inflate(inflater, container, false)
+
+        /** Tạo Đối Tượng ViewModel */
+        // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
+        viewModelCart = ViewModelProvider(this).get(CartViewModel::class.java)
+
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        /** ToolBar */
+        // 1. Get Account's Name
+        binding.txtLoginAccountName.text = SharedPreferencesUtils.getAccountName()
+        // 2. Logout Button
+        binding.imgMenuToolBar.setOnClickListener { it ->
+            val popupMenu = PopupMenu(requireContext(), it)
+            popupMenu.inflate(R.menu.popup_menu_main_manager)
+            popupMenu.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menu_logout -> {
+                        context?.openActivity(LoginActivity::class.java, true)
+                        true
+                    }
+                    else -> true
+                }
+            }
+
+            try {
+                val popup = popupMenu::class.java.getDeclaredField("qPopup")
+                popup.isAccessible = true
+                val menu = popup.get(popupMenu)
+                menu.javaClass
+                    .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                    .invoke(menu, true)
+            } catch (e: Exception){
+                e.printStackTrace()
+            } finally {
+                popupMenu.show()
+            }
+        }
+        /** ----------------------------------------------------------------------------------*/
+
+        /** Adapter CartItemInKitchen:  Xử lý adapter, inflate for View*/
+        // Luôn nhìn từ setListData ra
+        // 1. Tạo 1 adapter
+        adapterCartItemInKitchen = CartItemInKitchenAdapter(
+            requireContext(),
+            viewLifecycleOwner,
+            ArrayList(),
+            object : CartItemInKitchenAdapter.EventClickCartItemInKitchenListener {
+                override fun clickCartItemStatus(cartItemInKitchen: CartItemEntity) {
+                    if (cartItemInKitchen.cart_item_status == 2){
+                        // Hỏi là có quay lại trạng thái không
+                        // Có thì quay lại như lựa chọn, không thì thôi
+                        // Code 1 cái dialog chung rồi làm gì cũng showDialog ra hỏi.
+                        val cartItem = cartItemInKitchen
+                        cartItem.cart_item_status--
+                        viewModelCart.addCartItem(cartItem)
+                    }else{
+                        val cartItem = cartItemInKitchen
+                        cartItem.cart_item_status++
+                        viewModelCart.addCartItem(cartItem)
+                    }
+                }
+            })
+        // 2. Dùng adapter vừa tạo cho View cần dùng
+        binding.rcyCartItemInKitchen.adapter = adapterCartItemInKitchen
+        // 3. Set data cho adapder chuyển đổi.
+        // Thêm quả Sort!. Sort bao nhiêu thằng thì truyền vào bấy nhiêu thằng
+        // sortByTimeOfOrder sang MutableLiveData --> Lắng nghe --> Thay đổi thì cập nhật lại listData
+        // sortValue--> sortByTimeOfOrder.value!!  <--  Do nó cập nhật lại thằng nó lại ở trạng thái không có gì nên nó không load lại nữa.
+        // 59:15 !!!
+
+        sortByTimeOfOrder.observe(viewLifecycleOwner){ sortValue ->
+            viewModelCart.getListCartItemOfKitchenBySortTime(sortByTimeOfOrder.value!!).observe(viewLifecycleOwner){ listCart ->
+                adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
+            }
+        }
+
+        when(sortByTimeOfOrder.value){
+            1 -> sortByTimeOfOrder.value = 0
+            0 -> sortByTimeOfOrder.value = 1
+        }
+
+
     }
 }

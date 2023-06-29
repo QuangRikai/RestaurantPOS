@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -23,4 +24,15 @@ data class CategoryEntity constructor(
      */
 
 ) : Parcelable {
+    companion object {
+        fun toCategoryObject(json: String): CategoryEntity? {
+            return Gson().fromJson(json, CategoryEntity::class.java)
+        }
+    }
+
+
+    fun toJson(): String {
+        return Gson().toJson(this)
+    }
+
 }

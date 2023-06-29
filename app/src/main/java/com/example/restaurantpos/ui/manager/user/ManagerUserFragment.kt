@@ -52,29 +52,22 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
         val view = layoutInflater.inflate(R.layout.dialog_alert_edit_user, null)
         // 3.  Set VIEW tra ve above --> Dialog
         build.setView(view)
-
         // 4.  Code cho dau X
         view.findViewById<ImageView>(R.id.imgClose).setOnClickListener {
             dialog.dismiss()
         }
-
         // 5.  Handle Lock
         val lockUser = view.findViewById<LinearLayout>(R.id.llLockUser)
         lockUser?.setOnClickListener {
             requireContext().showToast("Lock this Account")
             dialog.dismiss()
         }
-
         // 6.  Handle Lock
         val resetUser = view.findViewById<LinearLayout>(R.id.llResetAccount)
         resetUser?.setOnClickListener {
             requireContext().showToast("Reset Account")
             dialog.dismiss()
         }
-
-
-
-
         // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display
         dialog = build.create()
         dialog.show()
