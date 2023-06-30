@@ -14,6 +14,10 @@ import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.manager.category.CategoryViewModel
+import com.example.restaurantpos.ui.receptionist.order.newOrder.CartItemAdapter
+import com.example.restaurantpos.ui.receptionist.order.newOrder.CategoryInBottomOfOrderFragmentAdapter
+import com.example.restaurantpos.ui.receptionist.order.newOrder.ItemOfCategoryInBottomOfOrderFragmentAdapter
+import com.example.restaurantpos.ui.receptionist.order.newOrder.NewOrderFragment
 import com.example.restaurantpos.ui.receptionist.table.TableViewModel
 import com.example.restaurantpos.util.showToast
 
@@ -155,6 +159,7 @@ class AddMoreOrderFragment : Fragment() {
             ArrayList(),
             chooseCategory,
             viewLifecycleOwner,
+            /** Phần này chưa rõ!*/
             /** Phần này chưa rõ!*/
             object : CategoryInBottomOfOrderFragmentAdapter.EventClickCategoryInOrderListener {
                 override fun clickCategoryInOrder(chooseCategory: Int) {

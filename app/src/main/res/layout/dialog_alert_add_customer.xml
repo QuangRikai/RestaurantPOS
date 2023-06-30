@@ -7,9 +7,8 @@
     android:background="@drawable/bg_customdialog">
 
 
-
     <ImageButton
-        android:id="@+id/imgCloseDialogAddItem"
+        android:id="@+id/imgCloseDialogCustomer"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
         android:layout_margin="@dimen/_12sdp"
@@ -24,11 +23,11 @@
         android:id="@+id/txtAddItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/bg_customdialog_button"
         android:fontFamily="@font/inter_600"
         android:paddingHorizontal="@dimen/_12sdp"
-        android:text="ADD ITEM"
+        android:text="CUSTOMER"
         android:textColor="@color/white"
         android:textSize="21sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +36,7 @@
 
 
     <LinearLayout
-        android:id="@+id/llItemName"
+        android:id="@+id/llCustomerName"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_12sdp"
@@ -56,7 +55,7 @@
             app:tint="@color/white" />
 
         <EditText
-            android:id="@+id/edtItemName"
+            android:id="@+id/edtPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -64,12 +63,26 @@
             android:background="@drawable/bg_edt_login"
             android:fontFamily="@font/inter_400"
             android:gravity="left"
-            android:hint="Name"
+            android:hint="Phone Number"
+            android:inputType="number"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
             android:textSize="@dimen/_15sdp" />
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcyCustomerInPhone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_75sdp"
+        android:layout_marginStart="@dimen/_40sdp"
+        android:layout_marginEnd="@dimen/_18ssp"
+        android:visibility="invisible"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llCustomerName"
+        app:spanCount="1"
+        tools:listitem="@layout/item_customer_in_phone" />
 
     <LinearLayout
         android:id="@+id/llItemPrice"
@@ -79,7 +92,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llItemName">
+        app:layout_constraintTop_toBottomOf="@id/rcyCustomerInPhone">
 
 
         <ImageView
@@ -91,7 +104,7 @@
             app:tint="@color/white" />
 
         <EditText
-            android:id="@+id/edtItemPrice"
+            android:id="@+id/edtCustomerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -99,8 +112,7 @@
             android:background="@drawable/bg_edt_login"
             android:fontFamily="@font/inter_400"
             android:gravity="left"
-            android:hint="Price"
-            android:inputType="numberDecimal"
+            android:hint="Customer's Name"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
             android:textSize="@dimen/_15sdp"
@@ -109,7 +121,7 @@
 
 
     <LinearLayout
-        android:id="@+id/llItemInventoryQuantity"
+        android:id="@+id/llCustomerBirthday"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginBottom="@dimen/_40sdp"
@@ -128,7 +140,7 @@
             app:tint="@color/white" />
 
         <EditText
-            android:id="@+id/edtItemInventoryQuantity"
+            android:id="@+id/edtCustomerBirthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -136,58 +148,12 @@
             android:background="@drawable/bg_edt_login"
             android:fontFamily="@font/inter_400"
             android:gravity="left"
-            android:inputType="number"
-            android:hint="Inventory Quantity"
+            android:hint="Customer Birthday"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
             android:textSize="@dimen/_15sdp" />
     </LinearLayout>
 
-
-    <LinearLayout
-        android:id="@+id/llItemImage"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_80sdp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llItemInventoryQuantity">
-
-
-        <ImageView
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:src="@drawable/img_right_arrow"
-            app:tint="@color/white" />
-
-        <Button
-            android:id="@+id/btnChoseImage"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/bg_light_blue"
-            android:fontFamily="@font/inter_400"
-            android:gravity="center"
-            android:text="Select Photo"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_10ssp" />
-
-        <ImageView
-            android:id="@+id/imgShow"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llItemInventoryQuantity" />
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -197,10 +163,10 @@
         android:layout_marginBottom="@dimen/_20sdp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llItemImage">
+        app:layout_constraintTop_toBottomOf="@+id/llCustomerBirthday">
 
         <Button
-            android:id="@+id/btnAddItem"
+            android:id="@+id/btnAddCustomer"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"
             android:layout_weight="1"

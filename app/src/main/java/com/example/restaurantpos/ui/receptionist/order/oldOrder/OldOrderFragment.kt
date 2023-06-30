@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.order
+package com.example.restaurantpos.ui.receptionist.order.oldOrder
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import com.example.restaurantpos.databinding.FragmentOldOrderBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
+import com.example.restaurantpos.ui.receptionist.order.CartViewModel
 
 
 class OldOrderFragment : Fragment() {
@@ -62,13 +63,17 @@ class OldOrderFragment : Fragment() {
 
 
         /** Code for Checkout Img */
+        // Tính tiền thì đáp sang bên kia OrderEntity thôi là okay rồi.
+        // Hiển thị ra 1 cái list rồi tổng tiền.
         binding.txtCheckout.setOnClickListener {
-
+            findNavController().navigate(R.id.action_orderedTableFragment_to_addMoreOrderFragment2,
+                bundleOf( "orderObject" to orderObject?.toJson())
+            )
         }
 
         /** ----------------------------------------------------------------------------------*/
         /** Adapter CartItemInOldOrder:  Xử lý adapter, inflate for View*/
-        // Luôn nhìn từ setListData ra
+        // Luôn nhìn từ setListData ra.
         // 1. Tạo 1 adapter
         adapterCartItemInOldOrder = CartItemInOldOrderAdapter(
             requireContext(),

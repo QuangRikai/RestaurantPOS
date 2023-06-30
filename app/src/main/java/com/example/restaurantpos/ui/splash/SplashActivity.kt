@@ -10,6 +10,7 @@ import com.example.restaurantpos.base.BaseActivity
 import com.example.restaurantpos.databinding.ActivitySplashBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
+import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.login.LoginActivity
@@ -63,7 +64,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 5", 13.1f, "", 5, 1))
         viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 6", 15.1f, "", 1, 2))
         viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 7", 111.1f, "", 3, 3))
-    }
+
+        /** 5. Customer  */
+        viewModel.addCustomer(CustomerEntity(1, "Quang 1", "08034931491", "19950302"))
+        viewModel.addCustomer(CustomerEntity(2, "Quang 2", "08034931492", "19950303"))
+        viewModel.addCustomer(CustomerEntity(3, "Quang 3", "08034931493", "19950304"))
+        }
 
     private fun startLoginActivity() {
         Handler(Looper.getMainLooper()).postDelayed({

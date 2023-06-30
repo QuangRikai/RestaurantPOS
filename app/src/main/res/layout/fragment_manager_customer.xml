@@ -1,14 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.manager.customer.ManagerCustomerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/llUserListTitle1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtCustomerManagerment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_700"
+            android:gravity="center"
+            android:text="Customer Management"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/_14sdp" />
+
+        <ImageView
+            android:id="@+id/imgAddUser"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_margin="@dimen/_18sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_add_user"
+            app:tint="@color/text_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llUserListTitle2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        app:layout_constraintTop_toBottomOf="@+id/llUserListTitle1">
+
+        <TextView
+            android:id="@+id/txtCustomerName"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/inter_600"
+            android:text="Name"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/txtCustomerPhone"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:fontFamily="@font/inter_600"
+            android:text="Phone"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/txtCustomerBirthday"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/inter_600"
+            android:text="Birthday"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/_14sdp" />
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcyUserManagement"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingTop="@dimen/_12sdp"
+        android:scrollbars="none"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llUserListTitle2"
+        app:spanCount="1"
+        tools:listitem="@layout/item_customer" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

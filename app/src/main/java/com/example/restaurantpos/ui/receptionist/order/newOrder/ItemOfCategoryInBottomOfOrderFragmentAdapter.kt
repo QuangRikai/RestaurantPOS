@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.order
+package com.example.restaurantpos.ui.receptionist.order.newOrder
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
 import com.example.restaurantpos.db.entity.ItemEntity

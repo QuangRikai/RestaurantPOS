@@ -18,7 +18,7 @@ data class OrderEntity constructor(
     val order_id: String,
 
     @ColumnInfo(name = "customer_id")
-    val customer_id: Int,
+    var customer_id: Int,
 
     @ColumnInfo(name = "table_id")
     val table_id: Int,

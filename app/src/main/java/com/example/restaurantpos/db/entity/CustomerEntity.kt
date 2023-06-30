@@ -17,10 +17,10 @@ data class CustomerEntity constructor(
     val customer_id: Int,
 
     @ColumnInfo(name = "customer_name")
-    val customer_name: Int,
+    val customer_name: String,
 
     @ColumnInfo(name = "phone")
-    val phone: Int,
+    val phone: String,
 
     @ColumnInfo(name = "birthday")
     val birthday: String

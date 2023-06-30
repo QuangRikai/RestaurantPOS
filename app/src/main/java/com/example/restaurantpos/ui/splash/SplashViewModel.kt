@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
+import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.db.roomdb.PosRoomDatabase
@@ -54,6 +55,12 @@ class SplashViewModel: ViewModel() {
     fun addTable(context: Context, table: TableEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             PosRoomDatabase.getInstance(context).tableDAO().addTable(table)
+        }
+    }
+
+    fun addCustomer(data: CustomerEntity) {
+        CoroutineScope(Dispatchers.IO).launch{
+            DatabaseUtil.addCustomer(data)
         }
     }
 

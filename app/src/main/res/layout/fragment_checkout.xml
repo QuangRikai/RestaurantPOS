@@ -34,26 +34,10 @@
             android:layout_weight="1"
             android:fontFamily="@font/inter_500"
             android:gravity="center"
-            android:text="Table's name"
+            android:text="Bill"
+            android:layout_marginRight="@dimen/_48sdp"
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp" />
-
-        <ImageView
-            android:id="@+id/txtCheckout"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_8sdp"
-            android:src="@drawable/img_checkout"
-            app:tint="@color/white" />
-
-
-        <ImageView
-            android:id="@+id/txtAddOrderItem"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_8sdp"
-            android:src="@drawable/img_add_circle"
-            app:tint="@color/white" />
 
     </LinearLayout>
 

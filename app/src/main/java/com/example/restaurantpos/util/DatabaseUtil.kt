@@ -97,6 +97,7 @@ object DatabaseUtil {
 
     // Phục vụ cho việc tìm kiếm Khách
     fun getListCustomerByPhone(phone: String) = customerDAO.getListCustomerByPhone(phone)
+    fun getCustomerByPhone(phone: String) = customerDAO.getCustomerByPhone(phone)
 
 
 }

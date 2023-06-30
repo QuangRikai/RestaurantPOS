@@ -50,6 +50,27 @@ fun View.gone() {
     this.visibility = View.GONE
 }
 
+
+
+
 fun Context.showToast(string: String) {
     Toast.makeText(this, string, Toast.LENGTH_SHORT).show()
+}
+
+/**------------------------------------------------------------------------------------*/
+fun View.disableView() {
+    this.isClickable = false
+    this.postDelayed({ this.isClickable = true }, 200)
+}
+class SafeClickListener(val onSafeClickListener: (View) -> Unit) : View.OnClickListener {
+    override fun onClick(v: View) {
+        v.disableView()
+        onSafeClickListener(v)
+    }
+}
+fun View.setOnSafeClick(onSafeClickListener: (View) -> Unit) {
+    val safeClick = SafeClickListener {
+        onSafeClickListener(it)
+    }
+    setOnClickListener(safeClick)
 }

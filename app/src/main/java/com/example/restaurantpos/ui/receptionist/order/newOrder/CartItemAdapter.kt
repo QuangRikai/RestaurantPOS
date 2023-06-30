@@ -1,7 +1,6 @@
-package com.example.restaurantpos.ui.receptionist.order
+package com.example.restaurantpos.ui.receptionist.order.newOrder
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.view.LayoutInflater
