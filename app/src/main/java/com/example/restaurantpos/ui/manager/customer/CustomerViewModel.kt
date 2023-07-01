@@ -9,14 +9,16 @@ import kotlinx.coroutines.launch
 
 class CustomerViewModel: ViewModel() {
 
-    fun getListCustomerByPhone(phone: String) = DatabaseUtil.getListCustomerByPhone(phone)
+    fun getListCustomerByPhoneForSearch(phone: String) = DatabaseUtil.getListCustomerByPhoneForSearch(phone)
+    fun getListCustomerByPhoneForAdd(phone: String) = DatabaseUtil.getListCustomerByPhoneForAdd(phone)
+    fun getListCustomer() = DatabaseUtil.getListCustomer()
 
-    fun getCustomerByPhone(phone: String) = DatabaseUtil.getCustomerByPhone(phone)
 
     fun addCustomer(data: CustomerEntity) {
         CoroutineScope(Dispatchers.IO).launch{
             DatabaseUtil.addCustomer(data)
         }
     }
+
 
 }

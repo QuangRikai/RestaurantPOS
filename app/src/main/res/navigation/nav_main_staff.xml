@@ -34,6 +34,7 @@
         android:label="fragment_ordered_table"
         tools:layout="@layout/fragment_old_order">
 
+        <!--Đáp ở đâu thì đặt argument ở đấy-->
         <argument
             android:name="data"
             android:defaultValue=""
@@ -52,6 +53,7 @@
         android:name="com.example.restaurantpos.ui.kitchen.KitchenFragment"
         android:label="fragment_kitchen"
         tools:layout="@layout/fragment_kitchen" />
+
     <fragment
         android:id="@+id/addMoreOrderFragment"
         android:name="com.example.restaurantpos.ui.receptionist.order.AddMoreOrderFragment"
@@ -74,6 +76,17 @@
         android:name="com.example.restaurantpos.ui.receptionist.checkout.CheckoutFragment"
         android:label="fragment_checkout"
         tools:layout="@layout/fragment_checkout" >
+
+        <argument
+            android:name="tableObject"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="orderObject"
+            android:defaultValue=""
+            app:argType="string" />
+
         <action
             android:id="@+id/action_checkoutFragment_to_tableFragment2"
             app:destination="@id/tableFragment" />

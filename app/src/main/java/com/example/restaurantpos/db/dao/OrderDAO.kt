@@ -22,11 +22,12 @@ interface OrderDAO {
     @Query("SELECT * FROM `order` WHERE order_id = :order_id")
     fun getOrder(order_id : String) : LiveData<OrderEntity>
 
+    // Câu chuyện ORDER BY order_create_time DESC --> 13-51:00   Cần xem lại???
     @Query("SELECT * FROM `order` WHERE table_id = :table_id ORDER BY order_create_time DESC")
     fun getOrderByTable(table_id : Int) : LiveData<OrderEntity>
 
-    @Query("SELECT * FROM `order` WHERE customer_id = :id ORDER BY order_create_time DESC")
-    fun getListOrderOfCustomer(id : Int) : LiveData<MutableList<OrderEntity>>
+    @Query("SELECT * FROM `order` WHERE customer_id = :customerId ORDER BY order_create_time DESC")
+    fun getListOrderByCustomerId(customerId : Int) : LiveData<MutableList<OrderEntity>>
 
 
 }

@@ -86,7 +86,6 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         }
 
         // 6.  Code cho ADD Button
-        /** Hàm này chưa hiểu rõ */
         view.findViewById<Button>(R.id.btnChoseImage).setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
@@ -119,6 +118,39 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
 
     /** Hàm này chưa hiểu rõ */
+
+//    Kết nối với   // 6.  Code cho ADD Button
+
+//    Bình thường khi 1 Activity nó kết thúc
+//    Bình thường chỉ thấy truyền dữ liệu từ màn này sang màn khác để chuyển màn
+//    Còn 1 sự kiện nữa là lúc nó kết thúc nó có thể đáp data cho bất kì màn nào mà trước đấy được quay trở lại
+//    Line 93: intent.action = Intent.ACTION_GET_CONTENT
+//    Hệ thống có rất nhiều action: Có cả action setting luôn.
+//    Acction của mình lấy content là mình chọn dữ liệu của máy
+//    Lúc này Nếu không có  intent.type = "image/*"
+//    thì nó sẽ mở hẳn bộ nhớ máy ra cho mình luôn
+//    Mình có thể thay bằng intent.type = "*/*" (Kiểu/loại)-> Sẽ hiển thị tất cả những gì mà mình có thể lấy được
+//    * Tất cả những file: video (mp4, mp3,...), image, GIF
+//    image/*  --> * là JPG, JPEG,PNG, GIF,...
+
+//    onActivityResult  --> Là 1 màn của Activity luôn.
+//    Đoạn code bên dưới không phải do thằng // 6.  Code cho ADD Button trả ra đâu
+//    Mình có thể tạo ra sự kiện onActivityResult. Nó là hàm chuyển ấy
+//    Trước khi kết thúc mình chỉ cần gọi ấy thôi là nó sẽ tự chuyển ra
+//    Lo Search Google đi chứ!. Nó có tính phí đâu (create, get, how to  ... android studio)
+//    Đọc của bọn android thường khó hiểu lắm. Chọn StackOverFlow, để ý những link nhỏ bên dưới!
+//
+//    //6:  startActivityForResult(Intent.createChooser(intent, "Select Photo Quang"), 101)
+//    onActivityResult --> Hứng lại luôn luôn theo cặp:
+//    RequestCode: Cái mình gọi ra để đánh dấu. Nhiều thằng lắm nên cần RequestCode để phân biệt
+//    Số RequestCode là do mình tạo ra để đánh dấu sự kiện startActivityForResult của mình
+//    Vì mỗi thời điểm nó có thể trả ra rất nhiều màn hình được trả về
+//    resultCode == AppCompatActivity.RESULT_OK là cái trả ra của hệ thống, cứ = OK là được
+//    Chọc vào trong hàm mà xem
+//
+//    Mình chia if
+//        1. Là của mình (Xe của mình và thùng xe chứa data, thì mình mới xử lý tiếp) và nó có tha data về đã
+
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, dataIntent: Intent?) {

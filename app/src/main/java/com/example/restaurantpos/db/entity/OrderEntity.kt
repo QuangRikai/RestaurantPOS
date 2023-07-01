@@ -36,7 +36,7 @@ data class OrderEntity constructor(
     val payment_amount: Float,
 
     @ColumnInfo(name = "order_status")
-    val order_status: Int
+    var order_status: Int
 
     /*
     0. Đang trong quá trình tạo Bill (Mới click cái bàn xong)

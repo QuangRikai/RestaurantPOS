@@ -23,7 +23,7 @@ interface CartItemDAO {
 
     // Get ListOrder Of OrderedTable, By order_id (Bill)
     @Query("SELECT * FROM cart_item WHERE order_id = :order_id")
-    fun getListCartItemByOrder(order_id: String): LiveData<MutableList<CartItemEntity>>
+    fun getListCartItemByOrderId(order_id: String): LiveData<MutableList<CartItemEntity>>
 
 //    cart_item_status = 0: Những thứ vẫn chưa làm thì cho phép Edit/Delete
     @Query("SELECT * FROM cart_item WHERE order_id = :order_id AND cart_item_status = 0")

@@ -66,8 +66,8 @@ class OldOrderFragment : Fragment() {
         // Tính tiền thì đáp sang bên kia OrderEntity thôi là okay rồi.
         // Hiển thị ra 1 cái list rồi tổng tiền.
         binding.txtCheckout.setOnClickListener {
-            findNavController().navigate(R.id.action_orderedTableFragment_to_addMoreOrderFragment2,
-                bundleOf( "orderObject" to orderObject?.toJson())
+            findNavController().navigate(R.id.action_orderedTableFragment_to_checkoutFragment4,
+                bundleOf("tableObject" to tableObject?.toJson(), "orderObject" to orderObject?.toJson())
             )
         }
 
@@ -104,7 +104,7 @@ class OldOrderFragment : Fragment() {
 
                 orderObject = order
 
-                viewModelCart.getListCartItemByOrder(order.order_id)
+                viewModelCart.getListCartItemByOrderId(order.order_id)
                     .observe(viewLifecycleOwner) { listCart ->
                         adapterCartItemInOldOrder.setListData(listCart)
                     }

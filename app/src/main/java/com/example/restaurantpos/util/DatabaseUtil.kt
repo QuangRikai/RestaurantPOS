@@ -65,11 +65,13 @@ object DatabaseUtil {
     fun getAllTable() = tableDAO.getAllTable()
 
 
+
+
     /** 4. CART MANAGEMENT  */
     fun addCartItem(data: CartItemEntity) = cartItemDAO.addCartItem(data)
     fun addListCartItem(data: List<CartItemEntity>) = cartItemDAO.addListCartItem(data)
     fun deleteCart(data: CartItemEntity) = cartItemDAO.deleteCartItem(data)
-    fun getListCartItemByOrder(order_id: String) = cartItemDAO.getListCartItemByOrder(order_id)
+    fun getListCartItemByOrderId(order_id: String) = cartItemDAO.getListCartItemByOrderId(order_id)
 
     // 2 hàm dưới làm gì?
     fun getListCartItemOfKitchen() = cartItemDAO.getListCartItemOfKitchen()
@@ -84,7 +86,7 @@ object DatabaseUtil {
     fun deleteOrder(data: OrderEntity) = orderDAO.deleteOrder(data)
     fun getOrder(order_id: String) = orderDAO.getOrder(order_id)
     fun getOrderByTable(table_id: Int) = orderDAO.getOrderByTable(table_id)
-    fun getListOrderOfCustomer(id: Int) = orderDAO.getListOrderOfCustomer(id)
+    fun getListOrderByCustomerId(id: Int) = orderDAO.getListOrderByCustomerId(id)
 
     /** 6. CUSTOMER MANAGEMENT  */
     fun addCustomer(data: CustomerEntity) = customerDAO.addCustomer(data)
@@ -96,8 +98,8 @@ object DatabaseUtil {
     fun getListCustomer() = customerDAO.getListCustomer()
 
     // Phục vụ cho việc tìm kiếm Khách
-    fun getListCustomerByPhone(phone: String) = customerDAO.getListCustomerByPhone(phone)
-    fun getCustomerByPhone(phone: String) = customerDAO.getCustomerByPhone(phone)
+    fun getListCustomerByPhoneForSearch(phone: String) = customerDAO.getListCustomerByPhoneForSearch(phone)
+    fun getListCustomerByPhoneForAdd(phone: String) = customerDAO.getListCustomerByPhoneForAdd(phone)
 
 
 }

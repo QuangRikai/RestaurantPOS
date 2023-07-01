@@ -9,14 +9,47 @@
         android:id="@+id/mainManagerFragment"
         android:name="com.example.restaurantpos.ui.main.MainManagerFragment"
         android:label="fragment_main_manager"
-        tools:layout="@layout/fragment_main_manager" >
+        tools:layout="@layout/fragment_main_manager">
         <action
             android:id="@+id/action_mainManagerFragment_to_addUserFragment"
             app:destination="@id/addUserFragment" />
+        <action
+            android:id="@+id/action_mainManagerFragment_to_customerOrderFragment"
+            app:destination="@id/customerOrderFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/addUserFragment"
         android:name="com.example.restaurantpos.ui.manager.user.AddUserFragment"
         android:label="fragment_add_user"
         tools:layout="@layout/fragment_add_user" />
+
+    <fragment
+        android:id="@+id/customerOrderFragment"
+        android:name="com.example.restaurantpos.ui.manager.customer.order.CustomerOrderFragment"
+        android:label="fragment_customer_order"
+        tools:layout="@layout/fragment_customer_order">
+
+        <action
+            android:id="@+id/action_customerOrderFragment_to_customerOrderBillFragment"
+            app:destination="@id/customerOrderBillFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customerOrderBillFragment"
+        android:name="com.example.restaurantpos.ui.manager.customer.bill.CustomerOrderBillFragment"
+        android:label="fragment_customer_order_bill"
+        tools:layout="@layout/fragment_customer_order_bill">
+
+<!--        Okay, mình muốn truyền orderObject sang
+        Nhưng đào đâu ra orderObject để truyền nhỉ???
+        ==> Lấy trong adapter, khai báo listData sẽ show lên view.
+            Nhìn view hiện list order cơ mà.
+        Sẽ code lúc navigate (Lúc sẽ gửi bundleOf() -->
+        <argument
+            android:name="orderObject"
+            android:defaultValue=""
+            app:argType="string" />
+
+    </fragment>
+
 </navigation>

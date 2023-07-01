@@ -311,7 +311,7 @@ class NewOrderFragment : Fragment() {
         // SetData for (1)
         edtPhoneNumber.doOnTextChanged { text, start, before, count ->
             if (text.toString().length >= 3) {
-                viewModelCustomer.getListCustomerByPhone(text.toString())
+                viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
                     .observe(viewLifecycleOwner) {
                         if (it.size > 0) {
                             adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
@@ -335,7 +335,7 @@ class NewOrderFragment : Fragment() {
                 )
             )
 
-            viewModelCustomer.getCustomerByPhone(edtPhoneNumber.text.toString())
+            viewModelCustomer.getListCustomerByPhoneForAdd(edtPhoneNumber.text.toString())
                 .observe(viewLifecycleOwner) { listCustomer ->
                     if (listCustomer.size > 0) {
                         customerObject = listCustomer[0]

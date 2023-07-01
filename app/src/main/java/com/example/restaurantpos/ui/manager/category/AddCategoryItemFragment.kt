@@ -46,6 +46,7 @@ class AddCategoryItemFragment : Fragment() {
          * Khai báo viewModel --> Dùng phương thức addUser --> set ADD Button
          */
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        /** Device's Back Button*/
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 onBack()

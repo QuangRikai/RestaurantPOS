@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
 
-    /**Order*/
+    /**----------------------------Order------------------------------------------*/
     fun addOrder(data: OrderEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseUtil.addOrder(data)
@@ -23,14 +23,11 @@ class CartViewModel : ViewModel() {
             DatabaseUtil.deleteOrder(data)
         }
     }
-
     fun getOrder(orderId: String) = DatabaseUtil.getOrder(orderId)
-
-
     fun getOrderByTable(tableId: Int) = DatabaseUtil.getOrderByTable(tableId)
+    fun getListOrderByCustomerId(customerId: Int) = DatabaseUtil.getListOrderByCustomerId(customerId)
 
-
-    /**Cart*/
+    /**----------------------------Cart------------------------------------------*/
     fun addCartItem(data: CartItemEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseUtil.addCartItem(data)
@@ -44,11 +41,10 @@ class CartViewModel : ViewModel() {
         }
     }
 
-    fun getListCartItemByOrder(orderId: String) = DatabaseUtil.getListCartItemByOrder(orderId)
+    fun getListCartItemByOrderId(orderId: String) = DatabaseUtil.getListCartItemByOrderId(orderId)
 
     fun getListCartItemOnWaiting(orderId: String) = DatabaseUtil.getListCartItemOnWaiting(orderId)
 
-    /** Tại sao xóa {} thì mới dùng observer được?? */
     fun getListCartItemOfKitchen() = DatabaseUtil.getListCartItemOfKitchen()
 
     fun getListCartItemOfKitchenBySortTime(sortByTimeOfOrder: Int) =

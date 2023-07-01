@@ -24,7 +24,6 @@ class CustomerAdapter(
         var txtCustomerName = itemView.findViewById<TextView>(R.id.txtCustomerName)
         var txtCustomerPhone = itemView.findViewById<TextView>(R.id.txtCustomerPhone)
         var txtCustomerBirthday = itemView.findViewById<TextView>(R.id.txtCustomerBirthday)
-        var imgCustomerMore = itemView.findViewById<ImageView>(R.id.imgCustomerMore)
         var viewRootCustomer = itemView.findViewById<LinearLayout>(R.id.viewRootCustomer)
     }
 
@@ -57,6 +56,8 @@ class CustomerAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setListData(newListData: MutableList<CustomerEntity>) {
         listData.clear()
+        // Khách nào không muốn lưu lại thì dùng Unkown thôi.
+        listData.add(CustomerEntity(0, "Unkown","...","..."))
         listData.addAll(newListData)
         notifyDataSetChanged()
     }

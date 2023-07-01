@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.receptionist.order.oldOrder.OldOrderFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.manager.customer.order.CustomerOrderFragment">
+
 
     <LinearLayout
-        android:id="@+id/toolBar"
+        android:id="@+id/llUserListTitle1"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/text_blue"
+        android:layout_height="@dimen/_40sdp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,52 +20,35 @@
             android:id="@+id/imgBack"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/_8sdp"
+            android:padding="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_12sdp"
             android:src="@drawable/img_back"
-            android:gravity="center_vertical"
-
-            app:tint="@color/white" />
+            app:tint="@color/text_blue" />
 
         <TextView
-            android:id="@+id/txtTableName"
+            android:id="@+id/txtCustomerManagerment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:fontFamily="@font/inter_500"
+            android:fontFamily="@font/inter_700"
             android:gravity="center"
-            android:text="Bill"
-            android:layout_marginRight="@dimen/_48sdp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp" />
+            android:layout_marginRight="@dimen/_52sdp"
+            android:text="Customer's Bill History"
+            android:textColor="@color/text_blue"
+            android:textSize="20sp" />
+
+
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/layoutCartItemInKitchen"
-        layout="@layout/item_cart_item_header_in_old_order" />
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/_4sdp"
-        android:background="@color/text_blue"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcyCartItemInOldOrder"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:scrollbars="none"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="1"
-        tools:listitem="@layout/item_cart_item_detail_in_old_order" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/_4sdp"
-        android:background="@color/text_blue"/>
+        android:background="@color/text_blue"
+        app:layout_constraintTop_toBottomOf="@+id/llUserListTitle1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <LinearLayout
         android:id="@+id/llCustomerInfo"
@@ -87,53 +69,21 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="center_vertical"
                 android:fontFamily="@font/inter_500"
-                android:text="Bill Amount:"
+                android:text="Name:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
             <TextView
-                android:id="@+id/txtBillAmount"
+                android:id="@+id/txtCustomerName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
-                android:fontFamily="@font/inter_400"
-                android:hint="100 $"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:fontFamily="@font/inter_500"
-                android:text="Payment Amount:"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp" />
-
-            <EditText
-                android:id="@+id/txtPaymentAmount"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_edt_login"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
                 android:fontFamily="@font/inter_400"
-                android:hint="80 $"
+                android:hint="Quang"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
@@ -148,23 +98,51 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="center_vertical"
                 android:fontFamily="@font/inter_500"
-                android:text="Change:"
+                android:text="Phone:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
             <TextView
-                android:id="@+id/txtChange"
+                android:id="@+id/txtCustomerPhone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
+                android:gravity="center_vertical"
                 android:fontFamily="@font/inter_400"
-                android:hint="20 $"
-                android:textColor="@color/text_red"
+                android:hint="08034931591"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/inter_500"
+                android:text="Birthday:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/txtCustomerBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/inter_400"
+                android:hint="1995/03/02"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
         </LinearLayout>
@@ -172,28 +150,54 @@
 
     </LinearLayout>
 
-
-
-    <View
+    <LinearLayout
+        android:id="@+id/llUserListTitle2"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/_4sdp"
-        android:background="@color/text_blue"/>
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        app:layout_constraintTop_toBottomOf="@+id/llCustomerInfo">
 
-    <TextView
-        android:id="@+id/txtDone"
+        <TextView
+            android:id="@+id/txtNo"
+            android:gravity="left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_600"
+            android:text="No."
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/_15sdp"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:gravity="left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:fontFamily="@font/inter_600"
+            android:text="Date"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/_15sdp" />
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcyCustomerManagement"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_35sdp"
-        android:layout_marginVertical="@dimen/_8sdp"
-        android:layout_marginHorizontal="@dimen/_30sdp"
-        android:background="@drawable/bg_txt_login"
-        android:text="DONE"
-        android:fontFamily="@font/inter_600"
-        android:textSize="@dimen/_20sdp"
-        android:gravity="center"
-        android:textColor="@color/white"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:scrollbars="none"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llUserListTitle2"
+        app:spanCount="1"
+        tools:listitem="@layout/item_customer_bill_history" />
 
 
-        />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

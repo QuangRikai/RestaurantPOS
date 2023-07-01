@@ -1,72 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.receptionist.order.oldOrder.OldOrderFragment">
-
-    <LinearLayout
-        android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/text_blue"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imgBack"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/_8sdp"
-            android:src="@drawable/img_back"
-            android:gravity="center_vertical"
-
-            app:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/txtTableName"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/inter_500"
-            android:gravity="center"
-            android:text="Bill"
-            android:layout_marginRight="@dimen/_48sdp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp" />
-
-    </LinearLayout>
-
-    <include
-        android:id="@+id/layoutCartItemInKitchen"
-        layout="@layout/item_cart_item_header_in_old_order" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/_4sdp"
-        android:background="@color/text_blue"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.manager.customer.bill.CustomerOrderBillFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcyCartItemInOldOrder"
+        android:id="@+id/rcyCartItemOnBill"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/_8sdp"
         android:scrollbars="none"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="1"
-        tools:listitem="@layout/item_cart_item_detail_in_old_order" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/_4sdp"
-        android:background="@color/text_blue"/>
+        tools:listitem="@layout/item_cart_item_on_bill_of_customer" />
 
     <LinearLayout
         android:id="@+id/llCustomerInfo"
@@ -171,29 +122,5 @@
 
 
     </LinearLayout>
-
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/_4sdp"
-        android:background="@color/text_blue"/>
-
-    <TextView
-        android:id="@+id/txtDone"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_35sdp"
-        android:layout_marginVertical="@dimen/_8sdp"
-        android:layout_marginHorizontal="@dimen/_30sdp"
-        android:background="@drawable/bg_txt_login"
-        android:text="DONE"
-        android:fontFamily="@font/inter_600"
-        android:textSize="@dimen/_20sdp"
-        android:gravity="center"
-        android:textColor="@color/white"
-
-
-        />
 
 </LinearLayout>
