@@ -10,13 +10,20 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "shift")
 data class ShiftEntity constructor(
-
-    @PrimaryKey(autoGenerate= true)
+    // Ý tưởng
+    /*
+    Kết hợp yyyy/MM/dd shift_name  --> Không thằng nào giống thằng nào
+    Sau này filter cũng dễ
+    */
+    @PrimaryKey
     @ColumnInfo(name = "shift_id")
-    val shift_id: Int,
+    val shift_id: String,
+
+    @ColumnInfo(name = "shift_time")
+    val shift_time: String,
 
     @ColumnInfo(name = "shift_name")
-    val shift_name: Int
+    val shift_name: String
 
 ):Parcelable {
     companion object {

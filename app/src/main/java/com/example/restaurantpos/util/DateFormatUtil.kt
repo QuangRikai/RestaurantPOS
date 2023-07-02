@@ -28,4 +28,16 @@ object DateFormatUtil {
         return simpleDateFormat.format(Date())
     }
 
+    fun getShiftId(year: Int, month: Int): String {
+        return "${year}/${month}"
+    }
+
+    fun getShiftId(year: Int, month: Int, day: Int, shift: Int): String {
+        return "${year}/${month}/${day}_${shift}"
+    }
+
+
+
+
+
 }

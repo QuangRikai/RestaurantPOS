@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/txtNo"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_11sdp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:fontFamily="@font/inter_400"
@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/txtTime"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_25sdp"
         android:layout_height="match_parent"
         android:layout_weight="2.2"
         android:fontFamily="@font/inter_400"
@@ -45,7 +45,7 @@
 
     <TextView
         android:id="@+id/txtTableName"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_25sdp"
         android:layout_height="match_parent"
         android:layout_weight="2.5"
         android:fontFamily="@font/inter_400"
@@ -61,7 +61,7 @@
 
     <TextView
         android:id="@+id/txtItemName"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_40sdp"
         android:layout_height="match_parent"
         android:layout_weight="6"
         android:fontFamily="@font/inter_400"
@@ -77,7 +77,7 @@
 
     <TextView
         android:id="@+id/txtNote"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_35sdp"
         android:layout_height="match_parent"
         android:layout_weight="5"
         android:fontFamily="@font/inter_400"
@@ -93,7 +93,7 @@
 
     <TextView
         android:id="@+id/txtCartItemStatus"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_20sdp"
         android:layout_height="match_parent"
         android:layout_weight="3"
         android:fontFamily="@font/inter_400"

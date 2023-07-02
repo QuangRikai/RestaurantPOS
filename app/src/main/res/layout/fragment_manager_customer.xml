@@ -16,21 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imgBack"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_2sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:src="@drawable/img_back"
-            app:tint="@color/text_blue" />
-
         <TextView
             android:id="@+id/txtCustomerManagerment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:layout_marginStart="@dimen/_48sdp"
             android:fontFamily="@font/inter_700"
             android:gravity="center"
             android:text="Customer's Infomation"

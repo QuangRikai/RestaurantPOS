@@ -1,25 +1,33 @@
 package com.example.restaurantpos.util
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.example.restaurantpos.db.dao.AccountDAO
+import com.example.restaurantpos.db.dao.AppDAO
 import com.example.restaurantpos.db.dao.CartItemDAO
 import com.example.restaurantpos.db.dao.CategoryDAO
 import com.example.restaurantpos.db.dao.CustomerDAO
 import com.example.restaurantpos.db.dao.ItemDAO
 import com.example.restaurantpos.db.dao.OrderDAO
+import com.example.restaurantpos.db.dao.ShiftDAO
 import com.example.restaurantpos.db.dao.TableDAO
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
+import com.example.restaurantpos.db.entity.ShiftEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 
 object DatabaseUtil {
 
-    //    lateinit var appDAO: AppDAO
+    lateinit var appDAO: AppDAO
     lateinit var accountDAO: AccountDAO
     lateinit var categoryDAO: CategoryDAO
     lateinit var itemDAO: ItemDAO
@@ -27,9 +35,11 @@ object DatabaseUtil {
     lateinit var cartItemDAO: CartItemDAO
     lateinit var orderDAO: OrderDAO
     lateinit var customerDAO: CustomerDAO
+    lateinit var shiftDAO: ShiftDAO
+
 
     fun init(context: Context) {
-//        appDAO = PosRoomDatabase.getInstance(context).appDAO()
+        appDAO = PosRoomDatabase.getInstance(context).appDAO()
         accountDAO = PosRoomDatabase.getInstance(context).accountDAO()
         categoryDAO = PosRoomDatabase.getInstance(context).categoryDAO()
         itemDAO = PosRoomDatabase.getInstance(context).itemDAO()
@@ -37,6 +47,7 @@ object DatabaseUtil {
         cartItemDAO = PosRoomDatabase.getInstance(context).cartItemDAO()
         orderDAO = PosRoomDatabase.getInstance(context).orderDAO()
         customerDAO = PosRoomDatabase.getInstance(context).customerDAO()
+        shiftDAO = PosRoomDatabase.getInstance(context).shiftDAO()
     }
 
     /** 1. USER MANAGEMENT  */
@@ -46,7 +57,7 @@ object DatabaseUtil {
     fun addListAccount(listAccount: List<AccountEntity>) = accountDAO.addListAccount(listAccount)
     fun getAllUser() = accountDAO.getAllUser()
 
-    /** 2. CATEGORY, ITEM MANAGEMENT  */
+    /** 2. CATEGORY && ITEM MANAGEMENT  */
 
     fun getAllCategory() = categoryDAO.getAllCategory()
     fun addCategory(data: CategoryEntity) = categoryDAO.addCategory(data)
@@ -63,8 +74,6 @@ object DatabaseUtil {
 
     fun getTableById(table_id: Int) = tableDAO.getTableById(table_id)
     fun getAllTable() = tableDAO.getAllTable()
-
-
 
 
     /** 4. CART MANAGEMENT  */
@@ -98,8 +107,24 @@ object DatabaseUtil {
     fun getListCustomer() = customerDAO.getListCustomer()
 
     // Phục vụ cho việc tìm kiếm Khách
-    fun getListCustomerByPhoneForSearch(phone: String) = customerDAO.getListCustomerByPhoneForSearch(phone)
-    fun getListCustomerByPhoneForAdd(phone: String) = customerDAO.getListCustomerByPhoneForAdd(phone)
+    fun getListCustomerByPhoneForSearch(phone: String) =
+        customerDAO.getListCustomerByPhoneForSearch(phone)
 
+    fun getListCustomerByPhoneForAdd(phone: String) =
+        customerDAO.getListCustomerByPhoneForAdd(phone)
+
+    /** 7. Shift && ShiftAccount MANAGEMENT  */
+    fun addShift(shift: ShiftEntity) = shiftDAO.addShift(shift)
+
+    fun getTShiftById(shift_id: String) = shiftDAO.getTShiftById(shift_id)
+
+    fun getListShift() = shiftDAO.getListShift()
+
+    fun addAccountShift(accountShift: AccountShiftEntity) = shiftDAO.addAccountShift(accountShift)
+
+    fun deleteAccountShift(accountShift: AccountShiftEntity) =
+        shiftDAO.deleteAccountShift(accountShift)
+
+    fun getListAccountShift(shift_id: String) = shiftDAO.getListAccountShift(shift_id)
 
 }

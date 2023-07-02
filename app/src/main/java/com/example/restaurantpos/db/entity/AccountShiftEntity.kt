@@ -15,8 +15,8 @@ data class AccountShiftEntity constructor(
     @ColumnInfo(name = "account_shift_id")
     val account_shift_id: Int,
 
-    @ColumnInfo(name = "shift_name")
-    val shift_id: Int,
+    @ColumnInfo(name = "shift_id")
+    val shift_id: String,
 
     @ColumnInfo(name = "account_id")
     val account_id: Int

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.manager.home.ManagerHomeFragment">
+
+    <LinearLayout
+        android:id="@+id/llApiWeather"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_150sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/llShift"
+        app:layout_constraintWidth_percent="0.5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/_35sdp"
+            android:text="API Weather"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llShift"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_150sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/llApiWeather"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5">
+
+        <Button
+            android:id="@+id/btnShift"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/_35sdp"
+            android:background="@drawable/bg_txt_login"
+            android:text="Shift"/>
+
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/llStatistic"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llShift">
+
+        <TextView
+            android:id="@+id/txtStatistic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/text_blue"
+            android:textSize="@dimen/_35sdp"
+            android:textColor="@color/white"
+            android:text="Statistic"/>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

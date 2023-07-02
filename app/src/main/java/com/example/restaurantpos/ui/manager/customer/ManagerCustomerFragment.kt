@@ -69,12 +69,6 @@ class ManagerCustomerFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-        /** imgBack */
-        binding.imgBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
-
 
     }
 }

@@ -11,6 +11,7 @@ import com.example.restaurantpos.db.dao.CategoryDAO
 import com.example.restaurantpos.db.dao.CustomerDAO
 import com.example.restaurantpos.db.dao.ItemDAO
 import com.example.restaurantpos.db.dao.OrderDAO
+import com.example.restaurantpos.db.dao.ShiftDAO
 import com.example.restaurantpos.db.dao.TableDAO
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.AccountShiftEntity
@@ -46,6 +47,7 @@ public abstract class PosRoomDatabase: RoomDatabase (){
     abstract fun cartItemDAO(): CartItemDAO
     abstract fun orderDAO(): OrderDAO
     abstract fun customerDAO(): CustomerDAO
+    abstract fun shiftDAO(): ShiftDAO
 
     companion object{
         @Volatile

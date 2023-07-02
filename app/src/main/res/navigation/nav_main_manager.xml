@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_mainManagerFragment_to_customerOrderFragment"
             app:destination="@id/customerOrderFragment" />
+        <action
+            android:id="@+id/action_mainManagerFragment_to_shiftFragment"
+            app:destination="@id/shiftFragment" />
+        <action
+            android:id="@+id/action_mainManagerFragment_to_statisticFragment"
+            app:destination="@id/statisticFragment" />
     </fragment>
 
     <fragment
@@ -51,5 +57,15 @@
             app:argType="string" />
 
     </fragment>
+    <fragment
+        android:id="@+id/shiftFragment"
+        android:name="com.example.restaurantpos.ui.manager.home.shift.ShiftFragment"
+        android:label="fragment_shift"
+        tools:layout="@layout/fragment_shift" />
+    <fragment
+        android:id="@+id/statisticFragment"
+        android:name="com.example.restaurantpos.ui.manager.home.statistic.StatisticFragment"
+        android:label="fragment_statistic"
+        tools:layout="@layout/fragment_statistic" />
 
 </navigation>

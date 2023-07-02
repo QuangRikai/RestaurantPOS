@@ -18,6 +18,11 @@ class MainManagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainManagerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.fragmentContainerView.adapter = TabMainManagerAdapter(requireParentFragment())
         requireParentFragment()
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -41,11 +46,5 @@ class MainManagerFragment : Fragment() {
 
             true
         })
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 }
