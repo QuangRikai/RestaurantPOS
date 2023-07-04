@@ -16,7 +16,7 @@ class ShiftViewModel : ViewModel() {
         }
     }
 
-    fun getTShiftById(shift_id: String) = DatabaseUtil.getTShiftById(shift_id)
+    fun getShiftById(shift_id: String) = DatabaseUtil.getShiftById(shift_id)
 
     fun getListShift() = DatabaseUtil.getListShift()
 
@@ -34,4 +34,8 @@ class ShiftViewModel : ViewModel() {
 
 
     fun getListAccountShift(shift_id: String) = DatabaseUtil.getListAccountShift(shift_id)
+    fun getListAccountShiftReceptionist(shift_id: String) = DatabaseUtil.getListAccountShiftReceptionist(shift_id)
+    fun getListAccountShiftKitchen(shift_id: String) = DatabaseUtil.getListAccountShiftKitchen(shift_id)
+
+
 }

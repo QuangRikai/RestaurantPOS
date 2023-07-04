@@ -3,6 +3,7 @@ package com.example.restaurantpos.ui.splash
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
@@ -61,6 +62,12 @@ class SplashViewModel: ViewModel() {
     fun addCustomer(data: CustomerEntity) {
         CoroutineScope(Dispatchers.IO).launch{
             DatabaseUtil.addCustomer(data)
+        }
+    }
+
+    fun addAccountShift(accountShift: AccountShiftEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseUtil.shiftDAO.addAccountShift(accountShift)
         }
     }
 

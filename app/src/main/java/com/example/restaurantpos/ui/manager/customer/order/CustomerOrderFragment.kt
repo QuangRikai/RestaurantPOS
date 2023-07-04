@@ -14,7 +14,7 @@ import com.example.restaurantpos.databinding.FragmentCustomerOrderBinding
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.ui.manager.customer.CustomerViewModel
-import com.example.restaurantpos.ui.receptionist.order.CartViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 
 class CustomerOrderFragment : Fragment() {
 

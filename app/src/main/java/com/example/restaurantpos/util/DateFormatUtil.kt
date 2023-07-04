@@ -11,14 +11,14 @@ object DateFormatUtil {
     const val formatNotContainDay = "HH:mm:ss"
 
     @SuppressLint("SimpleDateFormat")
-    fun convertStringToDate(data : String) : Date {
+    fun convertStringToDate(data: String): Date {
         val dateFormat = SimpleDateFormat(formatNotContainDay)
         val date = dateFormat.parse(data)
         return date
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun convertDateToString(data : Date) : String {
+    fun convertDateToString(data: Date): String {
         val dateFormat = SimpleDateFormat(formatNotContainDay)
         return dateFormat.format(data)
     }
@@ -37,7 +37,6 @@ object DateFormatUtil {
     }
 
 
-
-
-
 }
+
+

@@ -1,86 +1,87 @@
-package com.example.restaurantpos.ui.receptionist.order.newOrder
+package com.example.restaurantpos.ui.staff.receptionist.order
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.restaurantpos.R
-import com.example.restaurantpos.databinding.FragmentNewOrderBinding
+import com.example.restaurantpos.databinding.FragmentAddMoreOrderBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
-import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.manager.category.CategoryViewModel
-import com.example.restaurantpos.ui.manager.customer.CustomerViewModel
-import com.example.restaurantpos.ui.receptionist.order.CartViewModel
-import com.example.restaurantpos.ui.receptionist.order.CustomerInnerAdapter
-import com.example.restaurantpos.ui.receptionist.table.TableViewModel
-import com.example.restaurantpos.util.DateFormatUtil
-import com.example.restaurantpos.util.SharedPreferencesUtils
-import com.example.restaurantpos.util.gone
-import com.example.restaurantpos.util.show
+import com.example.restaurantpos.ui.staff.receptionist.order.newOrder.CartItemAdapter
+import com.example.restaurantpos.ui.staff.receptionist.order.newOrder.CategoryInBottomOfOrderFragmentAdapter
+import com.example.restaurantpos.ui.staff.receptionist.order.newOrder.ItemOfCategoryInBottomOfOrderFragmentAdapter
+import com.example.restaurantpos.ui.staff.receptionist.order.newOrder.NewOrderFragment
+import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
 import com.example.restaurantpos.util.showToast
 
-class NewOrderFragment : Fragment() {
 
-    lateinit var binding: FragmentNewOrderBinding
+class AddMoreOrderFragment : Fragment() {
 
-    /** Adapter */
+    lateinit var binding: FragmentAddMoreOrderBinding
     lateinit var adapterCategoryInBottomOfOrderFragment: CategoryInBottomOfOrderFragmentAdapter
     lateinit var adapterOrderItem: ItemOfCategoryInBottomOfOrderFragmentAdapter
     lateinit var adapterCartItem: CartItemAdapter
-    lateinit var adapterCustomerInner: CustomerInnerAdapter
 
-
-    /** Những ViewModel chứa các phương thức cần sử dụng */
+    /** Lấy những ViewModel chứa các phương thức cần sử dụng */
     lateinit var viewModelCategory: CategoryViewModel
     lateinit var viewModelCart: CartViewModel
     lateinit var viewModelTable: TableViewModel
-    lateinit var viewModelCustomer: CustomerViewModel
 
 
-    /** Tạo những đối tượng của Entity để dễ thao tác */
+    /** Tạo những đối tượng của Bảng để dễ thao tác */
     private var tableObject: TableEntity? = null
     private var orderObject: OrderEntity? = null
-    private var customerObject: CustomerEntity? = null
-    private var listCartItem = ArrayList<CartItemEntity>()
     private var listItemOfCategory = ArrayList<ItemEntity>()
+    private var listCartItem = ArrayList<CartItemEntity>()
+
+    // Thực hiện xóa ở đây thì hãy cẩn thận.
+    // Cần lưu nó lại vì thao tác trên này không lưu vào Database nhưng khi mà xóa thì phải lưu nó vào lại cả dataBase nữa
+    // 1:46
+    // Khi Click Order thì cần Dọn sạch (Delete), không còn liên quan gì nữa
+    private var listCartItemDelete = ArrayList<CartItemEntity>()
 
     // Để so sánh với category_id
     var chooseCategory: Int = 1
 
-    // Dialog cho Customer
-    lateinit var dialog: AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentNewOrderBinding.inflate(inflater, container, false)
+        binding = FragmentAddMoreOrderBinding.inflate(inflater, container, false)
         /** ----------------------------------------------------------------------------*/
-        /** Xử lý Biến tableObject (data từ fragment trước) */
-        // Chuyển TableEntity String thành 1 đối tượng để chuyển dữ liệu --> gán đối tượng này cho data
-        tableObject = TableEntity.toTableEntity(requireArguments().getString("data").toString())
+        /** Đáp Data từ Fragment trước sang */
+        tableObject =
+            TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
         if (tableObject == null) {
             findNavController().popBackStack()
         }
+
+        orderObject =
+            OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
+        if (orderObject == null) {
+            findNavController().popBackStack()
+        }
+
+        // Thằng này cần truyền sang 1 List<String>  --> Căng quá. Thay vì get từ Bếp, thì get từ order luôn.
+        /*        listCartItem =
+                    Gson().fromJson(requireArguments().getString("listCartItem").toString(), ArrayList<CartItemEntity>)
+                if (listCartItem == null) {
+                    findNavController().popBackStack()
+                }*/
 
         /** Tạo Đối Tượng ViewModel */
         // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
         viewModelCategory = ViewModelProvider(this).get(CategoryViewModel::class.java)
         viewModelCart = ViewModelProvider(this).get(CartViewModel::class.java)
         viewModelTable = ViewModelProvider(this).get(TableViewModel::class.java)
-        viewModelCustomer = ViewModelProvider(this).get(CustomerViewModel::class.java)
 
         /** ----------------------------------------------------------------------------*/
         return binding.root
@@ -91,39 +92,30 @@ class NewOrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         /** Handle data Object: tableEntity above*/
+        // 1. tableObject
         tableObject?.let { table ->
-            // Code cho tên Table
+            /** Code for Table's Name */
             binding.txtTableNameInOrderList.text = table.table_name
-            // Khi có Data thì mới thực hiện getListCategory. Lấy listData từ DB đổ lên View MenuOrder
+
+            // Xử lý cho Category View
             getListCategory(chooseCategory)
 
-            // Khi có Table (Đã click chọn Table) mới bắt đầu tạo Order
-            // Tạo trước 1 order default
-            orderObject = OrderEntity(
-                DateFormatUtil.getTimeForOrderId(),
-                0,
-                table.table_id,
-                SharedPreferencesUtils.getAccountId(),
-                DateFormatUtil.getTimeForOrderId(),
-                "",
-                0f,
-                0
-            )
+//            table.table_status = 1
+//            viewModelTable.addTable(requireContext(), table)
+        }
 
-// Vừa vào NewOrder là đã phải thay đổi trạng thái của bàn rồi. Tránh việc 2 bàn cùng order 1 lúc
-            table.table_status = 1
-            // Thêm bàn vào mà làm gì?
-            viewModelTable.addTable(requireContext(), table)
-
+        // 2. orderObject --> Lấy listCartItem from Order. Dùng ... Lọc ra những thằng của Table AND status Waiting.
+        orderObject?.let { order ->
+            viewModelCart.getListCartItemOnWaiting(order.order_id)
+                .observe(viewLifecycleOwner) { listItem ->
+//                listCartItem.clear()
+                    listCartItem.addAll(listItem)
+                    adapterCartItem.setListData(listCartItem)
+                }
         }
 
         /** Code for Back */
         binding.igmBackOfOrder.setOnClickListener {
-            // Nếu là bàn Order thêm (status = 2) thì không làm gì
-            if (tableObject!!.table_status == 1) {
-                tableObject!!.table_status = 0
-            }
-            viewModelTable.addTable(requireContext(), tableObject!!)
             findNavController().popBackStack()
         }
 
@@ -157,10 +149,6 @@ class NewOrderFragment : Fragment() {
 
             findNavController().popBackStack()
         }
-        /** Code for Customer TextView */
-        binding.txtCustomerInOrder.setOnClickListener {
-            showDialogCustomer()
-        }
 
 
         /** -------------------------------ADAPTER-------------------------*/
@@ -171,6 +159,9 @@ class NewOrderFragment : Fragment() {
             ArrayList(),
             chooseCategory,
             viewLifecycleOwner,
+            /** Phần này chưa rõ!*/
+            /** Phần này chưa rõ!*/
+            /** Phần này chưa rõ!*/
             /** Phần này chưa rõ!*/
             object : CategoryInBottomOfOrderFragmentAdapter.EventClickCategoryInOrderListener {
                 override fun clickCategoryInOrder(chooseCategory: Int) {
@@ -202,7 +193,7 @@ class NewOrderFragment : Fragment() {
                     }
 
                     // Đưa OrderItem --> Cart
-                    listCartItem.add(
+/*                    listCartItem.add(
                         CartItemEntity(
                             0,
                             itemInCategory.item_id,
@@ -211,7 +202,7 @@ class NewOrderFragment : Fragment() {
                             "",
                             0
                         )
-                    )
+                    )*/
 
                     // Set Data (listCartItem) cho adapter --> Đổ lên View CartOrder
                     adapterCartItem.setListData(listCartItem)
@@ -226,7 +217,7 @@ class NewOrderFragment : Fragment() {
         // 1. Tạo 1 adapter
         adapterCartItem = CartItemAdapter(
             requireParentFragment(),
-            ArrayList(),
+            ArrayList(), // Đáp sẵn bên kia sang nên không cần tạo rỗng set lại các thứ.
             viewLifecycleOwner,
             object : CartItemAdapter.EventClickCartItemListener {
                 override fun clickMinus(orderedItem: CartItemEntity, pos: Int) {
@@ -257,103 +248,11 @@ class NewOrderFragment : Fragment() {
         )
         // 2. Dùng adapter vừa tạo cho View cần dùng
         binding.rycCartItemList.adapter = adapterCartItem
+
     }
 
 
     /** ----------------------------------------------------------*/
-    /** Add Customer Dialog */
-    private fun showDialogCustomer() {
-        // -----------------Prepare--------------------------------------------------//
-        // 1.  Build Dialog
-        // 2.  Designed XML --> View
-        // 3.  Set VIEW tra ve above --> Dialog
-        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
-        val view = layoutInflater.inflate(R.layout.dialog_alert_add_customer, null)
-        build.setView(view)
-        // 4.  Get Component of Dialog
-        val edtPhoneNumber = view.findViewById<EditText>(R.id.edtPhoneNumber)
-        val rcyCustomerInPhone = view.findViewById<RecyclerView>(R.id.rcyCustomerInPhone)
-        val edtCustomerName = view.findViewById<EditText>(R.id.edtCustomerName)
-        val edtCustomerBirthday = view.findViewById<EditText>(R.id.edtCustomerBirthday)
-        val btnAddCustomer = view.findViewById<Button>(R.id.btnAddCustomer)
-        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
-        val imgCloseDialogCustomer = view.findViewById<ImageView>(R.id.imgCloseDialogCustomer)
-        // -----------------Code for Component----------------------------------------//
-        /*        */
-        /**???*//*
-        // 0.  Customer Info. Nếu Null thì không làm gì. Nếu get được thông tin đâu đó thì set vào.
-        // And Set Data for 1 if CAN do
-        customerObject?.let { customer ->
-            edtPhoneNumber.setText(customer.phone)
-            edtCustomerName.setText(customer.customer_name)
-            edtCustomerBirthday.setText(customer.birthday)
-            rcyCustomerInPhone.gone()
-        }*/
-        // -----------------Code for Component----------------------------------------//
-        // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
-
-
-        adapterCustomerInner = CustomerInnerAdapter(requireParentFragment(), ArrayList(), object :
-            CustomerInnerAdapter.EventClickItemCustomerInnerListener {
-            override fun clickCustomerInner(itemCustomer: CustomerEntity) {
-                // Có sẵn thì pick-up ra thôi
-                customerObject = itemCustomer
-                /**???*/
-//                orderObject?.customer_id = itemCustomer.customer_id
-                // Tìm cách đưa Customer's Name lên NewOrderFragment
-                binding.txtCustomerInOrder.text = itemCustomer.customer_name
-                dialog.dismiss()
-            }
-        })
-        rcyCustomerInPhone.adapter = adapterCustomerInner
-
-        // 2. Code for when staff types on edtPhoneNumber and contain >= 3 Chars. If exist --> Show for Picking-up
-        // SetData for (1)
-        edtPhoneNumber.doOnTextChanged { text, start, before, count ->
-            if (text.toString().length >= 3) {
-                viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
-                    .observe(viewLifecycleOwner) {
-                        if (it.size > 0) {
-                            adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
-                            rcyCustomerInPhone.show()
-                        }
-                    }
-            } else {
-                rcyCustomerInPhone.gone()
-            }
-        }
-
-
-        // 4.  Add Customer
-        btnAddCustomer.setOnClickListener {
-            viewModelCustomer.addCustomer(
-                CustomerEntity(
-                    0,
-                    edtCustomerName.text.toString(),
-                    edtPhoneNumber.text.toString(),
-                    edtCustomerBirthday.text.toString()
-                )
-            )
-
-            viewModelCustomer.getListCustomerByPhoneForAdd(edtPhoneNumber.text.toString())
-                .observe(viewLifecycleOwner) { listCustomer ->
-                    if (listCustomer.size > 0) {
-                        customerObject = listCustomer[0]
-                        binding.txtCustomerInOrder.text = listCustomer[0].customer_name
-                        dialog.dismiss()
-                    }
-                }
-        }
-
-
-        // Other:  Dau X  &   Cancel Button
-        imgCloseDialogCustomer.setOnClickListener { dialog.dismiss() }
-        btnCancel.setOnClickListener { dialog.dismiss() }
-
-        // End: Tao Dialog (Khi khai bao chua thuc hien) and Show len display
-        dialog = build.create()
-        dialog.show()
-    }
 
     // Set listData get được từ DB cho listData mà Adapter sử dụng, để đổ ra View.
     // Adapter:  CategoryInBottomOfOrderFragmentAdapter

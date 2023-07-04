@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.receptionist.order.oldOrder.OldOrderFragment">
+    tools:context=".ui.staff.receptionist.order.oldOrder.OldOrderFragment">
 
     <LinearLayout
         android:id="@+id/toolBar"
@@ -133,7 +133,7 @@
                 android:gravity="right|center_vertical"
                 android:paddingRight="@dimen/_50sdp"
                 android:fontFamily="@font/inter_400"
-                android:hint="80 $"
+                android:hint="120 $"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 

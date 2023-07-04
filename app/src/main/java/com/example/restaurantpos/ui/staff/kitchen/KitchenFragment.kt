@@ -1,18 +1,20 @@
-package com.example.restaurantpos.ui.kitchen
+package com.example.restaurantpos.ui.staff.kitchen
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentKitchenBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.ui.login.LoginActivity
-import com.example.restaurantpos.ui.receptionist.order.CartViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 
@@ -67,6 +69,7 @@ class KitchenFragment : Fragment() {
                         context?.openActivity(LoginActivity::class.java, true)
                         true
                     }
+
                     else -> true
                 }
             }
@@ -78,11 +81,17 @@ class KitchenFragment : Fragment() {
                 menu.javaClass
                     .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
                     .invoke(menu, true)
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
                 popupMenu.show()
             }
+        }
+
+        /** Kitchen Shift Show */
+        binding.txtShift.setOnClickListener {
+            findNavController().navigate(R.id.action_kitchenFragment_to_shiftOfStaffFragment,
+            bundleOf("shiftOfStaff" to 2))
         }
         /** ----------------------------------------------------------------------------------*/
 
@@ -95,14 +104,14 @@ class KitchenFragment : Fragment() {
             ArrayList(),
             object : CartItemInKitchenAdapter.EventClickCartItemInKitchenListener {
                 override fun clickCartItemStatus(cartItemInKitchen: CartItemEntity) {
-                    if (cartItemInKitchen.cart_item_status == 2){
+                    if (cartItemInKitchen.cart_item_status == 2) {
                         // Hỏi là có quay lại trạng thái không
                         // Có thì quay lại như lựa chọn, không thì thôi
                         // Code 1 cái dialog chung rồi làm gì cũng showDialog ra hỏi.
                         val cartItem = cartItemInKitchen
                         cartItem.cart_item_status--
                         viewModelCart.addCartItem(cartItem)
-                    }else{
+                    } else {
                         val cartItem = cartItemInKitchen
                         cartItem.cart_item_status++
                         viewModelCart.addCartItem(cartItem)
@@ -117,13 +126,14 @@ class KitchenFragment : Fragment() {
         // sortValue--> sortByTimeOfOrder.value!!  <--  Do nó cập nhật lại thằng nó lại ở trạng thái không có gì nên nó không load lại nữa.
         // 59:15 !!!
 
-        sortByTimeOfOrder.observe(viewLifecycleOwner){ sortValue ->
-            viewModelCart.getListCartItemOfKitchenBySortTime(sortByTimeOfOrder.value!!).observe(viewLifecycleOwner){ listCart ->
-                adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
-            }
+        sortByTimeOfOrder.observe(viewLifecycleOwner) { sortValue ->
+            viewModelCart.getListCartItemOfKitchenBySortTime(sortByTimeOfOrder.value!!)
+                .observe(viewLifecycleOwner) { listCart ->
+                    adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
+                }
         }
 
-        when(sortByTimeOfOrder.value){
+        when (sortByTimeOfOrder.value) {
             1 -> sortByTimeOfOrder.value = 0
             0 -> sortByTimeOfOrder.value = 1
         }

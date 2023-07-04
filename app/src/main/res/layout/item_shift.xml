@@ -3,12 +3,12 @@
     android:id="@+id/viewRootShift"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="@dimen/_40sdp"
+    android:minHeight="@dimen/_55sdp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1">
 
         <View
@@ -23,6 +23,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:src="@mipmap/ic_launcher"
+            android:background="@color/bg_orange"
             android:text="Day" />
 
         <View
@@ -37,11 +38,10 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:paddingStart="@dimen/_3sdp"
-            android:text="Quang" />
+            android:paddingStart="@dimen/_3sdp" />
 
         <View
-            android:layout_width="@dimen/_1sdp"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/black" />
 
@@ -52,11 +52,10 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:paddingStart="@dimen/_3sdp"
-            android:text="Chuong" />
+            android:paddingStart="@dimen/_3sdp" />
 
         <View
-            android:layout_width="@dimen/_1sdp"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/black" />
 
@@ -67,8 +66,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:paddingStart="@dimen/_3sdp"
-            android:text="C. Phuong" />
+            android:paddingStart="@dimen/_3sdp" />
 
         <View
             android:layout_width="@dimen/_1sdp"
@@ -78,7 +76,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
+        android:layout_height="1dp"
         android:background="@color/black" />
 
 </LinearLayout>

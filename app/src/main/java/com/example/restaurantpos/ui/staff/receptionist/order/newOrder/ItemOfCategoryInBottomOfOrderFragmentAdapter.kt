@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.order.newOrder
+package com.example.restaurantpos.ui.staff.receptionist.order.newOrder
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.order.oldOrder
+package com.example.restaurantpos.ui.staff.receptionist.order.oldOrder
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.example.restaurantpos.databinding.FragmentOldOrderBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
-import com.example.restaurantpos.ui.receptionist.order.CartViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 
 
 class OldOrderFragment : Fragment() {

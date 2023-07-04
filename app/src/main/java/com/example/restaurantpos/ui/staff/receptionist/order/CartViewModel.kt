@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.order
+package com.example.restaurantpos.ui.staff.receptionist.order
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

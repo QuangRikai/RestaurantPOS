@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.kitchen
+package com.example.restaurantpos.ui.staff.kitchen
 
 import android.annotation.SuppressLint
 import android.content.Context

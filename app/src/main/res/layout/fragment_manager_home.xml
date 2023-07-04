@@ -51,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
+        android:background="@color/bg_light_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +64,7 @@
             android:background="@color/text_blue"
             android:textSize="@dimen/_35sdp"
             android:textColor="@color/white"
-            android:text="Statistic"/>
+            android:text="Revenue Statistic"/>
 
 
     </androidx.core.widget.NestedScrollView>

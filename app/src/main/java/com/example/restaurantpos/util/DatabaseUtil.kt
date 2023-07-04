@@ -55,6 +55,7 @@ object DatabaseUtil {
     fun addAccount(accountEntity: AccountEntity) = accountDAO.addAccount(accountEntity)
 
     fun addListAccount(listAccount: List<AccountEntity>) = accountDAO.addListAccount(listAccount)
+    fun getAccountById(account_id: Int) = accountDAO.getAccountById(account_id)
     fun getAllUser() = accountDAO.getAllUser()
 
     /** 2. CATEGORY && ITEM MANAGEMENT  */
@@ -116,7 +117,7 @@ object DatabaseUtil {
     /** 7. Shift && ShiftAccount MANAGEMENT  */
     fun addShift(shift: ShiftEntity) = shiftDAO.addShift(shift)
 
-    fun getTShiftById(shift_id: String) = shiftDAO.getTShiftById(shift_id)
+    fun getShiftById(shift_id: String) = shiftDAO.getShiftById(shift_id)
 
     fun getListShift() = shiftDAO.getListShift()
 
@@ -125,6 +126,9 @@ object DatabaseUtil {
     fun deleteAccountShift(accountShift: AccountShiftEntity) =
         shiftDAO.deleteAccountShift(accountShift)
 
+    // Use for Shift's Show
     fun getListAccountShift(shift_id: String) = shiftDAO.getListAccountShift(shift_id)
+    fun getListAccountShiftReceptionist(shift_id: String) = shiftDAO.getListAccountShiftReceptionist(shift_id)
+    fun getListAccountShiftKitchen(shift_id: String) = shiftDAO.getListAccountShiftKitchen(shift_id)
 
 }

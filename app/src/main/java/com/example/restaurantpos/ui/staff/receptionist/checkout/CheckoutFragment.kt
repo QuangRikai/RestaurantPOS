@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.checkout
+package com.example.restaurantpos.ui.staff.receptionist.checkout
 
 import android.os.Bundle
 import android.util.Log
@@ -15,9 +15,9 @@ import com.example.restaurantpos.databinding.FragmentOldOrderBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
-import com.example.restaurantpos.ui.receptionist.order.CartViewModel
-import com.example.restaurantpos.ui.receptionist.order.oldOrder.CartItemInOldOrderAdapter
-import com.example.restaurantpos.ui.receptionist.table.TableViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.oldOrder.CartItemInOldOrderAdapter
+import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
 
 
 class CheckoutFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.table
+package com.example.restaurantpos.ui.staff.receptionist.table
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -20,8 +20,8 @@ interface AccountDAO {
     @Delete
     fun deleteAccount(account: AccountEntity): Int
 
-    @Query("SELECT * from account WHERE account_id = :id")
-    fun getAccountById(id: Int): AccountEntity
+    @Query("SELECT * from account WHERE account_id = :account_id")
+    fun getAccountById(account_id: Int): AccountEntity
 
     @Query("SELECT * from account WHERE user_name = :user_name AND password = :password")
     fun checkLogin(user_name: String, password: String): MutableList<AccountEntity>

@@ -13,7 +13,7 @@ import com.example.restaurantpos.databinding.FragmentCustomerOrderBillBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.ui.manager.customer.CustomerViewModel
-import com.example.restaurantpos.ui.receptionist.order.CartViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 
 
 class CustomerOrderBillFragment : Fragment() {

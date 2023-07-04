@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.receptionist.order.oldOrder.OldOrderFragment">
+    tools:context=".ui.staff.receptionist.order.oldOrder.OldOrderFragment">
 
     <LinearLayout
         android:id="@+id/toolBar"

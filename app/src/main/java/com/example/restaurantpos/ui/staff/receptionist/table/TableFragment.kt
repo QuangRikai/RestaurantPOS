@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.table
+package com.example.restaurantpos.ui.staff.receptionist.table
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import com.example.restaurantpos.ui.login.LoginActivity
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 
-class TableFragment : Fragment(), TableAdapter.EventClickTableListener{
+class TableFragment : Fragment(), TableAdapter.EventClickTableListener {
 
     lateinit var binding: FragmentTableBinding
     lateinit var adapter: TableAdapter
@@ -73,7 +73,14 @@ class TableFragment : Fragment(), TableAdapter.EventClickTableListener{
                 popupMenu.show()
             }
         }
+
+        /** Kitchen Shift Show */
+        binding.txtShift.setOnClickListener {
+            findNavController().navigate(R.id.action_tableFragment_to_shiftOfStaffFragment,
+                bundleOf("shiftOfStaff" to 1))
+        }
     }
+
     /** clickTable --> Navigate to Order/Ordered Fragment */
     /** bundleOf(26 and 55) */
     override fun clickTable(itemTable: TableEntity, table_status: Int) {

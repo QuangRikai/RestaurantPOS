@@ -9,16 +9,22 @@ import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
-import com.example.restaurantpos.db.entity.CartItemEntity
+import com.example.restaurantpos.db.entity.AccountShiftEntity
+import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.DatabaseUtil
+import com.example.restaurantpos.util.DateFormatUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 // Thằng này xử lý đâu đầu vãi
 class ShiftAdapter(
     var context: Context,
     private val lifecycleOwner: LifecycleOwner,
-//    private var day: Int,
-    private var month: Int,
     private var year: Int,
+    private var month: Int,
+    private var day: Int,
+    // Mình cần ngày bắt đầu của tuần
     val listenerClickShift: EventClickShiftListener
 ) : RecyclerView.Adapter<ShiftAdapter.ViewHolder>() {
 
@@ -32,22 +38,21 @@ class ShiftAdapter(
         var txtNightShift = itemView.findViewById<TextView>(R.id.txtNightShift)
     }
 
-//    override fun getItemCount(): Int = 7
+    override fun getItemCount(): Int = 7
 
-    override fun getItemCount(): Int {
-        if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)){
-            return numberOfDayInAMonthOfLeapYear[month]
-        } else{
-            return numberOfDayInAMonthOfNotLeapYear[month]
+    /*    override fun getItemCount(): Int {
+            if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+                return numberOfDayInAMonthOfLeapYear[month]
+            } else {
+                return numberOfDayInAMonthOfNotLeapYear[month]
+            }
         }
 
-    }
-
-    // Mỗi tháng có bao nhiêu ngày, còn cả vụ nhăm nhuận và start từ 0
-    val numberOfDayInAMonthOfNotLeapYear =
-        listOf<Int>(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-    val numberOfDayInAMonthOfLeapYear =
-        listOf<Int>(0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+        // Mỗi tháng có bao nhiêu ngày, còn cả vụ nhăm nhuận và start từ 0
+        val numberOfDayInAMonthOfNotLeapYear =
+            listOf<Int>(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+        val numberOfDayInAMonthOfLeapYear =
+            listOf<Int>(0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)*/
 
     //Method 1: Main in Adapter: XML Layout ==> View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -60,94 +65,87 @@ class ShiftAdapter(
     // Position ở đây sẽ ứng dụng position của List trong Database
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val day_i = DataUtil.plusDayReturnDay(year, month, day, position)
+        val month_i = DataUtil.plusDayReturnMonth(year, month, day, position)
+        val year_i = DataUtil.plusDayReturnYear(year, month, day, position)
 
+        val morningShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 1)
+        val afternoonShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 2)
+        val nightShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 3)
         /** Đổ data lên View */
-        holder.txtDay.text = "${position + 1}"
+        // Mình sẽ truyền vào ngày đầu tiên của tuần
+        // Xíu nữa sẽ xử lý vấn đề tuần bắt đầu từ ngày bao nhiêu
+//        holder.txtDay.text = "${day + position}"
+        holder.txtDay.text = "$month_i/$day_i"
 
         holder.txtMorningShift.setOnClickListener {
-//            listenerClickShift.clickMorningShift(cartItem)
+            listenerClickShift.clickMorningShift(morningShiftID)
         }
 
         holder.txtAfternoonShift.setOnClickListener {
-//            listenerClickShift.clickMorningShift(cartItem)
+            listenerClickShift.clickAfternoonShift(afternoonShiftID)
         }
 
         holder.txtNightShift.setOnClickListener {
-//            listenerClickShift.clickMorningShift(cartItem)
+            listenerClickShift.clickNightShift(nightShiftID)
         }
 
-        /*        showInfo(
-                    holder.txtTime,
-                    holder.txtItemName,
-                    holder.txtTableName,
-                    holder.txtCartItemStatus,
-                    cartItem.cart_item_status,
-                    cartItem.order_id,
-                    cartItem.item_id
-                )*/
-    }
+        // Get getListAccountShift
+        showMorningShift(holder.txtMorningShift, morningShiftID)
+        showAfternoonShift(holder.txtAfternoonShift, afternoonShiftID)
+        showNightShift(holder.txtNightShift, nightShiftID)
 
+    }
 
     /**-----------------------------------------------------------------------------------------*/
-
-    // Những thông tin về Table, Item thì phải get bằng order_id, item_id nha
-    /* fun showInfo(
-         txtTime: TextView,
-         txtItemName: TextView,
-         txtTableName: TextView,
-         txtCartItemStatus: TextView,
-         status: Int,
-         order_id: String,
-         item_id: Int
-     ) {
-
-         DatabaseUtil.getOrder(order_id).observe(lifecycleOwner) { order ->
-             // Order
-             txtTime.text = order.order_create_time.substring(12, order.order_create_time.length)
-             // Table
-             getTableName(txtTableName, order.table_id)
-         }
-         // Item
-         DatabaseUtil.getItemOfCategory(item_id).observe(lifecycleOwner) { itemList ->
-             txtItemName.text = itemList[0].item_name
-         }
-
-         when (status) {
-             *//* 0 -> txtCartItemStatus.text = "Wait"
-             else -> txtCartItemStatus.text = "In Process"*//*
-
-            // Xong là xong của Bếp
-            0 -> txtCartItemStatus.text = "Wait"
-            1 -> txtCartItemStatus.text = "In Process"
-            2 -> txtCartItemStatus.text = "Done"
+    private fun showInfo(txtViewOfShift: TextView, listAccountName: ArrayList<String>) {
+        var showOnShift = "・ "
+        listAccountName.forEach{ accountName ->
+            showOnShift += "$accountName\n ・ "
         }
-    }*/
+        txtViewOfShift.text = showOnShift
+    }
 
-    // Làm sao để từ order_id lấy table_id--> Lấy table_name ?
-    fun getTableName(txtTableName: TextView, table_id: Int) {
-        DatabaseUtil.getTableById(table_id).observe(lifecycleOwner) { table ->
-            txtTableName.text = table.table_name
+    private fun showMorningShift(txtMorningShift: TextView, shiftID: String) {
+        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) { listAccountName ->
+            txtMorningShift.text = listAccountName.toString()
+            showInfo(txtMorningShift, listAccountName as ArrayList<String>)
         }
     }
 
-/*    @SuppressLint("NotifyDataSetChanged")
-    fun setListData(day: Int, month: Int, year: Int) {
+    private fun showAfternoonShift(txtAfternoonShift: TextView, shiftID: String) {
+        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) {listAccountName ->
+            txtAfternoonShift.text = listAccountName.toString()
+            showInfo(txtAfternoonShift, listAccountName as ArrayList<String>)
+        }
+    }
 
-
-        notifyDataSetChanged()
-    }*/
+    private fun showNightShift(txtNightShift: TextView, shiftID: String) {
+        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) {listAccountName ->
+            txtNightShift.text = listAccountName.toString()
+            showInfo(txtNightShift, listAccountName as ArrayList<String>)
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setListData(month: Int, year: Int) {
-        this.month = month
+    fun setListData(year: Int, month: Int, day: Int) {
         this.year = year
+        this.month = month
+        this.day = day
         notifyDataSetChanged()
     }
 
 
     interface EventClickShiftListener {
-        fun clickMorningShift(cartItemInKitchen: CartItemEntity)
-        fun clickAfternoonShift(cartItemInKitchen: CartItemEntity)
-        fun clickNightShift(cartItemInKitchen: CartItemEntity)
+        // day = position + 1
+        // Click trả ra shift_id luôn
+        fun clickMorningShift(shift_id: String)
+        fun clickAfternoonShift(shift_id: String)
+        fun clickNightShift(shift_id: String)
     }
 }
+
+/*
+1.  Day: Ngày bắt đầu của tuần
+2. Xử lý thế nào để được ngày nữa cơ
+ */

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.restaurantpos.base.BaseActivity
 import com.example.restaurantpos.databinding.ActivitySplashBinding
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
@@ -69,6 +70,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         viewModel.addCustomer(CustomerEntity(1, "Quang 1", "08034931491", "19950302"))
         viewModel.addCustomer(CustomerEntity(2, "Quang 2", "08034931492", "19950303"))
         viewModel.addCustomer(CustomerEntity(3, "Quang 3", "08034931493", "19950304"))
+
+        /** 6. Account_Shift  */
+
         }
 
     private fun startLoginActivity() {

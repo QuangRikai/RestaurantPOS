@@ -14,6 +14,8 @@ data class ShiftEntity constructor(
     /*
     Kết hợp yyyy/MM/dd shift_name  --> Không thằng nào giống thằng nào
     Sau này filter cũng dễ
+
+    Chốt: shift_id dạng:    yyyy/MM/dd_shift_name
     */
     @PrimaryKey
     @ColumnInfo(name = "shift_id")
@@ -23,7 +25,13 @@ data class ShiftEntity constructor(
     val shift_time: String,
 
     @ColumnInfo(name = "shift_name")
-    val shift_name: String
+    val shift_name: Int
+    /*
+    1. Morning
+    2. Afternoon
+    3. Night
+    Đã thế này thì cần mẹ gì đến shift_time. shift_time  TRÙNG shift_name???
+     */
 
 ):Parcelable {
     companion object {

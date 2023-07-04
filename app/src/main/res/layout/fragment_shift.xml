@@ -36,14 +36,6 @@
             android:textColor="@color/text_blue"
             android:textSize="@dimen/_15sdp" />
 
-        <ImageView
-            android:id="@+id/txtCheckout"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_8sdp"
-            android:src="@drawable/img_checkout"
-            app:tint="@color/text_blue" />
-
 
         <ImageView
             android:id="@+id/txtAddOrderItem"
@@ -80,7 +72,8 @@
              android:layout_height="match_parent"
              android:layout_weight="1"
              android:text="2023/07"
-             android:textSize="@dimen/_20sdp"
+             android:textColor="@color/text_blue"
+             android:textSize="@dimen/_16sdp"
              android:gravity="center"/>
 
         <ImageView
@@ -94,12 +87,13 @@
     </LinearLayout>
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
+        android:layout_height="2dp"
         android:background="@color/black"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp">
+        android:layout_height="@dimen/_40sdp"
+        android:background="@color/bg_orange">
 
         <View
             android:layout_width="@dimen/_1sdp"

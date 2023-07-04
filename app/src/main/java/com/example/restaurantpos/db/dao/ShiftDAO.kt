@@ -18,11 +18,10 @@ interface ShiftDAO {
     fun addShift(shift: ShiftEntity): Long
 
     @Query("SELECT * from shift WHERE shift_id = :shift_id")
-    fun getTShiftById(shift_id: String): LiveData<ShiftEntity>
+    fun getShiftById(shift_id: String): LiveData<ShiftEntity>
 
     @Query("SELECT * from shift")
     fun getListShift(): LiveData<MutableList<ShiftEntity>>
-
 
     /** AccountShiftEntity */
 
@@ -30,12 +29,20 @@ interface ShiftDAO {
     fun addAccountShift(accountShift: AccountShiftEntity): Long
 
     @Delete
-    fun deleteAccountShift(accountShift: AccountShiftEntity): Long
+    fun deleteAccountShift(accountShift: AccountShiftEntity): Int
 
-    // Mình đang lọc theo tháng của năm nào đấy
-    // Bản thân id này có thể là năm-tháng-ngày-ca
-    // Lựa lựa ra rồi dùng thôi
-    @Query("SELECT * from account_shift WHERE shift_id = :shift_id")
-    fun getListAccountShift(shift_id: String): LiveData<MutableList<AccountShiftEntity>>
+    // shift_id dạng:    yyyy/MM/dd_shift_name
+    // Lấy ra toàn bộ account hoạt động trong Shift --> Đưa vào ID của Shift
+    @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id")
+    fun getListAccountShift(shift_id: String): LiveData<MutableList<String>>
+
+    // Filter riêng dành cho Staff
+    // Dùng cho ShiftOfStaffFragment --> Lại cần argument truyền sang để đánh dấu nó là nó từ thằng nào sang
+    // Lúc này có thể tái sử dụng 1 màn thôi
+    @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id AND role = 1")
+    fun getListAccountShiftReceptionist(shift_id: String): LiveData<MutableList<String>>
+
+    @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id AND role = 2")
+    fun getListAccountShiftKitchen(shift_id: String): LiveData<MutableList<String>>
 
 }

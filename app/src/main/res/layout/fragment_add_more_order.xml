@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.receptionist.order.AddMoreOrderFragment">
+    tools:context=".ui.staff.receptionist.order.AddMoreOrderFragment">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat

@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.receptionist.checkout
+package com.example.restaurantpos.ui.staff.receptionist.checkout
 //
 //import android.annotation.SuppressLint
 //import android.content.Context
