@@ -33,6 +33,9 @@ interface ShiftDAO {
 
     // shift_id dạng:    yyyy/MM/dd_shift_name
     // Lấy ra toàn bộ account hoạt động trong Shift --> Đưa vào ID của Shift
+
+    @Query("SELECT * from account_shift WHERE shift_id = :shift_id")
+    fun getListAccountShiftForSetListData(shift_id: String): LiveData<MutableList<AccountShiftEntity>>
     @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id")
     fun getListAccountShift(shift_id: String): LiveData<MutableList<String>>
 

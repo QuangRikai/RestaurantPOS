@@ -55,7 +55,7 @@ class OldOrderFragment : Fragment() {
         }
 
         /** Code for Add Img (Additional Order) */
-        binding.txtAddOrderItem.setOnClickListener {
+        binding.txtAddMoreOrder.setOnClickListener {
             findNavController().navigate(R.id.action_orderedTableFragment_to_addMoreOrderFragment2,
                 bundleOf("tableObject" to tableObject?.toJson(), "orderObject" to orderObject?.toJson())
             )

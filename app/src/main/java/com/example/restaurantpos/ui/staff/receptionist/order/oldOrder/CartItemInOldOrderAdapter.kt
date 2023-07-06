@@ -27,6 +27,7 @@ class CartItemInOldOrderAdapter(
             itemView.findViewById<LinearLayout>(R.id.viewRootCartItemInOldOrder)
         var txtNo = itemView.findViewById<TextView>(R.id.txtNo)
         var txtItemName = itemView.findViewById<TextView>(R.id.txtItemName)
+        var txtOrderQuantity = itemView.findViewById<TextView>(R.id.txtOrderQuantity)
         var txtNote = itemView.findViewById<TextView>(R.id.txtNote)
         var txtCartItemStatus = itemView.findViewById<TextView>(R.id.txtCartItemStatus)
     }
@@ -49,6 +50,7 @@ class CartItemInOldOrderAdapter(
         val cartItem = listData[position]
         /** Đổ data lên View */
         holder.txtNo.text = "${position + 1}"
+        holder.txtOrderQuantity.text = cartItem.order_quantity.toString()
         holder.txtNote.text = cartItem.note
 
         holder.txtCartItemStatus.setOnClickListener {
@@ -74,7 +76,7 @@ class CartItemInOldOrderAdapter(
         }
 
         when (status) {
-            0 -> txtCartItemStatus.text = "Wait"
+            0 -> txtCartItemStatus.text = "Waiting"
             1 -> txtCartItemStatus.text = "In Process"
             2 -> txtCartItemStatus.text = "Done"
             3 -> txtCartItemStatus.text = "Served"

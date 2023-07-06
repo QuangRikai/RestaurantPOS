@@ -18,9 +18,14 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    fun getStaffByName(staffName: String) =DatabaseUtil.getStaffByName(staffName)
+
+
     fun addUser(context: Context, user: AccountEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             PosRoomDatabase.getInstance(context).accountDAO().addAccount(user)
         }
     }
+
+
 }

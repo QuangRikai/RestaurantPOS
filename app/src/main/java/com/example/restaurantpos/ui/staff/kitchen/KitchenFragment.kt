@@ -15,8 +15,10 @@ import com.example.restaurantpos.databinding.FragmentKitchenBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.ui.login.LoginActivity
 import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
+import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
+import com.example.restaurantpos.util.showToast
 
 // Nhận định: Thằng này sử dụng lại ViewModel của CartViewModel
 class KitchenFragment : Fragment() {
@@ -108,13 +110,17 @@ class KitchenFragment : Fragment() {
                         // Hỏi là có quay lại trạng thái không
                         // Có thì quay lại như lựa chọn, không thì thôi
                         // Code 1 cái dialog chung rồi làm gì cũng showDialog ra hỏi.
-                        val cartItem = cartItemInKitchen
-                        cartItem.cart_item_status--
-                        viewModelCart.addCartItem(cartItem)
+//                        val cartItem = cartItemInKitchen
+//                        cartItem.cart_item_status--
+//                        viewModelCart.addCartItem(cartItem)
+                        DatabaseUtil.getItemOfCategory(cartItemInKitchen.item_id).observe(viewLifecycleOwner){
+                            context?.showToast("Done ${it[0].item_name}. Send to Receptionist")
+                        }
+                        cartItemInKitchen.cart_item_status++
+                        viewModelCart.addCartItem(cartItemInKitchen)
                     } else {
-                        val cartItem = cartItemInKitchen
-                        cartItem.cart_item_status++
-                        viewModelCart.addCartItem(cartItem)
+                        cartItemInKitchen.cart_item_status++
+                        viewModelCart.addCartItem(cartItemInKitchen)
                     }
                 }
             })

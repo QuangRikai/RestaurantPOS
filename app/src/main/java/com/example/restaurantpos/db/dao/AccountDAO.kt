@@ -35,6 +35,9 @@ interface AccountDAO {
     @Query("SELECT * from account WHERE role != 0 AND account_status = 1")
     fun getAllUserActive(): LiveData<MutableList<AccountEntity>>
 
+    @Query("SELECT * from account WHERE account_name LIKE :staffName")
+    fun getStaffByName(staffName: String): LiveData<MutableList<AccountEntity>>
+
 
 
 }

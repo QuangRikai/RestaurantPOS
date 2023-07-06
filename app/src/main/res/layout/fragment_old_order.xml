@@ -21,10 +21,9 @@
             android:id="@+id/imgBack"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
             android:src="@drawable/img_back"
             android:gravity="center_vertical"
-
             app:tint="@color/white" />
 
         <TextView
@@ -33,6 +32,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/inter_500"
+            android:layout_marginStart="@dimen/_32sdp"
             android:gravity="center"
             android:text="Table's name"
             android:textColor="@color/white"
@@ -48,7 +48,7 @@
 
 
         <ImageView
-            android:id="@+id/txtAddOrderItem"
+            android:id="@+id/txtAddMoreOrder"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
             android:padding="@dimen/_8sdp"

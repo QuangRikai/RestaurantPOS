@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.restaurantpos.base.BaseActivity
 import com.example.restaurantpos.databinding.ActivitySplashBinding
 import com.example.restaurantpos.db.entity.AccountEntity
-import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
@@ -73,7 +72,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         /** 6. Account_Shift  */
 
-        }
+    }
 
     private fun startLoginActivity() {
         Handler(Looper.getMainLooper()).postDelayed({

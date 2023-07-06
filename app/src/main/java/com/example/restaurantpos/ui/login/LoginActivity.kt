@@ -47,8 +47,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         viewModel.checkLogin(this@LoginActivity, userName, password)
     }
 
-
-
     // End
     override fun getInflaterViewBinding(layoutInflater: LayoutInflater): ActivityLoginBinding {
         return ActivityLoginBinding.inflate(layoutInflater)

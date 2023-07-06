@@ -9,18 +9,15 @@ import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
-import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.DateFormatUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 // Thằng này xử lý đâu đầu vãi
 class ShiftAdapter(
     var context: Context,
     private val lifecycleOwner: LifecycleOwner,
+    private var listData: MutableList<String>,
     private var year: Int,
     private var month: Int,
     private var day: Int,
@@ -65,19 +62,31 @@ class ShiftAdapter(
     // Position ở đây sẽ ứng dụng position của List trong Database
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val day_i = DataUtil.plusDayReturnDay(year, month, day, position)
-        val month_i = DataUtil.plusDayReturnMonth(year, month, day, position)
-        val year_i = DataUtil.plusDayReturnYear(year, month, day, position)
-
-        val morningShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 1)
-        val afternoonShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 2)
-        val nightShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 3)
+//        val accountShift = listData[position]
+        /*        private var year = 2023
+                private var month = 7
+                private var day = 4*/
         /** Đổ data lên View */
         // Mình sẽ truyền vào ngày đầu tiên của tuần
         // Xíu nữa sẽ xử lý vấn đề tuần bắt đầu từ ngày bao nhiêu
 //        holder.txtDay.text = "${day + position}"
+
+        val day_i = DataUtil.plusDayReturnDay(year, month, day, position)
+        val month_i = DataUtil.plusDayReturnMonth(year, month, day, position)
+        val year_i = DataUtil.plusDayReturnYear(year, month, day, position)
+
         holder.txtDay.text = "$month_i/$day_i"
 
+        val morningShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 1)
+        val afternoonShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 2)
+        val nightShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 3)
+
+        // Show Account Shift on Shift
+        showMorningShift(holder.txtMorningShift, morningShiftID)
+        showAfternoonShift(holder.txtAfternoonShift, afternoonShiftID)
+        showNightShift(holder.txtNightShift, nightShiftID)
+
+        /** Xử lý sự kiện khi click vào Shift */
         holder.txtMorningShift.setOnClickListener {
             listenerClickShift.clickMorningShift(morningShiftID)
         }
@@ -90,45 +99,46 @@ class ShiftAdapter(
             listenerClickShift.clickNightShift(nightShiftID)
         }
 
-        // Get getListAccountShift
-        showMorningShift(holder.txtMorningShift, morningShiftID)
-        showAfternoonShift(holder.txtAfternoonShift, afternoonShiftID)
-        showNightShift(holder.txtNightShift, nightShiftID)
 
     }
 
     /**-----------------------------------------------------------------------------------------*/
+    private fun showMorningShift(txtMorningShift: TextView, shiftID: String) {
+        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) { listAccountName ->
+            val listAccountNameShow = setListData(listAccountName)
+            txtMorningShift.text = listAccountNameShow.toString()
+            showInfo(txtMorningShift, listAccountNameShow as ArrayList<String>)
+        }
+    }
+
+    private fun showAfternoonShift(txtAfternoonShift: TextView, shiftID: String) {
+        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) { listAccountName ->
+            val listAccountNameShow = setListData(listAccountName)
+            txtAfternoonShift.text = listAccountNameShow.toString()
+            showInfo(txtAfternoonShift, listAccountNameShow as ArrayList<String>)
+        }
+    }
+
+    private fun showNightShift(txtNightShift: TextView, shiftID: String) {
+        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) { listAccountName ->
+            val listAccountNameShow = setListData(listAccountName)
+            txtNightShift.text = listAccountNameShow.toString()
+            showInfo(txtNightShift, listAccountNameShow as ArrayList<String>)
+        }
+    }
+
+    // ShowInfo --> Show ở đâu (txtViewOfShift), show cái gì (listAccountName)
     private fun showInfo(txtViewOfShift: TextView, listAccountName: ArrayList<String>) {
         var showOnShift = "・ "
-        listAccountName.forEach{ accountName ->
+        listAccountName.forEach { accountName ->
             showOnShift += "$accountName\n ・ "
         }
         txtViewOfShift.text = showOnShift
     }
 
-    private fun showMorningShift(txtMorningShift: TextView, shiftID: String) {
-        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) { listAccountName ->
-            txtMorningShift.text = listAccountName.toString()
-            showInfo(txtMorningShift, listAccountName as ArrayList<String>)
-        }
-    }
-
-    private fun showAfternoonShift(txtAfternoonShift: TextView, shiftID: String) {
-        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) {listAccountName ->
-            txtAfternoonShift.text = listAccountName.toString()
-            showInfo(txtAfternoonShift, listAccountName as ArrayList<String>)
-        }
-    }
-
-    private fun showNightShift(txtNightShift: TextView, shiftID: String) {
-        DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) {listAccountName ->
-            txtNightShift.text = listAccountName.toString()
-            showInfo(txtNightShift, listAccountName as ArrayList<String>)
-        }
-    }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setListData(year: Int, month: Int, day: Int) {
+    fun setDate(year: Int, month: Int, day: Int) {
         this.year = year
         this.month = month
         this.day = day
@@ -136,9 +146,18 @@ class ShiftAdapter(
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun setListData(newListData: MutableList<String>): MutableList<String> {
+        listData.clear()
+        listData.addAll(newListData)
+        notifyDataSetChanged()
+        return listData
+    }
+
+
     interface EventClickShiftListener {
         // day = position + 1
-        // Click trả ra shift_id luôn
+        // Click là addAccountShift luôn
         fun clickMorningShift(shift_id: String)
         fun clickAfternoonShift(shift_id: String)
         fun clickNightShift(shift_id: String)

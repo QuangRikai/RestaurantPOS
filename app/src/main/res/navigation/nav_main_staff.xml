@@ -30,6 +30,13 @@
             android:name="data"
             android:defaultValue=""
             app:argType="string" />
+
+
+        <argument
+            android:name="orderNavigation"
+            android:defaultValue="1"
+            app:argType="integer" />
+
     </fragment>
     <fragment
         android:id="@+id/orderedTableFragment"

@@ -27,7 +27,7 @@ data class CartItemEntity constructor(
     var order_quantity: Int,
 
     @ColumnInfo(name = "note")
-    val note: String,
+    var note: String,
 
     @ColumnInfo(name = "cart_item_status")
     var cart_item_status: Int

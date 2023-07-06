@@ -105,13 +105,13 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:gravity="center"
-            android:drawableLeft="@drawable/img_note"
             android:paddingHorizontal="@dimen/_8sdp"
             android:layout_marginVertical="@dimen/_2sdp"
             android:background="@drawable/bg_txt_login"
             android:src="@drawable/ic_launcher_background"
             android:text="Note"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            app:drawableLeftCompat="@drawable/img_note"/>
 
         <Button
             android:id="@+id/btnDelete"

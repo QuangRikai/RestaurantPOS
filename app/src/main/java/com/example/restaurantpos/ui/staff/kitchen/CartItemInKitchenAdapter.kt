@@ -29,6 +29,7 @@ class CartItemInKitchenAdapter(
         var txtTime = itemView.findViewById<TextView>(R.id.txtTime)
         var txtTableName = itemView.findViewById<TextView>(R.id.txtTableName)
         var txtItemName = itemView.findViewById<TextView>(R.id.txtItemName)
+        var txtOrderQuantity = itemView.findViewById<TextView>(R.id.txtOrderQuantity)
         var txtNote = itemView.findViewById<TextView>(R.id.txtNote)
         var txtCartItemStatus = itemView.findViewById<TextView>(R.id.txtCartItemStatus)
     }
@@ -51,6 +52,7 @@ class CartItemInKitchenAdapter(
         val cartItem = listData[position]
         /** Đổ data lên View */
         holder.txtNo.text = "${position + 1}"
+        holder.txtOrderQuantity.text = cartItem.order_quantity.toString()
         holder.txtNote.text = cartItem.note
 
         holder.txtCartItemStatus.setOnClickListener {
@@ -95,7 +97,7 @@ class CartItemInKitchenAdapter(
              else -> txtCartItemStatus.text = "In Process"*/
 
             // Xong là xong của Bếp
-            0 -> txtCartItemStatus.text = "Wait"
+            0 -> txtCartItemStatus.text = "Waiting"
             1 -> txtCartItemStatus.text = "In Process"
             2 -> txtCartItemStatus.text = "Done"
         }

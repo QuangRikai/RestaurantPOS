@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -30,6 +31,9 @@ import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NewOrderFragment : Fragment() {
 
@@ -74,6 +78,8 @@ class NewOrderFragment : Fragment() {
         if (tableObject == null) {
             findNavController().popBackStack()
         }
+
+
 
         /** Tạo Đối Tượng ViewModel */
         // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
@@ -172,9 +178,6 @@ class NewOrderFragment : Fragment() {
             chooseCategory,
             viewLifecycleOwner,
             /** Phần này chưa rõ!*/
-            /** Phần này chưa rõ!*/
-            /** Phần này chưa rõ!*/
-            /** Phần này chưa rõ!*/
             object : CategoryInBottomOfOrderFragmentAdapter.EventClickCategoryInOrderListener {
                 override fun clickCategoryInOrder(chooseCategory: Int) {
                     NewOrderFragment().chooseCategory = chooseCategory
@@ -249,7 +252,8 @@ class NewOrderFragment : Fragment() {
                 override fun clickNote(orderedItem: CartItemEntity, pos: Int) {
                     // Xử lý Dialog
                     context?.showToast("Xử lý Dialog")
-
+                    showDialogNote(orderedItem, pos)
+                    adapterCartItem.setListData(listCartItem)
                 }
 
                 override fun clickDelete(orderedItem: CartItemEntity, pos: Int) {
@@ -260,6 +264,36 @@ class NewOrderFragment : Fragment() {
         )
         // 2. Dùng adapter vừa tạo cho View cần dùng
         binding.rycCartItemList.adapter = adapterCartItem
+    }
+    /** ----------------------------------------------------------*/
+    /** Note Dialog */
+    private fun showDialogNote(orderedItem: CartItemEntity, pos: Int) {
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_add_note, null)
+        build.setView(view)
+        // ------------------------------------------------------------------------
+        val edtNote = view.findViewById<EditText>(R.id.edtNote)
+
+        val btnAdd = view.findViewById<Button>(R.id.btnAdd)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+        val imgClose = view.findViewById<ImageView>(R.id.imgClose)
+        // ------------------------------------------------------------------------
+        // 4.  Add Button: Thêm note và hiện note lên cartItem đã note
+        btnAdd.setOnClickListener {
+            listCartItem[pos].note = edtNote.text.toString()
+            adapterCartItem.setListData(listCartItem)
+            dialog.dismiss()
+        }
+
+
+        // Other:  Dau X  &   Cancel Button
+        imgClose.setOnClickListener { dialog.dismiss() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        // End: Tao Dialog (Khi khai bao chua thuc hien) and Show len display
+        dialog = build.create()
+        dialog.show()
+
     }
 
 
@@ -301,7 +335,7 @@ class NewOrderFragment : Fragment() {
             override fun clickCustomerInner(itemCustomer: CustomerEntity) {
                 // Có sẵn thì pick-up ra thôi
                 customerObject = itemCustomer
-                /**???*/
+
                 /**???*/
 //                orderObject?.customer_id = itemCustomer.customer_id
                 // Tìm cách đưa Customer's Name lên NewOrderFragment
@@ -358,7 +392,7 @@ class NewOrderFragment : Fragment() {
         dialog = build.create()
         dialog.show()
     }
-
+    /** ----------------------------------------------------------*/
     // Set listData get được từ DB cho listData mà Adapter sử dụng, để đổ ra View.
     // Adapter:  CategoryInBottomOfOrderFragmentAdapter
     private fun getListCategory(chooseCategory: Int) {

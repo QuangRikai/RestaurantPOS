@@ -57,6 +57,7 @@ object DatabaseUtil {
     fun addListAccount(listAccount: List<AccountEntity>) = accountDAO.addListAccount(listAccount)
     fun getAccountById(account_id: Int) = accountDAO.getAccountById(account_id)
     fun getAllUser() = accountDAO.getAllUser()
+    fun getStaffByName(staffName: String) = accountDAO.getStaffByName("%${staffName}%")
 
     /** 2. CATEGORY && ITEM MANAGEMENT  */
 
@@ -82,6 +83,7 @@ object DatabaseUtil {
     fun addListCartItem(data: List<CartItemEntity>) = cartItemDAO.addListCartItem(data)
     fun deleteCart(data: CartItemEntity) = cartItemDAO.deleteCartItem(data)
     fun getListCartItemByOrderId(order_id: String) = cartItemDAO.getListCartItemByOrderId(order_id)
+    fun getListCartItemByTableId(table_id: Int) = cartItemDAO.getListCartItemByTableId(table_id)
 
     // 2 hàm dưới làm gì?
     fun getListCartItemOfKitchen() = cartItemDAO.getListCartItemOfKitchen()
@@ -109,7 +111,7 @@ object DatabaseUtil {
 
     // Phục vụ cho việc tìm kiếm Khách
     fun getListCustomerByPhoneForSearch(phone: String) =
-        customerDAO.getListCustomerByPhoneForSearch(phone)
+        customerDAO.getListCustomerByPhoneForSearch("${phone}%")
 
     fun getListCustomerByPhoneForAdd(phone: String) =
         customerDAO.getListCustomerByPhoneForAdd(phone)
@@ -130,5 +132,9 @@ object DatabaseUtil {
     fun getListAccountShift(shift_id: String) = shiftDAO.getListAccountShift(shift_id)
     fun getListAccountShiftReceptionist(shift_id: String) = shiftDAO.getListAccountShiftReceptionist(shift_id)
     fun getListAccountShiftKitchen(shift_id: String) = shiftDAO.getListAccountShiftKitchen(shift_id)
+
+
+
+    fun getListAccountShiftForSetListData(shift_id: String) = shiftDAO.getListAccountShiftForSetListData(shift_id)
 
 }

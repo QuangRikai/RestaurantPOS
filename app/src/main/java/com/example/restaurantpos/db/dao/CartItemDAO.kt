@@ -49,5 +49,8 @@ interface CartItemDAO {
     )
     fun getListCartItemOfKitchenBySortTime(sortByTimeOfOrder: Int): LiveData<MutableList<CartItemEntity>>
 
+    @Query("SELECT * FROM `order`  JOIN cart_item  ON (`order`.order_id = cart_item .order_id) JOIN `table`  ON (`order`.table_id = `table`.table_id) WHERE `table`.table_id = :tableId")
+    fun getListCartItemByTableId(tableId: Int): LiveData<MutableList<CartItemEntity>>
+
 
 }

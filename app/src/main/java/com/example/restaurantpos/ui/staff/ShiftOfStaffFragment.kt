@@ -37,7 +37,7 @@ class ShiftOfStaffFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-        /** ??? Vì sao chỗ này lại so sánh được với 1 */
+        /** Xử lý Shift_ID */
         val calendar = Calendar.getInstance()
 
         val nowYear = calendar.get(Calendar.YEAR)
@@ -62,7 +62,7 @@ class ShiftOfStaffFragment : Fragment() {
            */
         if (requireArguments().getInt("shiftOfStaff", 1) == 1) {
             val shiftID = DateFormatUtil.getShiftId(nowYear, nowMonth, nowDay, shiftName)
-            viewModelShift.getListAccountShift(shiftID).observe(viewLifecycleOwner) {
+            viewModelShift.getListAccountShiftReceptionist(shiftID).observe(viewLifecycleOwner) {
                 binding.txtTitle.text = it.toString()
             }
         }

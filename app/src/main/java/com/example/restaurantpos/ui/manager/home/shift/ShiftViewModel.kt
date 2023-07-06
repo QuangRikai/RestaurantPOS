@@ -38,4 +38,7 @@ class ShiftViewModel : ViewModel() {
     fun getListAccountShiftKitchen(shift_id: String) = DatabaseUtil.getListAccountShiftKitchen(shift_id)
 
 
+    fun getListAccountShiftForSetListData(shift_id: String) = DatabaseUtil.getListAccountShiftForSetListData(shift_id)
+
+
 }

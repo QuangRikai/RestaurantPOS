@@ -26,7 +26,7 @@ interface CustomerDAO {
     fun getListCustomer() : LiveData<MutableList<CustomerEntity>>
 
     // Phục vụ cho việc tìm kiếm Khách
-    @Query("SELECT * FROM customer WHERE phone LIKE '%' || :phone || '%' ")
+    @Query("SELECT * FROM customer WHERE phone LIKE :phone")
     fun getListCustomerByPhoneForSearch(phone : String) : LiveData<MutableList<CustomerEntity>>
     @Query("SELECT * FROM customer WHERE phone = :phone ")
     fun getListCustomerByPhoneForAdd(phone : String) : LiveData<MutableList<CustomerEntity>>
