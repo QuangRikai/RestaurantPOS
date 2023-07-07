@@ -19,7 +19,7 @@
         android:theme="@style/Theme.RestaurantPOS"
         tools:targetApi="31">
         <activity
-            android:name=".ui.main.UpdateAccountInfoActivity"
+            android:name=".ui.manager.user.UpdateAccountInfoActivity"
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"

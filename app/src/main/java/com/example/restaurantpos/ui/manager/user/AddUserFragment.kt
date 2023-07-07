@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -14,8 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentAddUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.util.show
-import com.example.restaurantpos.util.showToast
-import java.util.Optional
 
 class AddUserFragment : Fragment() {
 
@@ -63,9 +59,9 @@ class AddUserFragment : Fragment() {
         }
         /** ADD Button*/
         binding.txtAdd.setOnClickListener {
-            if (binding.edtAddUserName.text.isEmpty()|| binding.edtAddAccountName.text.isEmpty()){
+            if (binding.edtAddUserName.text.isEmpty() || binding.edtAddAccountName.text.isEmpty()) {
                 binding.txtError.show()
-            }else{
+            } else {
                 viewModel.addUser(
                     requireActivity(), AccountEntity(
                         0,

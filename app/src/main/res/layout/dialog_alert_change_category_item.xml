@@ -8,7 +8,7 @@
 
 
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imgCloseDialogAddItem"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
@@ -21,14 +21,14 @@
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/txtAddItem"
+        android:id="@+id/txtUpdateItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/bg_customdialog_button"
         android:fontFamily="@font/inter_600"
         android:paddingHorizontal="@dimen/_12sdp"
-        android:text="ADD ITEM"
+        android:text="Update ITEM"
         android:textColor="@color/white"
         android:textSize="21sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,29 +36,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:id="@+id/txtInform"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Infomation below must not be empty!"
-        android:textColor="@color/text_red"
-        android:gravity="center"
-        android:visibility="invisible"
-        android:fontFamily="@font/inter_400"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAddItem" />
-
-
     <LinearLayout
         android:id="@+id/llItemName"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:layout_marginTop="@dimen/_22sdp"
+        android:layout_marginTop="@dimen/_12sdp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAddItem">
+        app:layout_constraintTop_toBottomOf="@+id/txtUpdateItem">
 
 
         <ImageView
@@ -157,6 +143,7 @@
             android:textSize="@dimen/_15sdp" />
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/llItemImage"
         android:layout_width="match_parent"
@@ -203,7 +190,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
@@ -211,17 +197,16 @@
         android:layout_marginBottom="@dimen/_20sdp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llItemImage"
-        tools:layout_editor_absoluteX="26dp">
+        app:layout_constraintTop_toBottomOf="@+id/llItemImage">
 
         <Button
-            android:id="@+id/btnAddItem"
+            android:id="@+id/btnUpdateItem"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"
             android:layout_weight="1"
             android:backgroundTint="@color/bg_light_blue"
             android:fontFamily="@font/inter_600"
-            android:text="ADD"
+            android:text="UPDATE"
             android:textColor="@color/white" />
 
         <Button

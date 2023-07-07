@@ -92,7 +92,6 @@ class CartItemAdapter(
             itemName.text = item[0].item_name
             itemImg.setImageBitmap(BitmapFactory.decodeFile(item[0].image))
         }
-
     }
 
 

@@ -2,6 +2,7 @@ package com.example.restaurantpos.ui.manager.category
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -19,8 +21,10 @@ import com.example.restaurantpos.databinding.FragmentManagerCategoryComponentBin
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.util.RealPathUtil
+import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import java.io.IOException
+import kotlin.math.round
 
 /**
  * Truyền vào position: Int để chuyển tab
@@ -35,6 +39,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
     lateinit var dialog: AlertDialog
     private var itemImagePath = ""
 
+    private var selectedImagePath: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,8 +60,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Chuc nang Add Category Item
-//        val imgAddItem = binding.imgAddCategoryItem
+        /** Chuc nang Add Category ClipData.Item */
         binding.imgAddCategoryItem.setOnClickListener {
             showAddCategoryItemDialog()
         }
@@ -68,25 +72,29 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
     private fun showAddCategoryItemDialog() {
         itemImagePath = ""
-        // 1.  Build Dialog
         val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
-        // 2.  Designed XML --> View
         val view = layoutInflater.inflate(R.layout.dialog_alert_add_category_item, null)
-        // 3.  Set VIEW tra ve above --> Dialog
         build.setView(view)
 
-        // 4.  Code cho dau X
-        view.findViewById<ImageView>(R.id.imgCloseDialogAddItem).setOnClickListener {
-            dialog.dismiss()
-        }
+        // 1.  Get Component of Dialog
+        val txtInform = view.findViewById<TextView>(R.id.txtInform)
+        val edtItemName = view.findViewById<EditText>(R.id.edtItemName)
+        val edtItemPrice = view.findViewById<EditText>(R.id.edtItemPrice)
+        val edtItemInventoryQuantity = view.findViewById<EditText>(R.id.edtItemInventoryQuantity)
 
-        // 5.  Code cho Cancel Button
-        view.findViewById<Button>(R.id.btnCancel).setOnClickListener {
-            dialog.dismiss()
-        }
+        val imgShow = view.findViewById<ImageView>(R.id.imgShow)
+        val btnChoseImage = view.findViewById<Button>(R.id.btnChoseImage)
+        val btnAddItem = view.findViewById<Button>(R.id.btnAddItem)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
 
-        // 6.  Code cho ADD Button
-        view.findViewById<Button>(R.id.btnChoseImage).setOnClickListener {
+        val imgClose = view.findViewById<ImageView>(R.id.imgCloseDialogAddItem)
+
+        // 2.  Code cho dau X & Cancel Button
+        imgClose.setOnClickListener { dialog.dismiss() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        // 3.  Code for ChooseImage
+        btnChoseImage.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
@@ -94,21 +102,23 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         }
 
 
-        // 7.  Code cho AddItem Button
-        view.findViewById<Button>(R.id.btnAddItem).setOnClickListener {
-            viewModel.addCategoryItem(
-                ItemEntity(
-                    0,
-                    dialog.findViewById<EditText>(R.id.edtItemName)?.text.toString(),
-                    dialog.findViewById<EditText>(R.id.edtItemPrice)?.text.toString().toFloat(),
-//                    DataUtil.getStringFromList(listItemImage),
-                    itemImagePath,
-                    dialog.findViewById<EditText>(R.id.edtItemInventoryQuantity)?.text.toString()
-                        .toInt(),
-                    category.category_id
+        // 4.  Code cho AddItem Button
+        btnAddItem.setOnClickListener {
+            if (edtItemName.text.toString() != "" && edtItemPrice.text.toString() != "" && edtItemInventoryQuantity.text.toString() != "") {
+                viewModel.addCategoryItem(
+                    ItemEntity(
+                        0,
+                        edtItemName?.text.toString(),
+                        edtItemPrice?.text.toString().toFloat(),
+                        itemImagePath,
+                        edtItemInventoryQuantity?.text.toString().toInt(),
+                        category.category_id
+                    )
                 )
-            )
-            dialog.dismiss()
+                dialog.dismiss()
+            } else {
+                txtInform.show()
+            }
         }
 
         // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display
@@ -117,7 +127,114 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
     }
 
 
-    /** Hàm này chưa hiểu rõ */
+    override fun longClickCategoryItem(itemCategory: ItemEntity) {
+        showChangeItemDialog(itemCategory)
+    }
+
+    @SuppressLint("SetTextI18n", "MissingInflatedId")
+    private fun showChangeItemDialog(itemOfCategory: ItemEntity) {
+        selectedImagePath = ""
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_change_category_item, null)
+        build.setView(view)
+
+        // 1.  Get Component of Dialog
+        val edtItemName = view.findViewById<EditText>(R.id.edtItemName)
+        val edtItemPrice = view.findViewById<EditText>(R.id.edtItemPrice)
+        val edtItemInventoryQuantity = view.findViewById<EditText>(R.id.edtItemInventoryQuantity)
+
+        val imgShow = view.findViewById<ImageView>(R.id.imgShow)
+        val btnChoseImage = view.findViewById<Button>(R.id.btnChoseImage)
+        val btnUpdateItem = view.findViewById<Button>(R.id.btnUpdateItem)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+
+        val imgClose = view.findViewById<ImageView>(R.id.imgCloseDialogAddItem)
+
+        val txtUpdateItem = view.findViewById<TextView>(R.id.txtUpdateItem)
+
+        // 2.  Code cho dau X & Cancel Button
+        imgClose.setOnClickListener { dialog.dismiss() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        txtUpdateItem.text = "Update " + itemOfCategory.item_name
+
+        edtItemName.hint = itemOfCategory.item_name
+        edtItemPrice.hint = round(itemOfCategory.price).toString()
+        edtItemInventoryQuantity.hint = itemOfCategory.inventory_quantity.toString()
+        imgShow.setImageBitmap(BitmapFactory.decodeFile(itemOfCategory.image))
+
+        // 3.  Code for ChooseImage
+        btnChoseImage.setOnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Photo Quang 1"), 102)
+        }
+        // 4.  Code cho AddItem Button
+        btnUpdateItem.setOnClickListener {
+            if (edtItemName.text.toString() != "") {
+                itemOfCategory.item_name = edtItemName.text.toString()
+            }
+            if (edtItemPrice.text.toString() != "") {
+                itemOfCategory.price = edtItemPrice.text.toString().toFloat()
+            }
+            if (edtItemInventoryQuantity.text.toString() != "") {
+                itemOfCategory.inventory_quantity = edtItemInventoryQuantity.text.toString().toInt()
+            }
+            if (selectedImagePath != "") {
+                itemOfCategory.image = selectedImagePath as String
+            }
+            viewModel.addCategoryItem(itemOfCategory)
+            dialog.dismiss()
+        }
+
+        // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display
+        dialog = build.create()
+        dialog.show()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, dataIntent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, dataIntent)
+        /** Choose Image when Adding */
+        if (requestCode == 101 && resultCode == AppCompatActivity.RESULT_OK) {
+            if ((dataIntent != null) && (dataIntent.data != null)) {
+                try {
+                    dialog.findViewById<ImageView>(R.id.imgShow)?.setImageBitmap(
+                        MediaStore.Images.Media.getBitmap(
+                            requireContext().contentResolver,
+                            dataIntent.data   // URI cung cấp cho bên dưới
+                        )
+                    )
+                    itemImagePath = RealPathUtil.getRealPath(requireContext(), dataIntent.data)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            } else {
+                requireContext().showToast("Error")
+            }
+        }
+
+        /** Choose Image when Updating */
+        if (requestCode == 102 && resultCode == AppCompatActivity.RESULT_OK) {
+            if ((dataIntent != null) && (dataIntent.data != null)) {
+                try {
+                    dialog.findViewById<ImageView>(R.id.imgShow)?.setImageBitmap(
+                        MediaStore.Images.Media.getBitmap(
+                            requireContext().contentResolver,
+                            dataIntent.data   // URI cung cấp cho bên dưới
+                        )
+                    )
+                    selectedImagePath = RealPathUtil.getRealPath(requireContext(), dataIntent.data)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            } else {
+                requireContext().showToast("Error")
+            }
+        }
+    }
+}
+/** Hàm này chưa hiểu rõ */
 
 //    Kết nối với   // 6.  Code cho ADD Button
 
@@ -151,32 +268,3 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 //    Mình chia if
 //        1. Là của mình (Xe của mình và thùng xe chứa data, thì mình mới xử lý tiếp) và nó có tha data về đã
 
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, dataIntent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, dataIntent)
-
-        if (requestCode == 101 && resultCode == AppCompatActivity.RESULT_OK) {
-            if ((dataIntent != null) && (dataIntent.data != null)) {
-                try {
-                    dialog.findViewById<ImageView>(R.id.imgShow)?.setImageBitmap(
-                        MediaStore.Images.Media.getBitmap(
-                            requireContext().contentResolver,
-                            dataIntent.data   // URI cung cấp cho bên dưới
-                        )
-                    )
-                    itemImagePath = RealPathUtil.getRealPath(requireContext(), dataIntent.data)
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            } else {
-                requireContext().showToast("Có Lỗi")
-            }
-
-        }
-    }
-
-    override fun longClickCategoryItem(itemCategory: ItemEntity) {
-        // Change Item
-    }
-}

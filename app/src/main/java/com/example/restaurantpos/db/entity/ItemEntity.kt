@@ -17,16 +17,16 @@ data class ItemEntity constructor(
     val item_id: Int,
 
     @ColumnInfo(name = "item_name")
-    val item_name: String,
+    var item_name: String,
 
     @ColumnInfo(name = "price")
-    val price: Float,
+    var price: Float,
 
     @ColumnInfo(name = "image")
-    val image: String,
+    var image: String,
 
     @ColumnInfo(name = "inventory_quantity")
-    val inventory_quantity: Int,
+    var inventory_quantity: Int,
 
     @ColumnInfo(name = "category_id")
     val category_id: Int

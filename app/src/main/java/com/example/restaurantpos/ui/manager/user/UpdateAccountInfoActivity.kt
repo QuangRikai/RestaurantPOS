@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.main
+package com.example.restaurantpos.ui.manager.user
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.restaurantpos.databinding.ActivityUpdateAccountInfoBinding
 import com.example.restaurantpos.db.entity.AccountEntity
-import com.example.restaurantpos.ui.manager.user.UserViewModel
+import com.example.restaurantpos.ui.main.MainManagerActivity
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 
@@ -36,7 +36,6 @@ class UpdateAccountInfoActivity : AppCompatActivity() {
         binding.txtCancel.setOnClickListener {
             backToManager()
         }
-
         binding.imgBack.setOnClickListener {
             backToManager()
         }
