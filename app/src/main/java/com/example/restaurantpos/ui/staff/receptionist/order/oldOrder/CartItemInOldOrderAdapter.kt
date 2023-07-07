@@ -54,16 +54,22 @@ class CartItemInOldOrderAdapter(
         holder.txtNote.text = cartItem.note
 
         holder.txtCartItemStatus.setOnClickListener {
-            if(cartItem.cart_item_status == 2){
+            if(cartItem.cart_item_status_id == 2){
                 listenerClickCartItemInOldOrder.clickCartItemServedStatus(cartItem)
             }
+        }
 
+        holder.viewRootCartItemInOldOrder.setOnLongClickListener {
+            if(cartItem.cart_item_status_id == 0){
+                listenerClickCartItemInOldOrder.deleteItemCanceledByCustomer(cartItem)
+            }
+            true
         }
 
         showInfo(
             holder.txtItemName,
             holder.txtCartItemStatus,
-            cartItem.cart_item_status,
+            cartItem.cart_item_status_id,
             cartItem.item_id
         )
     }
@@ -93,5 +99,7 @@ class CartItemInOldOrderAdapter(
 
     interface EventClickCartItemInOldOrderListener {
         fun clickCartItemServedStatus(cartItemInOldOrder: CartItemEntity)
+
+        fun deleteItemCanceledByCustomer(cartItemInOldOrder: CartItemEntity)
     }
 }

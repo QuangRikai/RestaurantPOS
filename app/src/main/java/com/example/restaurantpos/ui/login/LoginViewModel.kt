@@ -31,7 +31,7 @@ class LoginViewModel : ViewModel() {
                 }
             } else {
                 val acc = loginAccountList[0]
-                when (acc.role) {
+                when (acc.role_id) {
                     0 -> {
  /*                       SharedPreferencesUtils.setUserName(acc.user_name)
                         SharedPreferencesUtils.setPassword(acc.password)*/
@@ -43,13 +43,13 @@ class LoginViewModel : ViewModel() {
                     1 -> {
                         SharedPreferencesUtils.setAccountName(acc.account_name)
                         SharedPreferencesUtils.setAccountId(acc.account_id)
-                        context.openActivity(MainReceptionistActivity::class.java, bundleOf("NavigateByRole" to acc.role ))
+                        context.openActivity(MainReceptionistActivity::class.java, bundleOf("NavigateByRole" to acc.role_id ))
                     }
 
                     2 -> {
                         SharedPreferencesUtils.setAccountName(acc.account_name)
                         SharedPreferencesUtils.setAccountId(acc.account_id)
-                        context.openActivity(MainReceptionistActivity::class.java, bundleOf("NavigateByRole" to acc.role ))
+                        context.openActivity(MainReceptionistActivity::class.java, bundleOf("NavigateByRole" to acc.role_id ))
                     }
                 }
             }

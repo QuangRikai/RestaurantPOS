@@ -4,10 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentAddMoreOrderBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.ItemEntity
@@ -49,6 +54,9 @@ class AddMoreOrderFragment : Fragment() {
 
     // Để so sánh với category_id
     var chooseCategory: Int = 1
+
+    // Dialog cho add Item's Note
+    lateinit var dialog: AlertDialog
 
 
     override fun onCreateView(
@@ -144,7 +152,7 @@ class AddMoreOrderFragment : Fragment() {
             // Cập nhập trạng thái cho Table
             // Chú ý: 2 thằng không thể order cùng lúc cùng 1 cái bàn được
             /** ------------------------------????????-------------------------*/
-            tableObject?.table_status = 2
+            tableObject?.table_status_id = 2
             viewModelTable.addTable(requireContext(), tableObject!!)
 
             findNavController().popBackStack()
@@ -159,9 +167,7 @@ class AddMoreOrderFragment : Fragment() {
             ArrayList(),
             chooseCategory,
             viewLifecycleOwner,
-            /** Phần này chưa rõ!*/
-            /** Phần này chưa rõ!*/
-            /** Phần này chưa rõ!*/
+
             /** Phần này chưa rõ!*/
             object : CategoryInBottomOfOrderFragmentAdapter.EventClickCategoryInOrderListener {
                 override fun clickCategoryInOrder(chooseCategory: Int) {
@@ -235,8 +241,8 @@ class AddMoreOrderFragment : Fragment() {
                 }
 
                 override fun clickNote(orderedItem: CartItemEntity, pos: Int) {
-                    // Xử lý Dialog
-                    context?.showToast("Xử lý Dialog")
+                    showDialogNote(orderedItem, pos)
+                    adapterCartItem.setListData(listCartItem)
 
                 }
 
@@ -287,6 +293,36 @@ class AddMoreOrderFragment : Fragment() {
         }
         // Adapter: Bây giờ source of Data là filterList
         adapterOrderItem.setListData(filterList)
+    }
+
+    /** Note Dialog */
+    private fun showDialogNote(orderedItem: CartItemEntity, pos: Int) {
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_add_note, null)
+        build.setView(view)
+        // ------------------------------------------------------------------------
+        val edtNote = view.findViewById<EditText>(R.id.edtNote)
+
+        val btnAdd = view.findViewById<Button>(R.id.btnAdd)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+        val imgClose = view.findViewById<ImageView>(R.id.imgClose)
+        // ------------------------------------------------------------------------
+        // 4.  Add Button: Thêm note và hiện note lên cartItem đã note
+        btnAdd.setOnClickListener {
+            listCartItem[pos].note = edtNote.text.toString()
+            adapterCartItem.setListData(listCartItem)
+            dialog.dismiss()
+        }
+
+
+        // Other:  Dau X  &   Cancel Button
+        imgClose.setOnClickListener { dialog.dismiss() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        // End: Tao Dialog (Khi khai bao chua thuc hien) and Show len display
+        dialog = build.create()
+        dialog.show()
+
     }
 
 }

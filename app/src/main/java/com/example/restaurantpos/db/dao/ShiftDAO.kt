@@ -17,6 +17,9 @@ interface ShiftDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addShift(shift: ShiftEntity): Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addListShift(listShift: List<ShiftEntity>): List<Long>
+
     @Query("SELECT * from shift WHERE shift_id = :shift_id")
     fun getShiftById(shift_id: String): LiveData<ShiftEntity>
 
@@ -42,10 +45,10 @@ interface ShiftDAO {
     // Filter riêng dành cho Staff
     // Dùng cho ShiftOfStaffFragment --> Lại cần argument truyền sang để đánh dấu nó là nó từ thằng nào sang
     // Lúc này có thể tái sử dụng 1 màn thôi
-    @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id AND role = 1")
+    @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id AND role_id = 1")
     fun getListAccountShiftReceptionist(shift_id: String): LiveData<MutableList<String>>
 
-    @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id AND role = 2")
+    @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id AND role_id = 2")
     fun getListAccountShiftKitchen(shift_id: String): LiveData<MutableList<String>>
 
 }

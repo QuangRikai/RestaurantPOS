@@ -72,6 +72,11 @@ class KitchenFragment : Fragment() {
                         true
                     }
 
+                    R.id.menu_update_info -> {
+                        findNavController().navigate(R.id.action_kitchenFragment_to_updateStaffInfoFragment)
+                        true
+                    }
+
                     else -> true
                 }
             }
@@ -106,7 +111,7 @@ class KitchenFragment : Fragment() {
             ArrayList(),
             object : CartItemInKitchenAdapter.EventClickCartItemInKitchenListener {
                 override fun clickCartItemStatus(cartItemInKitchen: CartItemEntity) {
-                    if (cartItemInKitchen.cart_item_status == 2) {
+                    if (cartItemInKitchen.cart_item_status_id == 2) {
                         // Hỏi là có quay lại trạng thái không
                         // Có thì quay lại như lựa chọn, không thì thôi
                         // Code 1 cái dialog chung rồi làm gì cũng showDialog ra hỏi.
@@ -116,10 +121,10 @@ class KitchenFragment : Fragment() {
                         DatabaseUtil.getItemOfCategory(cartItemInKitchen.item_id).observe(viewLifecycleOwner){
                             context?.showToast("Done ${it[0].item_name}. Send to Receptionist")
                         }
-                        cartItemInKitchen.cart_item_status++
+                        cartItemInKitchen.cart_item_status_id++
                         viewModelCart.addCartItem(cartItemInKitchen)
                     } else {
-                        cartItemInKitchen.cart_item_status++
+                        cartItemInKitchen.cart_item_status_id++
                         viewModelCart.addCartItem(cartItemInKitchen)
                     }
                 }

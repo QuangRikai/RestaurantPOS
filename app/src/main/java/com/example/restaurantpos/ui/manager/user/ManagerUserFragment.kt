@@ -1,9 +1,10 @@
 package com.example.restaurantpos.ui.manager.user
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -45,29 +46,64 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun showEditDialog(itemUser: AccountEntity) {
         // 1.  Build Dialog
-        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
         // 2.  Designed XML --> View
-        val view = layoutInflater.inflate(R.layout.dialog_alert_edit_user, null)
         // 3.  Set VIEW tra ve above --> Dialog
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_edit_user, null)
         build.setView(view)
-        // 4.  Code cho dau X
-        view.findViewById<ImageView>(R.id.imgClose).setOnClickListener {
-            dialog.dismiss()
-        }
+        // 4.  Get Component of Dialog
+        val txtAccountName = view.findViewById<TextView>(R.id.txtAccountName)
+        val txtUserName = view.findViewById<TextView>(R.id.txtUserName)
+        val txtResetPassword = view.findViewById<TextView>(R.id.txtResetPassword)
+        val txtLock = view.findViewById<TextView>(R.id.txtLock)
+        val txtUnlock = view.findViewById<TextView>(R.id.txtUnlock)
+
+        val imgClose = view.findViewById<ImageView>(R.id.imgClose)
+        //------------------------------------------------------------------------------//
+        // 5. Show Info
+        txtAccountName.text = itemUser.account_name
+        txtUserName.text = itemUser.user_name
+
         // 5.  Handle Lock
-        val lockUser = view.findViewById<LinearLayout>(R.id.llLockUser)
-        lockUser?.setOnClickListener {
-            requireContext().showToast("Lock this Account")
+        txtLock?.setOnClickListener {
+            itemUser.account_status_id = false
+            requireContext().showToast("${itemUser.account_name} was locked ")
+            itemUser.account_name = "(Locked) " + itemUser.account_name
+            viewModel.addUser(requireContext(),itemUser)
+            viewModel.getAllUser().observe(viewLifecycleOwner){
+                adapter.setListData(it)
+            }
+
             dialog.dismiss()
         }
         // 6.  Handle Lock
-        val resetUser = view.findViewById<LinearLayout>(R.id.llResetAccount)
-        resetUser?.setOnClickListener {
-            requireContext().showToast("Reset Account")
+        txtResetPassword?.setOnClickListener {
+            itemUser.password = "123"
+            requireContext().showToast("Password was changed  into 123")
+            viewModel.addUser(requireContext(),itemUser)
             dialog.dismiss()
         }
+
+        // 5.  Handle UnLock
+        txtUnlock?.setOnClickListener {
+            itemUser.account_status_id = true
+            itemUser.account_name =itemUser.account_name.substring(8)
+            viewModel.addUser(requireContext(),itemUser)
+
+            requireContext().showToast("${itemUser.account_name} was unlocked")
+            viewModel.getAllUser().observe(viewLifecycleOwner){
+                adapter.setListData(it)
+            }
+
+            dialog.dismiss()
+        }
+
+        // Other: Close or Cancel
+        imgClose.setOnClickListener { dialog.dismiss() }
+
         // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display
         dialog = build.create()
         dialog.show()

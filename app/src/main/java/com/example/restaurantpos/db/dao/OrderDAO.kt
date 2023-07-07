@@ -6,7 +6,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.restaurantpos.db.entity.AccountStatusEntity
 import com.example.restaurantpos.db.entity.OrderEntity
+import com.example.restaurantpos.db.entity.OrderStatusEntity
 import com.example.restaurantpos.db.entity.TableEntity
 
 @Dao
@@ -15,6 +17,8 @@ interface OrderDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOrder(data : OrderEntity) : Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addListOrderStatus(listOrderStatus: List<OrderStatusEntity>): List<Long>
     @Delete
     fun deleteOrder(data: OrderEntity): Int
 

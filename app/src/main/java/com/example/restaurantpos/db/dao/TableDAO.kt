@@ -6,7 +6,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.restaurantpos.db.entity.AccountStatusEntity
 import com.example.restaurantpos.db.entity.TableEntity
+import com.example.restaurantpos.db.entity.TableStatusEntity
 
 @Dao
 interface TableDAO {
@@ -25,6 +27,9 @@ interface TableDAO {
 
     @Query("SELECT * from `table` WHERE table_id = :id")
     fun getTableById(id: Int):  LiveData<TableEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addListTableStatus(listTableStatus: List<TableStatusEntity>): List<Long>
 
 
 

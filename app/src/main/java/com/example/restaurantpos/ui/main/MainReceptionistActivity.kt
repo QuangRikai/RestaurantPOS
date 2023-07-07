@@ -1,7 +1,7 @@
 package com.example.restaurantpos.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.restaurantpos.R
@@ -19,22 +19,23 @@ class MainReceptionistActivity : AppCompatActivity() {
 
         /** Navigation */
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_receptionist) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_receptionist) as NavHostFragment
         val inflater = navHostFragment.navController.navInflater
         val graph = inflater.inflate(R.navigation.nav_main_staff)
 
         // Use bundle from Login to separate
-        if(intent.getIntExtra("NavigateByRole", 1) == 1){
+        if (intent.getIntExtra("NavigateByRole", 1) == 1) {
             graph.setStartDestination(R.id.tableFragment)
-        } else{
+        } else {
             graph.setStartDestination(R.id.kitchenFragment)
         }
 
-/*        if (isTrue){
-            graph.startDestinationId = R.id.kitchenFragment
-        }else {
-            graph.startDestination = R.id.OtherDetailsFragment
-        }*/
+        /*        if (isTrue){
+                    graph.startDestinationId = R.id.kitchenFragment
+                }else {
+                    graph.startDestination = R.id.OtherDetailsFragment
+                }*/
 
         val navController = navHostFragment.navController
         navController.setGraph(graph, intent.extras)

@@ -42,7 +42,7 @@ class StaffSelectionAdapter(
 
         holder.txtStaffName.text = itemStaff.account_name
         holder.txtStaffRole.text =
-            when (itemStaff.role) {
+            when (itemStaff.role_id) {
                 0 -> "Manager"
                 1 -> "Receptionist"
                 2 -> "Kitchen"

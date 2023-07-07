@@ -64,7 +64,7 @@ class CartItemInKitchenAdapter(
             holder.txtItemName,
             holder.txtTableName,
             holder.txtCartItemStatus,
-            cartItem.cart_item_status,
+            cartItem.cart_item_status_id,
             cartItem.order_id,
             cartItem.item_id
         )

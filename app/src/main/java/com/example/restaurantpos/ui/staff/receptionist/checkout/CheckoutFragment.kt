@@ -60,7 +60,8 @@ class CheckoutFragment : Fragment() {
 
         /** Code for DONE */
         binding.txtDone.setOnClickListener {
-            tableObject?.table_status = 0
+            // Set lại Table is Empty and update Status on Database
+            tableObject?.table_status_id = 0
             tableObject?.let { tableObject ->
                 viewModelTable.addTable(
                     requireContext(),
@@ -68,9 +69,11 @@ class CheckoutFragment : Fragment() {
                 )
             }
 
-            orderObject?.order_status = 2
+            // Set Bill's Status is "Đã Thanh Toán" and update Status on Database
+            orderObject?.order_status_id = 2
             orderObject?.let { orderObject -> viewModelCart.addOrder(orderObject) }
 
+            // Xong thì trả về lại màn Table để order tiếp
             findNavController().navigate(R.id.action_checkoutFragment_to_tableFragment2)
         }
 

@@ -15,14 +15,19 @@ import com.example.restaurantpos.db.dao.OrderDAO
 import com.example.restaurantpos.db.dao.ShiftDAO
 import com.example.restaurantpos.db.dao.TableDAO
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.db.entity.AccountRoleEntity
 import com.example.restaurantpos.db.entity.AccountShiftEntity
+import com.example.restaurantpos.db.entity.AccountStatusEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
+import com.example.restaurantpos.db.entity.CartItemStatusEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
+import com.example.restaurantpos.db.entity.OrderStatusEntity
 import com.example.restaurantpos.db.entity.ShiftEntity
 import com.example.restaurantpos.db.entity.TableEntity
+import com.example.restaurantpos.db.entity.TableStatusEntity
 import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 
 object DatabaseUtil {
@@ -55,8 +60,13 @@ object DatabaseUtil {
     fun addAccount(accountEntity: AccountEntity) = accountDAO.addAccount(accountEntity)
 
     fun addListAccount(listAccount: List<AccountEntity>) = accountDAO.addListAccount(listAccount)
+
+    fun addListAccountRole(listAccountRole: List<AccountRoleEntity>) = accountDAO.addListAccountRole(listAccountRole)
+
+    fun addListAccountStatus(listAccountStatus: List<AccountStatusEntity>) = accountDAO.addListAccountStatus(listAccountStatus)
     fun getAccountById(account_id: Int) = accountDAO.getAccountById(account_id)
     fun getAllUser() = accountDAO.getAllUser()
+    fun getAllUserActive() = accountDAO.getAllUserActive()
     fun getStaffByName(staffName: String) = accountDAO.getStaffByName("%${staffName}%")
 
     /** 2. CATEGORY && ITEM MANAGEMENT  */
@@ -78,9 +88,13 @@ object DatabaseUtil {
     fun getAllTable() = tableDAO.getAllTable()
 
 
+    fun addListTableStatus(listTableStatus: List<TableStatusEntity>) = tableDAO.addListTableStatus(listTableStatus)
+
     /** 4. CART MANAGEMENT  */
     fun addCartItem(data: CartItemEntity) = cartItemDAO.addCartItem(data)
     fun addListCartItem(data: List<CartItemEntity>) = cartItemDAO.addListCartItem(data)
+
+    fun addListCartItemStatus(listCartItemStatus: List<CartItemStatusEntity>) = cartItemDAO.addListCartItemStatus(listCartItemStatus)
     fun deleteCart(data: CartItemEntity) = cartItemDAO.deleteCartItem(data)
     fun getListCartItemByOrderId(order_id: String) = cartItemDAO.getListCartItemByOrderId(order_id)
     fun getListCartItemByTableId(table_id: Int) = cartItemDAO.getListCartItemByTableId(table_id)
@@ -95,6 +109,11 @@ object DatabaseUtil {
     /** 5. ORDER MANAGEMENT  */
 
     fun addOrder(data: OrderEntity) = orderDAO.addOrder(data)
+
+
+    fun addListOrderStatus(listOrderStatus: List<OrderStatusEntity>) = orderDAO.addListOrderStatus(listOrderStatus)
+
+
     fun deleteOrder(data: OrderEntity) = orderDAO.deleteOrder(data)
     fun getOrder(order_id: String) = orderDAO.getOrder(order_id)
     fun getOrderByTable(table_id: Int) = orderDAO.getOrderByTable(table_id)
@@ -118,6 +137,10 @@ object DatabaseUtil {
 
     /** 7. Shift && ShiftAccount MANAGEMENT  */
     fun addShift(shift: ShiftEntity) = shiftDAO.addShift(shift)
+
+
+    fun addListShift(listShift: List<ShiftEntity>) = shiftDAO.addListShift(listShift)
+
 
     fun getShiftById(shift_id: String) = shiftDAO.getShiftById(shift_id)
 

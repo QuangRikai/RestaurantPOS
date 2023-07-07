@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/llUserListTitle1">
 
         <TextView
-            android:id="@+id/txtUserName"
+            android:id="@+id/txtUserNameHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"

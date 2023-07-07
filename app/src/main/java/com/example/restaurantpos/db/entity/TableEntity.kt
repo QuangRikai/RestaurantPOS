@@ -16,10 +16,13 @@ data class TableEntity constructor(
     val table_id: Int,
 
     @ColumnInfo(name = "table_name")
-    val table_name: String,
+    var table_name: String,
 
-    @ColumnInfo(name = "table_status")
-    var table_status: Int
+    @ColumnInfo(name = "table_capacity")
+    val table_capacity: Int,
+
+    @ColumnInfo(name = "table_status_id")
+    var table_status_id: Int
 
     /*
     0. Empty     (Order mới)

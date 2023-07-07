@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentAddUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.util.show
+import com.example.restaurantpos.util.showToast
 import java.util.Optional
 
 class AddUserFragment : Fragment() {
@@ -38,7 +40,7 @@ class AddUserFragment : Fragment() {
         /**
          * Xử lý role trong spinner
          */
-        handleUserRole()
+        handleUserRoleBySpinner()
 
         /**\
          * Khai báo viewModel --> Dùng phương thức addUser --> set ADD Button
@@ -51,30 +53,35 @@ class AddUserFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-
+        /** Cancel/Back */
+        binding.txtCancel.setOnClickListener {
+            onBack()
+        }
 
         binding.imgBack.setOnClickListener {
             onBack()
         }
-
+        /** ADD Button*/
         binding.txtAdd.setOnClickListener {
-            viewModel.addUser(
-                requireActivity(), AccountEntity(
-                    0,
-                    binding.edtAddAccountName.text.toString().trim(),
-                    binding.edtAddUserName.text.toString().trim(),
-                    "123",
-                    role,
-                    true
+            if (binding.edtAddUserName.text.isEmpty()|| binding.edtAddAccountName.text.isEmpty()){
+                binding.txtError.show()
+            }else{
+                viewModel.addUser(
+                    requireActivity(), AccountEntity(
+                        0,
+                        binding.edtAddAccountName.text.toString().trim(),
+                        binding.edtAddUserName.text.toString().trim(),
+                        "123",
+                        role,
+                        true
+                    )
                 )
-            )
-            onBack()
+                onBack()
+            }
         }
-
-
     }
 
-    private fun handleUserRole() {
+    private fun handleUserRoleBySpinner() {
         val listUserRole = listOf("Receptionist", "Kitchen")
         binding.spnRole.adapter = UserRoleSpinnerAdapter(requireActivity(), listUserRole)
         binding.spnRole.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

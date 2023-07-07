@@ -9,10 +9,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.restaurantpos.base.BaseActivity
 import com.example.restaurantpos.databinding.ActivitySplashBinding
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.db.entity.AccountRoleEntity
+import com.example.restaurantpos.db.entity.AccountStatusEntity
+import com.example.restaurantpos.db.entity.CartItemStatusEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
+import com.example.restaurantpos.db.entity.OrderStatusEntity
+import com.example.restaurantpos.db.entity.ShiftEntity
 import com.example.restaurantpos.db.entity.TableEntity
+import com.example.restaurantpos.db.entity.TableStatusEntity
 import com.example.restaurantpos.ui.login.LoginActivity
 
 
@@ -40,17 +46,45 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 AccountEntity(3, "Quang Test Kitchen", "quang2", "123", 2, true),
             )
         )
+        /** 1.1. Account_Role */
+        viewModel.addListAccountRole(
+            listOf(
+                AccountRoleEntity(0, "Manager"),
+                AccountRoleEntity(1, "Receptionist"),
+                AccountRoleEntity(2, "Kitchen")
+            )
+        )
+        /** 1.2. Account_Status */
+        viewModel.addListAccountStatus(
+            listOf(
+                AccountStatusEntity(false, "Inactive"),
+                AccountStatusEntity(true, "Active")
+            )
+        )
 
         /** 2. Table */
-        viewModel.addTable(this, TableEntity(1, "Table 01", 0))
-        viewModel.addTable(this, TableEntity(2, "Table 02", 0))
-        viewModel.addTable(this, TableEntity(3, "Table 03", 0))
-        viewModel.addTable(this, TableEntity(4, "Table 04", 0))
-        viewModel.addTable(this, TableEntity(5, "Table 05", 0))
-        viewModel.addTable(this, TableEntity(6, "Table 06", 0))
-        viewModel.addTable(this, TableEntity(7, "Table 07", 0))
-        viewModel.addTable(this, TableEntity(8, "Table 08", 0))
-        viewModel.addTable(this, TableEntity(9, "Table 09", 0))
+        viewModel.addTable(this, TableEntity(1, "TAKE AWAY",4,0))
+        viewModel.addTable(this, TableEntity(2, "Table 01", 4,0))
+        viewModel.addTable(this, TableEntity(3, "Table 02", 4,0))
+        viewModel.addTable(this, TableEntity(4, "Table 03", 4,0))
+        viewModel.addTable(this, TableEntity(5, "Table 04", 4,0))
+        viewModel.addTable(this, TableEntity(6, "Table 05", 4,0))
+        viewModel.addTable(this, TableEntity(7, "Table 06", 4,0))
+        viewModel.addTable(this, TableEntity(8, "Table 07", 4,0))
+        viewModel.addTable(this, TableEntity(9, "Table 08", 4,0))
+        viewModel.addTable(this, TableEntity(10, "Table 09",4,0))
+        viewModel.addTable(this, TableEntity(11, "Table 10",4,0))
+        viewModel.addTable(this, TableEntity(12, "Table 11",4,0))
+
+        /** 2.1. Table_Status */
+        viewModel.addListTableStatus(
+            listOf(
+                TableStatusEntity(0, "Empty"),
+                TableStatusEntity(1, "In New Order"),
+                TableStatusEntity(2, "In Old Order"),
+                TableStatusEntity(3, "Problem")
+            )
+        )
 
         /** 3. Category */
         viewModel.addCategory(CategoryEntity(1, "FOODS"))
@@ -65,13 +99,39 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 6", 15.1f, "", 1, 2))
         viewModel.addCategoryItem(ItemEntity(0, "Mon Nhau 7", 111.1f, "", 3, 3))
 
+        /** 4.1. Cart_Item_Status */
+        viewModel.addListCartItemStatus(
+            listOf(
+                CartItemStatusEntity(0, "Waiting"),
+                CartItemStatusEntity(1, "In Progress"),
+                CartItemStatusEntity(2, "Done"),
+                CartItemStatusEntity(3, "Served")
+            )
+        )
+
+        /** 4.2. Order_Status */
+        viewModel.addListOrderStatus(
+            listOf(
+                OrderStatusEntity(0, "After clicking the table"),
+                OrderStatusEntity(1, "After Ordering"),
+                OrderStatusEntity(2, "After Checkout")
+            )
+        )
+
         /** 5. Customer  */
         viewModel.addCustomer(CustomerEntity(1, "Quang 1", "08034931491", "19950302"))
-        viewModel.addCustomer(CustomerEntity(2, "Quang 2", "08034931492", "19950303"))
-        viewModel.addCustomer(CustomerEntity(3, "Quang 3", "08034931493", "19950304"))
+        viewModel.addCustomer(CustomerEntity(2, "Quang 2", "09034931492", "19950303"))
+        viewModel.addCustomer(CustomerEntity(3, "Quang 3", "07034931493", "19950304"))
 
-        /** 6. Account_Shift  */
+        /** 6. Shift  */
 
+        viewModel.addListShift(
+            listOf(
+                ShiftEntity("1", "Morning", "8:00", "12:00"),
+                ShiftEntity("2", "Afternoon", "12:00", "18:00"),
+                ShiftEntity("3", "Night", "18:00", "22:00")
+            )
+        )
     }
 
     private fun startLoginActivity() {

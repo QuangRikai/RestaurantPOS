@@ -41,7 +41,7 @@ class ManagerUserAdapter(
         val itemUser = listData[position]
 
         holder.txtAccountName.text = itemUser.account_name
-        holder.txtUserRole.text = if (itemUser.role == 1) {
+        holder.txtUserRole.text = if (itemUser.role_id == 1) {
             "Receptionist"
         } else {
             "Kitchen"

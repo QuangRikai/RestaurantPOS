@@ -117,7 +117,7 @@ class NewOrderFragment : Fragment() {
             )
 
 // Vừa vào NewOrder là đã phải thay đổi trạng thái của bàn rồi. Tránh việc 2 bàn cùng order 1 lúc
-            table.table_status = 1
+            table.table_status_id = 1
             // Thêm bàn vào mà làm gì?
             viewModelTable.addTable(requireContext(), table)
 
@@ -126,8 +126,8 @@ class NewOrderFragment : Fragment() {
         /** Code for Back */
         binding.igmBackOfOrder.setOnClickListener {
             // Nếu là bàn Order thêm (status = 2) thì không làm gì
-            if (tableObject!!.table_status == 1) {
-                tableObject!!.table_status = 0
+            if (tableObject!!.table_status_id == 1) {
+                tableObject!!.table_status_id = 0
             }
             viewModelTable.addTable(requireContext(), tableObject!!)
             findNavController().popBackStack()
@@ -158,7 +158,7 @@ class NewOrderFragment : Fragment() {
             // Cập nhập trạng thái cho Table
             // Chú ý: 2 thằng không thể order cùng lúc cùng 1 cái bàn được
             /** ------------------------------????????-------------------------*/
-            tableObject?.table_status = 2
+            tableObject?.table_status_id = 2
             viewModelTable.addTable(requireContext(), tableObject!!)
 
             findNavController().popBackStack()
@@ -250,8 +250,6 @@ class NewOrderFragment : Fragment() {
                 }
 
                 override fun clickNote(orderedItem: CartItemEntity, pos: Int) {
-                    // Xử lý Dialog
-                    context?.showToast("Xử lý Dialog")
                     showDialogNote(orderedItem, pos)
                     adapterCartItem.setListData(listCartItem)
                 }

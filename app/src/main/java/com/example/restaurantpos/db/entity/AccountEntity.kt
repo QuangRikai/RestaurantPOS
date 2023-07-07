@@ -16,19 +16,19 @@ data class AccountEntity constructor(
     val account_id: Int,
 
     @ColumnInfo(name = "account_name")
-    val account_name: String,
+    var account_name: String,
 
     @ColumnInfo(name = "user_name")
-    val user_name: String,
+    var user_name: String,
 
     @ColumnInfo(name = "password")
-    val password: String,
+    var password: String,
 
-    @ColumnInfo(name = "role")
-    val role: Int,
+    @ColumnInfo(name = "role_id")
+    val role_id: Int,
 
-    @ColumnInfo(name = "account_status")
-    val account_status: Boolean
+    @ColumnInfo(name = "account_status_id")
+    var account_status_id: Boolean
 
 
     /*

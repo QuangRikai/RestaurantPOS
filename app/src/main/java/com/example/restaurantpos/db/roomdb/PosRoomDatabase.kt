@@ -14,27 +14,37 @@ import com.example.restaurantpos.db.dao.OrderDAO
 import com.example.restaurantpos.db.dao.ShiftDAO
 import com.example.restaurantpos.db.dao.TableDAO
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.db.entity.AccountRoleEntity
 import com.example.restaurantpos.db.entity.AccountShiftEntity
+import com.example.restaurantpos.db.entity.AccountStatusEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
+import com.example.restaurantpos.db.entity.CartItemStatusEntity
 import com.example.restaurantpos.db.entity.OrderEntity
+import com.example.restaurantpos.db.entity.OrderStatusEntity
 import com.example.restaurantpos.db.entity.ShiftEntity
 import com.example.restaurantpos.db.entity.TableEntity
+import com.example.restaurantpos.db.entity.TableStatusEntity
 
 @Database(
     version = 1,
     entities = [
         AccountEntity::class,
+        AccountRoleEntity::class,
         AccountShiftEntity::class,
+        AccountStatusEntity::class,
         CartItemEntity::class,
+        CartItemStatusEntity::class,
         CategoryEntity::class,
         CustomerEntity::class,
         ItemEntity::class,
         OrderEntity::class,
+        OrderStatusEntity::class,
         ShiftEntity::class,
-        TableEntity::class
+        TableEntity::class,
+        TableStatusEntity::class
     ]
 )
 public abstract class PosRoomDatabase: RoomDatabase (){

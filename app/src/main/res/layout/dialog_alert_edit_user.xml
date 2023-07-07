@@ -36,7 +36,7 @@
 
 
     <TextView
-        android:id="@+id/txtUserName"
+        android:id="@+id/txtAccountName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -49,6 +49,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtEditUser" />
+
+
+    <TextView
+        android:id="@+id/txtUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:gravity="center"
+        android:paddingStart="@dimen/_8sdp"
+        android:text="Username"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAccountName" />
 
     <LinearLayout
         android:id="@+id/llUpdateInfo"
@@ -71,12 +87,13 @@
             app:tint="@color/white" />
 
         <TextView
+            android:id="@+id/txtResetPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingStart="@dimen/_8sdp"
-            android:text="Update Infomation"
+            android:text="Reset password"
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp" />
     </LinearLayout>
@@ -101,6 +118,7 @@
             app:tint="@color/white" />
 
         <TextView
+            android:id="@+id/txtLock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -132,12 +150,13 @@
             app:tint="@color/white" />
 
         <TextView
+            android:id="@+id/txtUnlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingStart="@dimen/_8sdp"
-            android:text="Reset password"
+            android:text="Unlock this Account"
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp" />
     </LinearLayout>

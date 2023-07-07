@@ -45,7 +45,7 @@ class TableAdapter(
         /** Set Text --> Table */
         holder.txtTableName.text = itemTable.table_name
         /** Set Trang Thai cho Table*/
-        when (itemTable.table_status) {
+        when (itemTable.table_status_id) {
             0 -> holder.viewRootTableItem.background =
                 context.getDrawable(R.drawable.bg_table_empty)
 
@@ -58,7 +58,12 @@ class TableAdapter(
 
         /** Click Table (Kèm theo itemTable.status để hứng dữ liệu) */
         holder.viewRootTableItem.setOnClickListener {
-            listenerClickEditUser.clickTable(itemTable, itemTable.table_status)
+            listenerClickEditUser.clickTable(itemTable, itemTable.table_status_id)
+        }
+
+        holder.viewRootTableItem.setOnLongClickListener {
+            listenerClickEditUser.changeStatus(itemTable, itemTable.table_status_id)
+            true
         }
     }
 
@@ -71,5 +76,7 @@ class TableAdapter(
 
     interface EventClickTableListener {
         fun clickTable(itemTable: TableEntity, table_status: Int)
+
+        fun changeStatus(itemTable: TableEntity, table_status: Int)
     }
 }

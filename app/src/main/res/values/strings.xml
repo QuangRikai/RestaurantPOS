@@ -22,8 +22,9 @@
     <string name="role">Role</string>
     <string name="user_management">User Management</string>
     <string name="add">ADD</string>
-    <string name="staff_s_name">Staff\'s Name</string>
+    <string name="staff_s_name">Staff\'s name</string>
     <string name="loginaccount_name">LoginAccount Name</string>
     <string name="lock_this_account">Lock this Account</string>
+    <string name="cancel">CANCEL</string>
 
 </resources>

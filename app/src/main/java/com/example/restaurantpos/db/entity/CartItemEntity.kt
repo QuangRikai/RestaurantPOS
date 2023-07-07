@@ -29,13 +29,14 @@ data class CartItemEntity constructor(
     @ColumnInfo(name = "note")
     var note: String,
 
-    @ColumnInfo(name = "cart_item_status")
-    var cart_item_status: Int
+    @ColumnInfo(name = "cart_item_status_id")
+    var cart_item_status_id: Int
 
     /* Status.
-0: Wait
+0: Waiting
 1: In Process
 2: Done
+3: Served
  */
 
 ): Parcelable {
