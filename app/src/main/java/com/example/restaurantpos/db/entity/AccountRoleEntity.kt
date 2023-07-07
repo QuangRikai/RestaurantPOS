@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "account_role")
 data class AccountRoleEntity constructor(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "account_role_id")
     val account_role_id: Int,
 

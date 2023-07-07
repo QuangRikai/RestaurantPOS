@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "account_status")
 data class AccountStatusEntity constructor(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "account_status_id")
     val account_status_id: Boolean,
 
