@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.manager.user
+package com.example.restaurantpos.ui.staff
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentUpdateStaffInfoBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.ui.main.MainManagerActivity
-import com.example.restaurantpos.util.DateFormatUtil
+import com.example.restaurantpos.ui.manager.user.UserViewModel
+import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 
 
@@ -71,7 +72,7 @@ class UpdateStaffInfoFragment : Fragment() {
                     }
 
                     if (binding.edtPassword.text.toString() != "") {
-                        admin[0].password = binding.edtPassword.text.toString()
+                        admin[0].password = DataUtil.convertToMD5(binding.edtPassword.text.toString())
                     }
 
                     viewModel.addUser(requireContext(), admin[0])

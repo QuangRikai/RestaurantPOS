@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.restaurantpos.databinding.ActivityUpdateAccountInfoBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.ui.main.MainManagerActivity
+import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 
@@ -56,7 +57,7 @@ class UpdateAccountInfoActivity : AppCompatActivity() {
                     }
 
                     if (binding.edtPassword.text.toString() != "") {
-                        admin[0].password = binding.edtPassword.text.toString()
+                        admin[0].password = DataUtil.convertToMD5(binding.edtPassword.text.toString())
                     }
 
                     viewModel.addUser(this, admin[0])

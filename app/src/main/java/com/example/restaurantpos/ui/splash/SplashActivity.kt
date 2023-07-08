@@ -20,6 +20,7 @@ import com.example.restaurantpos.db.entity.ShiftEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.db.entity.TableStatusEntity
 import com.example.restaurantpos.ui.login.LoginActivity
+import com.example.restaurantpos.util.DataUtil
 
 
 @SuppressLint("CustomSplashScreen")
@@ -41,9 +42,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         /** 1. Account */
         viewModel.addListAccount(
             listOf(
-                AccountEntity(1, "Quang Test Manager", "quang0", "123", 0, true),
-                AccountEntity(2, "Quang Test Receptionist", "quang1", "123", 1, true),
-                AccountEntity(3, "Quang Test Kitchen", "quang2", "123", 2, true),
+                AccountEntity(1,"Quang Test Manager","quang0", DataUtil.convertToMD5("123"),0,true),
+                AccountEntity(2, "Quang Test Receptionist", "quang1", DataUtil.convertToMD5("123"), 1, true),
+                AccountEntity(3, "Quang Test Kitchen", "quang2", DataUtil.convertToMD5("123"), 2, true),
             )
         )
         /** 1.1. Account_Role */
@@ -63,18 +64,18 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         )
 
         /** 2. Table */
-        viewModel.addTable(this, TableEntity(1, "TAKE AWAY",4,0))
-        viewModel.addTable(this, TableEntity(2, "Table 01", 4,0))
-        viewModel.addTable(this, TableEntity(3, "Table 02", 4,0))
-        viewModel.addTable(this, TableEntity(4, "Table 03", 4,0))
-        viewModel.addTable(this, TableEntity(5, "Table 04", 4,0))
-        viewModel.addTable(this, TableEntity(6, "Table 05", 4,0))
-        viewModel.addTable(this, TableEntity(7, "Table 06", 4,0))
-        viewModel.addTable(this, TableEntity(8, "Table 07", 4,0))
-        viewModel.addTable(this, TableEntity(9, "Table 08", 4,0))
-        viewModel.addTable(this, TableEntity(10, "Table 09",4,0))
-        viewModel.addTable(this, TableEntity(11, "Table 10",4,0))
-        viewModel.addTable(this, TableEntity(12, "Table 11",4,0))
+        viewModel.addTable(this, TableEntity(1, "TAKE AWAY", 4, 0))
+        viewModel.addTable(this, TableEntity(2, "Table 01", 4, 0))
+        viewModel.addTable(this, TableEntity(3, "Table 02", 4, 0))
+        viewModel.addTable(this, TableEntity(4, "Table 03", 4, 0))
+        viewModel.addTable(this, TableEntity(5, "Table 04", 4, 0))
+        viewModel.addTable(this, TableEntity(6, "Table 05", 4, 0))
+        viewModel.addTable(this, TableEntity(7, "Table 06", 4, 0))
+        viewModel.addTable(this, TableEntity(8, "Table 07", 4, 0))
+        viewModel.addTable(this, TableEntity(9, "Table 08", 4, 0))
+        viewModel.addTable(this, TableEntity(10, "Table 09", 4, 0))
+        viewModel.addTable(this, TableEntity(11, "Table 10", 4, 0))
+        viewModel.addTable(this, TableEntity(12, "Table 11", 4, 0))
 
         /** 2.1. Table_Status */
         viewModel.addListTableStatus(

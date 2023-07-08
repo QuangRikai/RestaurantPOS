@@ -32,7 +32,7 @@ interface AccountDAO {
     fun getAccountById(account_id: Int): LiveData<MutableList<AccountEntity>>
 
     @Query("SELECT * from account WHERE user_name = :user_name AND password = :password AND account_status_id = 1")
-    fun checkLogin(user_name: String, password: String): MutableList<AccountEntity>
+    fun checkLogin(user_name: String, password: String): List<AccountEntity>
 
     @Query("SELECT * from account WHERE role_id != 0")
     fun getAllUser(): LiveData<MutableList<AccountEntity>>

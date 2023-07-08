@@ -65,6 +65,7 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:hint="New password"
+            android:inputType="textPassword"
             android:paddingStart="@dimen/_18sdp"
             tools:ignore="RtlSymmetry" />
 

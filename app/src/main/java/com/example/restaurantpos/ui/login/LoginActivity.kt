@@ -1,9 +1,11 @@
 package com.example.restaurantpos.ui.login
 
 import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.restaurantpos.base.BaseActivity
 import com.example.restaurantpos.databinding.ActivityLoginBinding
+import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.show
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,8 +32,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 }
             } else {
                 checkLogin(
+                    binding.txtInformLogin,
                     binding.edtUsername.text.toString(),
-                    binding.edtPassword.text.toString()
+                    DataUtil.convertToMD5(binding.edtPassword.text.toString())
                 )
             }
         }
@@ -43,8 +46,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         binding.txtInformLogin.show()
     }
 
-    private fun checkLogin(userName: String, password: String) {
-        viewModel.checkLogin(this@LoginActivity, userName, password)
+    private fun checkLogin(textView: TextView, userName: String, password: String) {
+        viewModel.checkLogin(this@LoginActivity,textView, userName, password)
     }
 
     // End

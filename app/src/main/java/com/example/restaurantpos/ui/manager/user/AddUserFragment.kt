@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentAddUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.show
 
 class AddUserFragment : Fragment() {
@@ -67,7 +68,7 @@ class AddUserFragment : Fragment() {
                         0,
                         binding.edtAddAccountName.text.toString().trim(),
                         binding.edtAddUserName.text.toString().trim(),
-                        "123",
+                        DataUtil.convertToMD5("123"),
                         role,
                         true
                     )

@@ -1,10 +1,6 @@
 package com.example.restaurantpos.util
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import com.example.restaurantpos.db.dao.AccountDAO
 import com.example.restaurantpos.db.dao.AppDAO
 import com.example.restaurantpos.db.dao.CartItemDAO
@@ -41,6 +37,7 @@ object DatabaseUtil {
     lateinit var orderDAO: OrderDAO
     lateinit var customerDAO: CustomerDAO
     lateinit var shiftDAO: ShiftDAO
+//    lateinit var tokenDAO: TokenDAO
 
 
     fun init(context: Context) {
@@ -53,17 +50,21 @@ object DatabaseUtil {
         orderDAO = PosRoomDatabase.getInstance(context).orderDAO()
         customerDAO = PosRoomDatabase.getInstance(context).customerDAO()
         shiftDAO = PosRoomDatabase.getInstance(context).shiftDAO()
+//        tokenDAO = PosRoomDatabase.getInstance(context).tokenDAO()
     }
 
     /** 1. USER MANAGEMENT  */
-
+    fun checkLogin(user_name: String, password: String)= accountDAO.checkLogin(user_name, password)
     fun addAccount(accountEntity: AccountEntity) = accountDAO.addAccount(accountEntity)
 
     fun addListAccount(listAccount: List<AccountEntity>) = accountDAO.addListAccount(listAccount)
 
-    fun addListAccountRole(listAccountRole: List<AccountRoleEntity>) = accountDAO.addListAccountRole(listAccountRole)
+    fun addListAccountRole(listAccountRole: List<AccountRoleEntity>) =
+        accountDAO.addListAccountRole(listAccountRole)
 
-    fun addListAccountStatus(listAccountStatus: List<AccountStatusEntity>) = accountDAO.addListAccountStatus(listAccountStatus)
+    fun addListAccountStatus(listAccountStatus: List<AccountStatusEntity>) =
+        accountDAO.addListAccountStatus(listAccountStatus)
+
     fun getAccountById(account_id: Int) = accountDAO.getAccountById(account_id)
     fun getAllUser() = accountDAO.getAllUser()
     fun getAllUserActive() = accountDAO.getAllUserActive()
@@ -74,7 +75,8 @@ object DatabaseUtil {
     fun getAllCategory() = categoryDAO.getAllCategory()
     fun addCategory(data: CategoryEntity) = categoryDAO.addCategory(data)
     fun addCategoryItem(data: ItemEntity) = itemDAO.addCategoryItem(data)
-    fun deleteItemOfCategory(itemOfCategory: ItemEntity) = itemDAO.deleteItemOfCategory(itemOfCategory)
+    fun deleteItemOfCategory(itemOfCategory: ItemEntity) =
+        itemDAO.deleteItemOfCategory(itemOfCategory)
 
 
     fun addListCategoryItem(listData: List<ItemEntity>) = itemDAO.addListCategoryItem(listData)
@@ -91,13 +93,16 @@ object DatabaseUtil {
     fun getAllTable() = tableDAO.getAllTable()
 
 
-    fun addListTableStatus(listTableStatus: List<TableStatusEntity>) = tableDAO.addListTableStatus(listTableStatus)
+    fun addListTableStatus(listTableStatus: List<TableStatusEntity>) =
+        tableDAO.addListTableStatus(listTableStatus)
 
     /** 4. CART MANAGEMENT  */
     fun addCartItem(data: CartItemEntity) = cartItemDAO.addCartItem(data)
     fun addListCartItem(data: List<CartItemEntity>) = cartItemDAO.addListCartItem(data)
 
-    fun addListCartItemStatus(listCartItemStatus: List<CartItemStatusEntity>) = cartItemDAO.addListCartItemStatus(listCartItemStatus)
+    fun addListCartItemStatus(listCartItemStatus: List<CartItemStatusEntity>) =
+        cartItemDAO.addListCartItemStatus(listCartItemStatus)
+
     fun deleteCart(data: CartItemEntity) = cartItemDAO.deleteCartItem(data)
     fun getListCartItemByOrderId(order_id: String) = cartItemDAO.getListCartItemByOrderId(order_id)
     fun getListCartItemByTableId(table_id: Int) = cartItemDAO.getListCartItemByTableId(table_id)
@@ -114,7 +119,8 @@ object DatabaseUtil {
     fun addOrder(data: OrderEntity) = orderDAO.addOrder(data)
 
 
-    fun addListOrderStatus(listOrderStatus: List<OrderStatusEntity>) = orderDAO.addListOrderStatus(listOrderStatus)
+    fun addListOrderStatus(listOrderStatus: List<OrderStatusEntity>) =
+        orderDAO.addListOrderStatus(listOrderStatus)
 
 
     fun deleteOrder(data: OrderEntity) = orderDAO.deleteOrder(data)
@@ -156,11 +162,19 @@ object DatabaseUtil {
 
     // Use for Shift's Show
     fun getListAccountShift(shift_id: String) = shiftDAO.getListAccountShift(shift_id)
-    fun getListAccountShiftReceptionist(shift_id: String) = shiftDAO.getListAccountShiftReceptionist(shift_id)
+    fun getListAccountShiftReceptionist(shift_id: String) =
+        shiftDAO.getListAccountShiftReceptionist(shift_id)
+
     fun getListAccountShiftKitchen(shift_id: String) = shiftDAO.getListAccountShiftKitchen(shift_id)
 
+    fun getListAccountShiftForSetListData(shift_id: String) =
+        shiftDAO.getListAccountShiftForSetListData(shift_id)
 
-
-    fun getListAccountShiftForSetListData(shift_id: String) = shiftDAO.getListAccountShiftForSetListData(shift_id)
-
+    /** 8. TOKEN  */
+//    fun addToken(data : TokenEntity) = tokenDAO.addToken(data)
+//
+//    fun deleteToken(data : TokenEntity) = tokenDAO.deleteToken(data)
+//
+//    fun checkToken(token: String, now : String) = tokenDAO.checkToken(token, now)
+//    fun getAccountToken(token: String, now : String) = tokenDAO.getAccountToken(token, now)
 }

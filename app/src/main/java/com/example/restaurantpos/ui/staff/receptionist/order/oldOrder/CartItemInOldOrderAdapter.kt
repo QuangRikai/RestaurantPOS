@@ -54,13 +54,13 @@ class CartItemInOldOrderAdapter(
         holder.txtNote.text = cartItem.note
 
         holder.txtCartItemStatus.setOnClickListener {
-            if(cartItem.cart_item_status_id == 2){
+            if (cartItem.cart_item_status_id == 2) {
                 listenerClickCartItemInOldOrder.clickCartItemServedStatus(cartItem)
             }
         }
 
         holder.viewRootCartItemInOldOrder.setOnLongClickListener {
-            if(cartItem.cart_item_status_id == 0){
+            if (cartItem.cart_item_status_id == 0) {
                 listenerClickCartItemInOldOrder.deleteItemCanceledByCustomer(cartItem)
             }
             true
@@ -75,17 +75,32 @@ class CartItemInOldOrderAdapter(
     }
 
     // Những thông tin về Table, Item thì phải get bằng order_id, item_id nha
-    fun showInfo(txtItemName: TextView, txtCartItemStatus: TextView, status: Int, item_id: Int) {
+    private fun showInfo(txtItemName: TextView, txtCartItemStatus: TextView, status: Int, item_id: Int) {
         // Item
         DatabaseUtil.getItemOfCategory(item_id).observe(lifecycleOwner) { itemList ->
             txtItemName.text = itemList[0].item_name
         }
 
         when (status) {
-            0 -> txtCartItemStatus.text = "Waiting"
-            1 -> txtCartItemStatus.text = "In Process"
-            2 -> txtCartItemStatus.text = "Done"
-            3 -> txtCartItemStatus.text = "Served"
+            0 -> {
+                txtCartItemStatus.text = "Waiting"
+                txtCartItemStatus.setBackgroundResource(R.drawable.bg_status_red)
+            }
+
+            1 -> {
+                txtCartItemStatus.text = "In Process"
+                txtCartItemStatus.setBackgroundResource(R.drawable.bg_status_gray)
+            }
+
+            2 -> {
+                txtCartItemStatus.text = "Done"
+                txtCartItemStatus.setBackgroundResource(R.drawable.bg_status_green)
+            }
+
+            3 -> {
+                txtCartItemStatus.text = "Served"
+                txtCartItemStatus.setBackgroundResource(R.drawable.bg_status_white)
+            }
         }
     }
 

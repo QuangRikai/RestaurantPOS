@@ -17,11 +17,11 @@ import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.AccountRoleEntity
 import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.db.entity.AccountStatusEntity
+import com.example.restaurantpos.db.entity.CartItemEntity
+import com.example.restaurantpos.db.entity.CartItemStatusEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
-import com.example.restaurantpos.db.entity.CartItemEntity
-import com.example.restaurantpos.db.entity.CartItemStatusEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.OrderStatusEntity
 import com.example.restaurantpos.db.entity.ShiftEntity
@@ -45,9 +45,10 @@ import com.example.restaurantpos.db.entity.TableStatusEntity
         ShiftEntity::class,
         TableEntity::class,
         TableStatusEntity::class
+//        TokenEntity::class
     ]
 )
-public abstract class PosRoomDatabase: RoomDatabase (){
+public abstract class PosRoomDatabase : RoomDatabase() {
 
     abstract fun appDAO(): AppDAO
     abstract fun accountDAO(): AccountDAO
@@ -58,25 +59,25 @@ public abstract class PosRoomDatabase: RoomDatabase (){
     abstract fun orderDAO(): OrderDAO
     abstract fun customerDAO(): CustomerDAO
     abstract fun shiftDAO(): ShiftDAO
+//    abstract fun tokenDAO(): TokenDAO
 
-    companion object{
+    companion object {
         @Volatile
-        private  var INSTANCE: PosRoomDatabase? = null
-        fun getInstance(context: Context): PosRoomDatabase{
-            return INSTANCE?: synchronized(this){
-            val instance = Room.databaseBuilder(
-                context.applicationContext,
-                PosRoomDatabase::class.java,
-                "quangdb"
-            )
-                .fallbackToDestructiveMigration()
-                .build()
-            INSTANCE =instance
-            return instance
-        }
+        private var INSTANCE: PosRoomDatabase? = null
+        fun getInstance(context: Context): PosRoomDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    PosRoomDatabase::class.java,
+                    "quangdb"
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
+                INSTANCE = instance
+                return instance
+            }
         }
     }
-
 
 
 }

@@ -124,7 +124,7 @@
     </fragment>
     <fragment
         android:id="@+id/updateStaffInfoFragment"
-        android:name="com.example.restaurantpos.ui.manager.user.UpdateStaffInfoFragment"
+        android:name="com.example.restaurantpos.ui.staff.UpdateStaffInfoFragment"
         android:label="UpdateStaffInfoFragment" >
 
         <argument
