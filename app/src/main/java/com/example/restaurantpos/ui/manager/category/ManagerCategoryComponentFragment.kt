@@ -125,10 +125,12 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         dialog = build.create()
         dialog.show()
     }
-
-
-    override fun longClickCategoryItem(itemCategory: ItemEntity) {
+    override fun clickUpdateItem(itemCategory: ItemEntity) {
         showChangeItemDialog(itemCategory)
+    }
+
+    override fun longClickDeleteItem(itemCategory: ItemEntity) {
+        showDeleteItemDialog(itemCategory)
     }
 
     @SuppressLint("SetTextI18n", "MissingInflatedId")
@@ -192,6 +194,33 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         dialog.show()
     }
 
+    private fun showDeleteItemDialog(itemOfCategory: ItemEntity) {
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_delete_category_item, null)
+        build.setView(view)
+
+
+        val btnYes = view.findViewById<Button>(R.id.btnYes)
+        val btnNo = view.findViewById<Button>(R.id.btnNo)
+        val imgClose = view.findViewById<ImageView>(R.id.imgClose)
+        val txtDeleteItem = view.findViewById<TextView>(R.id.txtDeleteItem)
+
+
+        imgClose.setOnClickListener { dialog.dismiss() }
+        btnNo.setOnClickListener { dialog.dismiss() }
+        txtDeleteItem.text = "Delete " + itemOfCategory.item_name
+
+
+        btnYes.setOnClickListener {
+            viewModel.deleteItemOfCategory(itemOfCategory)
+            dialog.dismiss()
+        }
+
+        // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display
+        dialog = build.create()
+        dialog.show()
+    }
+
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, dataIntent: Intent?) {
         super.onActivityResult(requestCode, resultCode, dataIntent)
@@ -233,6 +262,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
             }
         }
     }
+
 }
 /** Hàm này chưa hiểu rõ */
 

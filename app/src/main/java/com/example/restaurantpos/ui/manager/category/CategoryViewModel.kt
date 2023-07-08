@@ -21,6 +21,12 @@ class CategoryViewModel: ViewModel() {
       }
     }
 
+    fun deleteItemOfCategory(itemOfCategory: ItemEntity) {
+      CoroutineScope(Dispatchers.IO).launch {
+          DatabaseUtil.deleteItemOfCategory(itemOfCategory)
+      }
+    }
+
     fun addListCategoryItem(listCategoryItem: List<ItemEntity>) {
       CoroutineScope(Dispatchers.IO).launch {
           DatabaseUtil.addListCategoryItem(listCategoryItem)

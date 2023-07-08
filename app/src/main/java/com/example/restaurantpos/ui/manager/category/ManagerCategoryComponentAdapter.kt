@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -27,6 +28,7 @@ class ManagerCategoryComponentAdapter(
         var txtItemName = itemView.findViewById<TextView>(R.id.txtItemName)
         var txtItemPrice = itemView.findViewById<TextView>(R.id.txtItemPrice)
         var txtItemInventoryQuantity = itemView.findViewById<TextView>(R.id.txtItemInventoryQuantity)
+        var btnUpdateItem = itemView.findViewById<Button>(R.id.btnUpdateItem)
 
         // Whole Item
         var viewRootItemCategory = itemView.findViewById<LinearLayout>(R.id.viewRootItemCategory)
@@ -65,12 +67,15 @@ class ManagerCategoryComponentAdapter(
         holder.txtItemPrice.text = itemCategory.price.toString()
         holder.txtItemInventoryQuantity.text = itemCategory.inventory_quantity.toString()
 
-        holder.viewRootItemCategory.setOnLongClickListener {
-            listener.longClickCategoryItem(itemCategory)
-            true
+
+        holder.btnUpdateItem.setOnClickListener {
+            listener.clickUpdateItem(itemCategory)
         }
 
-
+        holder.viewRootItemCategory.setOnLongClickListener {
+            listener.longClickDeleteItem(itemCategory)
+            true
+        }
 
         /** BỎ: User the Interface below */
 
@@ -94,8 +99,9 @@ class ManagerCategoryComponentAdapter(
 
     interface EventClickItemCategoryListener {
         /** BỎ: fun clickCategoryItem */
-//        fun clickCategoryItem(itemCategory: ItemEntity)
-        fun longClickCategoryItem(itemCategory: ItemEntity)
+        fun clickUpdateItem(itemCategory: ItemEntity)
+        fun longClickDeleteItem(itemCategory: ItemEntity)
+
 
     }
 }

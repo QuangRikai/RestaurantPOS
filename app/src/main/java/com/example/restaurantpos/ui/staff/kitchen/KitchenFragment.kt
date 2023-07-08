@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.PopupMenu
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -28,6 +31,7 @@ class KitchenFragment : Fragment() {
     lateinit var viewModelCart: CartViewModel
 
     lateinit var adapterCartItemInKitchen: CartItemInKitchenAdapter
+    lateinit var dialog: AlertDialog
 
     /*
     Sort theo Order_id (Order_create_id)
@@ -97,8 +101,10 @@ class KitchenFragment : Fragment() {
 
         /** Kitchen Shift Show */
         binding.txtShift.setOnClickListener {
-            findNavController().navigate(R.id.action_kitchenFragment_to_shiftOfStaffFragment,
-            bundleOf("shiftOfStaff" to 2))
+            findNavController().navigate(
+                R.id.action_kitchenFragment_to_shiftOfStaffFragment,
+                bundleOf("shiftOfStaff" to 2)
+            )
         }
         /** ----------------------------------------------------------------------------------*/
 
@@ -111,18 +117,8 @@ class KitchenFragment : Fragment() {
             ArrayList(),
             object : CartItemInKitchenAdapter.EventClickCartItemInKitchenListener {
                 override fun clickCartItemStatus(cartItemInKitchen: CartItemEntity) {
-                    if (cartItemInKitchen.cart_item_status_id == 2) {
-                        // Hỏi là có quay lại trạng thái không
-                        // Có thì quay lại như lựa chọn, không thì thôi
-                        // Code 1 cái dialog chung rồi làm gì cũng showDialog ra hỏi.
-//                        val cartItem = cartItemInKitchen
-//                        cartItem.cart_item_status--
-//                        viewModelCart.addCartItem(cartItem)
-                        DatabaseUtil.getItemOfCategory(cartItemInKitchen.item_id).observe(viewLifecycleOwner){
-                            context?.showToast("Done ${it[0].item_name}. Send to Receptionist")
-                        }
-                        cartItemInKitchen.cart_item_status_id++
-                        viewModelCart.addCartItem(cartItemInKitchen)
+                    if (cartItemInKitchen.cart_item_status_id == 1) {
+                        showConfirmItemStatusDialog(cartItemInKitchen)
                     } else {
                         cartItemInKitchen.cart_item_status_id++
                         viewModelCart.addCartItem(cartItemInKitchen)
@@ -150,5 +146,40 @@ class KitchenFragment : Fragment() {
         }
 
 
+    }
+
+    private fun showConfirmItemStatusDialog(cartItemInKitchen: CartItemEntity) {
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_confirm_status_in_kitchen, null)
+        build.setView(view)
+
+
+        val btnDone = view.findViewById<Button>(R.id.btnDone)
+        val btnRevert = view.findViewById<Button>(R.id.btnRevert)
+        val imgClose = view.findViewById<ImageView>(R.id.imgClose)
+
+
+        imgClose.setOnClickListener { dialog.dismiss() }
+
+
+        btnDone.setOnClickListener {
+            DatabaseUtil.getItemOfCategory(cartItemInKitchen.item_id)
+                .observe(viewLifecycleOwner) {
+                    context?.showToast("Done ${it[0].item_name}. Send to Receptionist")
+                }
+            cartItemInKitchen.cart_item_status_id++
+            viewModelCart.addCartItem(cartItemInKitchen)
+            viewModelCart.addCartItem(cartItemInKitchen)
+            dialog.dismiss()
+        }
+
+        btnRevert.setOnClickListener {
+            cartItemInKitchen.cart_item_status_id = 1
+            viewModelCart.addCartItem(cartItemInKitchen)
+            dialog.dismiss()
+        }
+        // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display
+        dialog = build.create()
+        dialog.show()
     }
 }

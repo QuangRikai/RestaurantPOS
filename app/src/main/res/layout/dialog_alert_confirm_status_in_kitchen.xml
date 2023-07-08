@@ -19,50 +19,39 @@
         app:srcCompat="@drawable/ic_close"
         app:tint="@color/white" />
 
-    <TextView
-        android:id="@+id/txtDeleteItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_45sdp"
-        android:background="@drawable/bg_customdialog_button"
-        android:fontFamily="@font/inter_600"
-        android:paddingHorizontal="@dimen/_12sdp"
-        android:text="Has Customer \n canceled this Item?"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="21sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDeleteItem">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="26dp">
 
         <Button
-            android:id="@+id/btnYes"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_40sdp"
+            android:id="@+id/btnDone"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_weight="1"
             android:backgroundTint="@color/bg_light_blue"
             android:fontFamily="@font/inter_600"
-            android:text="YES"
+            android:gravity="center"
+            android:text="DONE"
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/btnNo"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnRevert"
+            android:layout_width="@dimen/_250sdp"
             android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_30sdp"
             android:layout_weight="1"
-            android:backgroundTint="@color/bg_light_blue"
+            android:backgroundTint="@color/text_red"
             android:fontFamily="@font/inter_600"
-            android:text="NO"
+            android:gravity="center"
+            android:text="Revert to Waiting?"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:textColor="@color/white" />
 
     </LinearLayout>

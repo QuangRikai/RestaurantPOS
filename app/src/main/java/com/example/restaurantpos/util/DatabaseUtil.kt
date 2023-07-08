@@ -74,6 +74,9 @@ object DatabaseUtil {
     fun getAllCategory() = categoryDAO.getAllCategory()
     fun addCategory(data: CategoryEntity) = categoryDAO.addCategory(data)
     fun addCategoryItem(data: ItemEntity) = itemDAO.addCategoryItem(data)
+    fun deleteItemOfCategory(itemOfCategory: ItemEntity) = itemDAO.deleteItemOfCategory(itemOfCategory)
+
+
     fun addListCategoryItem(listData: List<ItemEntity>) = itemDAO.addListCategoryItem(listData)
     fun getListCategoryComponentItem(categoryComponentId: Int) =
         itemDAO.getListCategoryComponentItem(categoryComponentId)

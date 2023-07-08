@@ -102,5 +102,16 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnUpdateItem"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="match_parent"
+        android:text="U\nP\nD\nA\nT\nE"
+        android:fontFamily="@font/inter_600"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_9sdp"
+        android:background="@drawable/bg_txt_login"
+        android:layout_marginHorizontal="@dimen/_5sdp"/>
+
 
 </LinearLayout>

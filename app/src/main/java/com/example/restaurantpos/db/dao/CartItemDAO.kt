@@ -48,7 +48,7 @@ interface CartItemDAO {
     Con số status có thể quyết định việc bỏ đi hoặc không á.
     */
     @Query(
-        "SELECT * FROM cart_item WHERE cart_item_status_id < 3  \n" +
+        "SELECT * FROM cart_item WHERE cart_item_status_id < 2  \n" +
                 "ORDER BY \n" +
                 "CASE WHEN :sortByTimeOfOrder = 0 THEN order_id END ASC, \n" +
                 "CASE WHEN :sortByTimeOfOrder = 1 THEN order_id END DESC"

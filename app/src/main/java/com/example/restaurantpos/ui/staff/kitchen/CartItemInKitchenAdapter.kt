@@ -55,6 +55,13 @@ class CartItemInKitchenAdapter(
         holder.txtOrderQuantity.text = cartItem.order_quantity.toString()
         holder.txtNote.text = cartItem.note
 
+//        when (cartItem.cart_item_status_id) {
+//            0 -> holder.txtCartItemStatus.setBackgroundColor(R.drawable.bg_status_red)
+//            1 -> holder.txtCartItemStatus.setBackgroundColor(R.drawable.bg_status_gray)
+//            2 -> holder.txtCartItemStatus.setBackgroundColor(R.drawable.bg_status_green)
+//            else -> holder.txtCartItemStatus.setBackgroundColor(R.drawable.bg_status_red)
+//        }
+
         holder.txtCartItemStatus.setOnClickListener {
             listenerClickCartItemInKitchen.clickCartItemStatus(cartItem)
         }
@@ -97,9 +104,17 @@ class CartItemInKitchenAdapter(
              else -> txtCartItemStatus.text = "In Process"*/
 
             // Xong là xong của Bếp
-            0 -> txtCartItemStatus.text = "Waiting"
-            1 -> txtCartItemStatus.text = "In Process"
-            2 -> txtCartItemStatus.text = "Done"
+            0 -> {
+                txtCartItemStatus.text = "Waiting"
+            }
+
+            1 -> {
+                txtCartItemStatus.text = "In Process"
+            }
+
+            2 -> {
+                txtCartItemStatus.text = "Done"
+            }
         }
     }
 

@@ -8,7 +8,7 @@
 
 
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imgCloseDialogAddItem"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
