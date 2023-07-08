@@ -169,12 +169,11 @@ class KitchenFragment : Fragment() {
                 }
             cartItemInKitchen.cart_item_status_id++
             viewModelCart.addCartItem(cartItemInKitchen)
-            viewModelCart.addCartItem(cartItemInKitchen)
             dialog.dismiss()
         }
 
         btnRevert.setOnClickListener {
-            cartItemInKitchen.cart_item_status_id = 1
+            cartItemInKitchen.cart_item_status_id--
             viewModelCart.addCartItem(cartItemInKitchen)
             dialog.dismiss()
         }
