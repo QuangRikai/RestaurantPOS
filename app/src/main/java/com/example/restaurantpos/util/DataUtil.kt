@@ -28,7 +28,6 @@ object DataUtil {
 
 
     /** I. For Shift Adapter */
-    // plus là cái quần què gì???
 
     val numberOfDayInAMonthOfNotLeapYear =
         listOf<Int>(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
@@ -36,57 +35,60 @@ object DataUtil {
         listOf<Int>(0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
     /** I.1　For　Plus */
+    // Ngày thì xét điều kiện sang tháng
     fun plusDayReturnDay(year: Int, month: Int, day: Int, plus: Int): Int {
         val nowPositionDay: Int = day + plus
 
         if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
-            // Đủ diều kiện sang tháng
-            if (nowPositionDay > numberOfDayInAMonthOfLeapYear[month]) {
-                return nowPositionDay - numberOfDayInAMonthOfLeapYear[month]
+            return if (nowPositionDay > numberOfDayInAMonthOfLeapYear[month]) {
+                nowPositionDay - numberOfDayInAMonthOfLeapYear[month]
             } else {
-                return nowPositionDay
+                nowPositionDay
             }
         } else {
-            if (nowPositionDay > numberOfDayInAMonthOfNotLeapYear[month]) {
-                return nowPositionDay - numberOfDayInAMonthOfNotLeapYear[month]
+            return if (nowPositionDay > numberOfDayInAMonthOfNotLeapYear[month]) {
+                nowPositionDay - numberOfDayInAMonthOfNotLeapYear[month]
             } else {
-                return nowPositionDay
+                nowPositionDay
             }
         }
     }
 
+    // Tháng thì xét điều kiện ngày đã lớn hơn max chưa
     fun plusDayReturnMonth(year: Int, month: Int, day: Int, plus: Int): Int {
         val nowPositionDay: Int = day + plus
 
-        if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+        return if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
             if (nowPositionDay > numberOfDayInAMonthOfLeapYear[month]) {
-                return month + 1
+                month + 1
             } else {
-                return month
+                month
             }
         } else {
             if (nowPositionDay > numberOfDayInAMonthOfNotLeapYear[month]) {
-                return month + 1
+                month + 1
             } else {
-                return month
+                month
             }
         }
     }
 
+    // Năm thì điều kiện của cả ngày và tháng. Rằng có phải là ngày tháng cuối năm chăng
     fun plusDayReturnYear(year: Int, month: Int, day: Int, plus: Int): Int {
+        // plus chính là position (từ 0 đến 6)
         val nowPositionDay: Int = day + plus
 
-        if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+        return if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
             if (nowPositionDay > numberOfDayInAMonthOfLeapYear[month] && month == 12) {
-                return year + 1
+                year + 1
             } else {
-                return year
+                year
             }
         } else {
             if (nowPositionDay > numberOfDayInAMonthOfNotLeapYear[month] && month == 12) {
-                return year + 1
+                year + 1
             } else {
-                return year
+                year
             }
         }
     }

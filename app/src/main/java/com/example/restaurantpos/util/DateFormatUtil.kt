@@ -32,7 +32,7 @@ object DateFormatUtil {
     }
 
     fun getShiftId(year: Int, month: Int, day: Int, shift: Int): String {
-        return "${year}/${month}/${day}_${shift}"
+        return "${year}/${month}/${day}  $shift"
     }
 
 

@@ -30,6 +30,7 @@ class ShiftAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var txtDay = itemView.findViewById<TextView>(R.id.txtDay)
+        var txtDayOfWeek = itemView.findViewById<TextView>(R.id.txtDayOfWeek)
         var txtMorningShift = itemView.findViewById<TextView>(R.id.txtMorningShift)
         var txtAfternoonShift = itemView.findViewById<TextView>(R.id.txtAfternoonShift)
         var txtNightShift = itemView.findViewById<TextView>(R.id.txtNightShift)
@@ -71,15 +72,34 @@ class ShiftAdapter(
         // Xíu nữa sẽ xử lý vấn đề tuần bắt đầu từ ngày bao nhiêu
 //        holder.txtDay.text = "${day + position}"
 
-        val day_i = DataUtil.plusDayReturnDay(year, month, day, position)
-        val month_i = DataUtil.plusDayReturnMonth(year, month, day, position)
-        val year_i = DataUtil.plusDayReturnYear(year, month, day, position)
+        val day_pos = DataUtil.plusDayReturnDay(year, month, day, position)
+        val month_pos = DataUtil.plusDayReturnMonth(year, month, day, position)
+        val year_pos = DataUtil.plusDayReturnYear(year, month, day, position)
 
-        holder.txtDay.text = "$month_i/$day_i"
+        // Này đang sai
+        holder.txtDay.text = "$month_pos/$day_pos"
+        // Này chuẩn
+        holder.txtDayOfWeek.text = when (position) {
+            0 -> "Mon"
+            1 -> "Tue"
+            2 -> "Wed"
+            3 -> "Thur"
+            4 -> "Fri"
+            5 -> "Sat"
+            6 -> "Sun"
+            else -> "Mon"
+        }
 
-        val morningShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 1)
-        val afternoonShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 2)
-        val nightShiftID = DateFormatUtil.getShiftId(year_i, month_i, day_i, 3)
+        /*
+        Shift_name
+        1: Morning
+        2: Afternoon
+        3: Night
+        */
+
+        val morningShiftID = DateFormatUtil.getShiftId(year_pos, month_pos, day_pos, 1)
+        val afternoonShiftID = DateFormatUtil.getShiftId(year_pos, month_pos, day_pos, 2)
+        val nightShiftID = DateFormatUtil.getShiftId(year_pos, month_pos, day_pos, 3)
 
         // Show Account Shift on Shift
         showMorningShift(holder.txtMorningShift, morningShiftID)
@@ -105,25 +125,26 @@ class ShiftAdapter(
     /**-----------------------------------------------------------------------------------------*/
     private fun showMorningShift(txtMorningShift: TextView, shiftID: String) {
         DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) { listAccountName ->
-            val listAccountNameShow = setListData(listAccountName)
-            txtMorningShift.text = listAccountNameShow.toString()
-            showInfo(txtMorningShift, listAccountNameShow as ArrayList<String>)
+//            val listAccountNameShow = setListData(listAccountName)
+//            txtMorningShift.text = listAccountNameShow.toString()
+
+            showInfo(txtMorningShift, listAccountName as ArrayList<String>)
         }
     }
 
     private fun showAfternoonShift(txtAfternoonShift: TextView, shiftID: String) {
         DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) { listAccountName ->
-            val listAccountNameShow = setListData(listAccountName)
-            txtAfternoonShift.text = listAccountNameShow.toString()
-            showInfo(txtAfternoonShift, listAccountNameShow as ArrayList<String>)
+//            val listAccountNameShow = setListData(listAccountName)
+//            txtAfternoonShift.text = listAccountNameShow.toString()
+            showInfo(txtAfternoonShift, listAccountName as ArrayList<String>)
         }
     }
 
     private fun showNightShift(txtNightShift: TextView, shiftID: String) {
         DatabaseUtil.getListAccountShift(shiftID).observe(lifecycleOwner) { listAccountName ->
-            val listAccountNameShow = setListData(listAccountName)
-            txtNightShift.text = listAccountNameShow.toString()
-            showInfo(txtNightShift, listAccountNameShow as ArrayList<String>)
+//            val listAccountNameShow = setListData(listAccountName)
+//            txtNightShift.text = listAccountNameShow.toString()
+            showInfo(txtNightShift, listAccountName as ArrayList<String>)
         }
     }
 
@@ -131,7 +152,7 @@ class ShiftAdapter(
     private fun showInfo(txtViewOfShift: TextView, listAccountName: ArrayList<String>) {
         var showOnShift = "・ "
         listAccountName.forEach { accountName ->
-            showOnShift += "$accountName\n ・ "
+            showOnShift += "$accountName\n ・"
         }
         txtViewOfShift.text = showOnShift
     }

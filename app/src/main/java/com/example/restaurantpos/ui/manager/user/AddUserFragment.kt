@@ -34,9 +34,7 @@ class AddUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /**
-         * Xử lý role trong spinner
-         */
+        /**  Xử lý role trong spinner  */
         handleUserRoleBySpinner()
 
         /**\

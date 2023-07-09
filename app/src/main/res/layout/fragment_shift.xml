@@ -38,7 +38,7 @@
 
 
         <ImageView
-            android:id="@+id/txtAddOrderItem"
+            android:id="@+id/txtAddAccountShift"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
             android:padding="@dimen/_8sdp"

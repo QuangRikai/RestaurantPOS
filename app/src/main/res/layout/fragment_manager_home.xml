@@ -10,26 +10,88 @@
         android:id="@+id/llApiWeather"
         android:layout_width="0dp"
         android:layout_height="@dimen/_150sdp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/llShift"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/llShift"
-        app:layout_constraintWidth_percent="0.5"
-        android:orientation="horizontal">
+        app:layout_constraintWidth_percent="0.5">
+
+
 
         <ImageView
             android:id="@+id/imgWeather"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            android:src="@drawable/ic_info"
-            android:textSize="@dimen/_35sdp"/>
+            android:src="@drawable/img_cake_coffee"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:textSize="@dimen/_35sdp" />
 
-
-        <TextView
-            android:id="@+id/txtTemp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/_35sdp"
-            android:text="Temp"/>
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="bottom">
+
+            <TextView
+                android:id="@+id/txtMinTemp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center"
+                android:text="0 " />
+
+            <TextView
+                android:id="@+id/txtTemp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center"
+                android:text="10" />
+
+            <TextView
+                android:id="@+id/txtMaxTemp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center"
+                android:text="20" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="bottom">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center"
+                android:text="Min" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center"
+                android:text="Now" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center"
+                android:text="Max" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -48,9 +110,10 @@
             android:id="@+id/btnShift"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_35sdp"
             android:background="@drawable/bg_txt_login"
-            android:text="ROSTER"/>
+            android:text="ROSTERs"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_25sdp" />
 
 
     </LinearLayout>
@@ -59,8 +122,9 @@
         android:id="@+id/llStatistic"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/bg_light_blue"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,9 +135,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/text_blue"
-            android:textSize="@dimen/_35sdp"
+            android:text="Revenue Statistic"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:textColor="@color/white"
-            android:text="Revenue Statistic"/>
+            android:textSize="@dimen/_35sdp" />
 
 
     </androidx.core.widget.NestedScrollView>

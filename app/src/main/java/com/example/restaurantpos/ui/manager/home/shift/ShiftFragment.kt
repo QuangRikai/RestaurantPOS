@@ -1,13 +1,16 @@
 package com.example.restaurantpos.ui.manager.home.shift
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -17,9 +20,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentShiftBinding
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.ui.manager.user.UserViewModel
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
+import com.example.restaurantpos.util.show
 import java.util.Calendar
 
 
@@ -34,11 +39,14 @@ class ShiftFragment : Fragment() {
 
     private var year = 2023
     private var month = 7
-    private var day = 3
+    private var day = 10
 
     // Add account_shift
     lateinit var dialog: AlertDialog
+    val calendar = Calendar.getInstance()
 
+    //  Xử lý role trong spinner
+    private var shiftName = 1
 
     private var staffObject: AccountEntity? = null
     override fun onCreateView(
@@ -62,11 +70,19 @@ class ShiftFragment : Fragment() {
             // Sao cứ phải làm việc khó khăn thế này. Xử lý bà nó trong Adapter luôn đi
             15-45:00
             */
-        /**---------------------------------------------------------------------------------------*/
 
+        /**---------------------------------------------------------------------------------------*/
+        // Code for add Account_Shift
+        binding.txtAddAccountShift.setOnClickListener {
+            showAddAccountShiftDialogTop()
+        }
+        /**---------------------------------------------------------------------------------------*/
         // Vừa vào là đã phải hiển thị NOW TIME (year + month + day) rồi nhé
         binding.txtDateInShift.text = "$year/$month"
+
+        // Trả về hôm nay, và các ngày tiếp theo được xử lý tự động
         day = getFirst()
+
 
         /** imgBack */
         binding.imgBack.setOnClickListener {
@@ -94,24 +110,124 @@ class ShiftFragment : Fragment() {
             object : ShiftAdapter.EventClickShiftListener {
                 override fun clickMorningShift(shift_id: String) {
                     if (SharedPreferencesUtils.getAccountRole() == 0) {
-                        showAddAccountShiftDialog(shift_id)
+                        viewModelShift.addAccountShift(
+                            AccountShiftEntity(0, shift_id, 2)
+                        )
+//                        showAddAccountShiftDialog(shift_id)
                     }
                 }
 
                 override fun clickAfternoonShift(shift_id: String) {
                     if (SharedPreferencesUtils.getAccountRole() == 0) {
-                        showAddAccountShiftDialog(shift_id)
+                        viewModelShift.addAccountShift(
+                            AccountShiftEntity(0, shift_id, 3)
+                        )
+//                        showAddAccountShiftDialog(shift_id)
                     }
                 }
 
                 override fun clickNightShift(shift_id: String) {
                     if (SharedPreferencesUtils.getAccountRole() == 0) {
-                        showAddAccountShiftDialog(shift_id)
+                        viewModelShift.addAccountShift(
+                            AccountShiftEntity(0, shift_id, 2)
+                        )
+//                        showAddAccountShiftDialog(shift_id)
                     }
                 }
             })
         binding.rcyShift.adapter = adapterShift
         /**---------------------------------------------------------------------------------------*/
+    }
+
+
+    /** Add Accouont_Shift Dialog- ON TOP*/
+    private val startYear = calendar.get(Calendar.YEAR)
+    private val startMonth = calendar.get(Calendar.MONTH)
+    private val startDay = calendar.get(Calendar.DAY_OF_MONTH)
+    private var accountID: Int = 0
+    private var shift_name: Int = 0
+    private var shiftID = ""
+
+    @SuppressLint("SetTextI18n")
+    private fun showAddAccountShiftDialogTop() {
+
+        // -----------------Prepare--------------------------------------------------//
+        // 1.  Build Dialog
+        // 2.  Designed XML --> View
+        // 3.  Set VIEW tra ve above --> Dialog
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_add_account_shift_on_top, null)
+        build.setView(view)
+        // 4.  Get Component of Dialog
+        val edtAccount = view.findViewById<EditText>(R.id.edtAccount)
+        val spnShift = view.findViewById<Spinner>(R.id.spnShift)
+        val txtShiftDate = view.findViewById<TextView>(R.id.txtShiftDate)
+        val txtError = view.findViewById<TextView>(R.id.txtError)
+
+        val imgClose = view.findViewById<ImageView>(R.id.imgClose)
+        val imgDate = view.findViewById<ImageView>(R.id.imgDate)
+
+        val btnAdd = view.findViewById<Button>(R.id.btnAdd)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+
+        /**  Xử lý role trong spinner  */
+        handleShiftNameBySpinner(spnShift)
+        // -----------------Code for Component----------------------------------------//
+        // 3. Pick-up-Date
+        imgDate.setOnClickListener {
+            DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    txtShiftDate.text = "$year/${1 + month}/$dayOfMonth"
+                },
+                startYear, startMonth, startDay
+            ).show()
+        }
+
+
+        // 4.  Add Account_Shift
+        btnAdd.setOnClickListener {
+            accountID = edtAccount?.text.toString().toIntOrNull() ?: 0
+            shiftID = txtShiftDate?.text.toString() + "  $shiftName"
+
+            if (txtShiftDate.text.isNotEmpty() && edtAccount.text.isNotEmpty() && accountID in 1..3) {
+                viewModelShift.addAccountShift(
+                    AccountShiftEntity(accountID, shiftID, shiftName)
+                )
+                dialog.dismiss()
+            } else {
+                txtError.show()
+            }
+
+        }
+
+        // Other:  Dau X  &   Cancel Button
+        imgClose.setOnClickListener { dialog.dismiss() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        // End: Tao Dialog (Khi khai bao chua thuc hien) and Show len display
+        dialog = build.create()
+        dialog.show()
+    }
+
+    /** handleShiftNameBySpinner */
+    private fun handleShiftNameBySpinner(spnShift: Spinner) {
+        val listShiftName = listOf("Morning", "Afternoon", "Night")
+
+        spnShift.adapter = ShiftSpinnerAdapter(requireActivity(), listShiftName)
+        spnShift.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                shiftName = position + 1
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
     }
 
     /** Add Accouont_Shift Dialog */
@@ -194,7 +310,8 @@ class ShiftFragment : Fragment() {
     }
 
     private fun backWeek() {
-        if (day <= 7) {
+        // Tính lại Năm, Tháng, ngày. Và Set lại data cho adapter
+        if (7 >= day) {
             if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
                 if (month == 1) {
                     month = 12
@@ -226,7 +343,7 @@ class ShiftFragment : Fragment() {
             if (now > DataUtil.numberOfDayInAMonthOfLeapYear[month]) {
                 day = now - DataUtil.numberOfDayInAMonthOfLeapYear[month]
                 if (month == 12) {
-                    month = 11
+                    month = 1
                     year += 1
                 } else {
                     month += 1
@@ -238,7 +355,7 @@ class ShiftFragment : Fragment() {
             if (now > DataUtil.numberOfDayInAMonthOfNotLeapYear[month]) {
                 day = now - DataUtil.numberOfDayInAMonthOfNotLeapYear[month]
                 if (month == 12) {
-                    month = 11
+                    month = 1
                     year += 1
                 } else {
                     month += 1
@@ -253,46 +370,42 @@ class ShiftFragment : Fragment() {
 
     /** getFirst --> Monday is ? */
     private fun getFirst(): Int {
-        // Tạo một đối tượng Calendar, khởi tạo với thời gian hiện tại của hệ thống
         val calendar = Calendar.getInstance()
-        // Trường DATE đại diện cho ngày trong tháng hiện tại.
-        val nowDay = calendar.get(Calendar.DATE) // Ngày 7/5
-        // Thứ trong tuần
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) // Thứ 4
-
-
+        val nowDay = calendar.get(Calendar.DATE)
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        // 1 là Chủ Nhật và 2 đến 7 là tương ứng
         // Xử lý để thứ 2 là ngày đầu tuần
-        // Hiện tại 1 là Chủ Nhật
+
         when (dayOfWeek) {
             1 -> {
-                return nowDay - 3
-            }
-
-            2 -> {
-                return nowDay - 4
-            }
-
-            3 -> {
-                return nowDay - 5
-            }
-
-            4 -> {
                 return nowDay - 6
             }
 
-            5 -> {
+            2 -> {
                 return nowDay
             }
 
-            6 -> {
+            3 -> {
                 return nowDay - 1
             }
 
-            7 -> {
+            4 -> {
                 return nowDay - 2
             }
 
+            5 -> {
+                return nowDay - 3
+            }
+
+            6 -> {
+                return nowDay - 4
+            }
+
+            7 -> {
+                return nowDay - 5
+            }
+
         }
-        return 3
+        return 1
     }
 }
