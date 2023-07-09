@@ -28,6 +28,10 @@ interface CartItemDAO {
     fun deleteCartItem(data: CartItemEntity): Int
 
     // Get ListOrder Of OrderedTable, By order_id (Bill)
+
+    @Query("SELECT * FROM `order`  JOIN cart_item  ON (`order`.order_id = cart_item .order_id) JOIN `table`  ON (`order`.table_id = `table`.table_id) WHERE `table`.table_id = :tableId AND `order`.order_status_id = 1")
+    fun getListCartItemByTableIdAndOrderStatus(tableId: Int): LiveData<MutableList<CartItemEntity>>
+
     @Query("SELECT * FROM cart_item WHERE order_id = :order_id")
     fun getListCartItemByOrderId(order_id: String): LiveData<MutableList<CartItemEntity>>
 

@@ -57,6 +57,7 @@ class ManagerCategoryComponentAdapter(
     /**
      * Khác nhau ở mớ này là nhiều
      */
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemCategory = listData[position]
 
@@ -64,7 +65,7 @@ class ManagerCategoryComponentAdapter(
         setImage( holder.imgCategoryItemImage, itemCategory.image)
 //       holder.imgCategoryItemImage.setImageBitmap(BitmapFactory.decodeFile(itemCategory.image))
         holder.txtItemName.text = itemCategory.item_name
-        holder.txtItemPrice.text = itemCategory.price.toString()
+        holder.txtItemPrice.text = String.format("%.1f", itemCategory.price) + " $"
         holder.txtItemInventoryQuantity.text = itemCategory.inventory_quantity.toString()
 
 

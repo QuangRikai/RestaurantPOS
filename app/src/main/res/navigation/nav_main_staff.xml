@@ -30,10 +30,9 @@
         tools:layout="@layout/fragment_new_order">
         <!-- Giải thích cho phần này-->
         <argument
-            android:name="data"
+            android:name="tableObject"
             android:defaultValue=""
             app:argType="string" />
-
 
         <argument
             android:name="orderNavigation"
@@ -49,9 +48,15 @@
 
         <!--Đáp ở đâu thì đặt argument ở đấy-->
         <argument
-            android:name="data"
+            android:name="tableObject"
             android:defaultValue=""
             app:argType="string" />
+
+        <argument
+            android:name="orderObject"
+            android:defaultValue=""
+            app:argType="string" />
+
         <action
             android:id="@+id/action_orderedTableFragment_to_addMoreOrderFragment2"
             app:destination="@id/addMoreOrderFragment" />
@@ -76,7 +81,7 @@
 
     <fragment
         android:id="@+id/addMoreOrderFragment"
-        android:name="com.example.restaurantpos.ui.staff.receptionist.order.AddMoreOrderFragment"
+        android:name="com.example.restaurantpos.ui.staff.receptionist.order.moreOrder.AddMoreOrderFragment"
         android:label="fragment_add_more_order"
         tools:layout="@layout/fragment_add_more_order">
 

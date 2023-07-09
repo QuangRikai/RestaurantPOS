@@ -45,10 +45,15 @@ class OldOrderFragment : Fragment() {
         // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
         viewModelCart = ViewModelProvider(this).get(CartViewModel::class.java)
         /** Xử lý Biến tableObject (data từ fragment trước) */
-        tableObject = TableEntity.toTableEntity(requireArguments().getString("data").toString())
+        tableObject = TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
         if (tableObject == null) {
             findNavController().popBackStack()
         }
+
+//        orderObject = OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
+//        if (orderObject == null) {
+//            findNavController().popBackStack()
+//        }
 
         return binding.root
     }
@@ -65,8 +70,9 @@ class OldOrderFragment : Fragment() {
             findNavController().navigate(
                 R.id.action_orderedTableFragment_to_addMoreOrderFragment2,
                 bundleOf(
-                    "tableObject" to tableObject?.toJson(),
-                    "orderObject" to orderObject?.toJson()
+                    "tableObject" to tableObject?.toJson()
+//                    ,
+//                    "orderObject" to orderObject?.toJson()
                 )
             )
         }
@@ -79,8 +85,9 @@ class OldOrderFragment : Fragment() {
             findNavController().navigate(
                 R.id.action_orderedTableFragment_to_checkoutFragment4,
                 bundleOf(
-                    "tableObject" to tableObject?.toJson(),
-                    "orderObject" to orderObject?.toJson()
+                    "tableObject" to tableObject?.toJson()
+//                    ,
+//                    "orderObject" to orderObject?.toJson()
                 )
             )
         }
@@ -122,15 +129,21 @@ class OldOrderFragment : Fragment() {
         tableObject?.let { table ->
             // Code cho tên Table
             binding.txtTableName.text = table.table_name
-            //Get table_id for using
-            viewModelCart.getOrderByTable(table.table_id).observe(viewLifecycleOwner) { order ->
+            viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
+                .observe(viewLifecycleOwner) { listCart ->
+                    listCartForDelete = listCart as ArrayList<CartItemEntity>
+                    adapterCartItemInOldOrder.setListData(listCart)
+                }
+
+        //Get table_id for using
+/*            viewModelCart.getOrderByTable(table.table_id).observe(viewLifecycleOwner) { order ->
                 orderObject = order
                 viewModelCart.getListCartItemByOrderId(order.order_id)
                     .observe(viewLifecycleOwner) { listCart ->
                         listCartForDelete = listCart as ArrayList<CartItemEntity>
                         adapterCartItemInOldOrder.setListData(listCart)
                     }
-            }
+            }*/
         }
 
     }

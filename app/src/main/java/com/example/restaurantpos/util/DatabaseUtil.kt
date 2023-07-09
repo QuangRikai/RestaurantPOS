@@ -1,6 +1,7 @@
 package com.example.restaurantpos.util
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.example.restaurantpos.db.dao.AccountDAO
 import com.example.restaurantpos.db.dao.AppDAO
 import com.example.restaurantpos.db.dao.CartItemDAO
@@ -105,6 +106,7 @@ object DatabaseUtil {
 
     fun deleteCart(data: CartItemEntity) = cartItemDAO.deleteCartItem(data)
     fun getListCartItemByOrderId(order_id: String) = cartItemDAO.getListCartItemByOrderId(order_id)
+    fun getListCartItemByTableIdAndOrderStatus(tableId: Int) = cartItemDAO.getListCartItemByTableIdAndOrderStatus(tableId)
     fun getListCartItemByTableId(table_id: Int) = cartItemDAO.getListCartItemByTableId(table_id)
 
     // 2 hàm dưới làm gì?

@@ -43,6 +43,7 @@ class CartViewModel : ViewModel() {
 
     fun getListCartItemByOrderId(orderId: String) = DatabaseUtil.getListCartItemByOrderId(orderId)
     fun getListCartItemByTableId(tableId: Int) = DatabaseUtil.getListCartItemByTableId(tableId)
+    fun getListCartItemByTableIdAndOrderStatus(tableId: Int) = DatabaseUtil.getListCartItemByTableIdAndOrderStatus(tableId)
 
     fun getListCartItemOnWaiting(orderId: String) = DatabaseUtil.getListCartItemOnWaiting(orderId)
 

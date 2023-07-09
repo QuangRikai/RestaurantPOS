@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/inter_500"
             android:gravity="center"
-            android:text="Shift Management"
+            android:text="Roster Management"
             android:textColor="@color/text_blue"
             android:textSize="@dimen/_15sdp" />
 

@@ -50,14 +50,14 @@ class ItemOfCategoryInBottomOfOrderFragmentAdapter(
 
 
     // Method 2: Bind Each Element in List RESOURCE DATA (OutData Format) ==> Element in designed Layout ==> Display in Screen
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemInCategory = listData[position]
         /** Đổ Data cho OrderItem */
         holder.imgCategoryItemImage.setImageBitmap(BitmapFactory.decodeFile(itemInCategory.image))
         holder.txtItemName.text = itemInCategory.item_name
-        holder.txtItemPrice.text = itemInCategory.price.toString()
+        holder.txtItemPrice.text = String.format("%.1f", itemInCategory.price) + " $"
         holder.txtItemInventoryQuantity.text = itemInCategory.inventory_quantity.toString()
 
         /** Add OrderItem to CART */

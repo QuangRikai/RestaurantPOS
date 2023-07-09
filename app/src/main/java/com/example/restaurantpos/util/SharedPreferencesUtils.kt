@@ -66,6 +66,19 @@ object SharedPreferencesUtils {
     fun getAccountId(): Int {
         return pref.getInt(Constant.ID, 0)
     }
+
+    /** Account Role */
+
+    @SuppressLint("CommitPrefEdits")
+    fun setAccountRole(data: Int) {
+        pref.edit().putInt(Constant.ID, data).apply()
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun getAccountRole(): Int {
+        return pref.getInt(Constant.ID, 0)
+    }
+
     /** Token */
     @SuppressLint("CommitPrefEdits")
     fun setToken(data: String) {

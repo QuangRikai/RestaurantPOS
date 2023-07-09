@@ -104,13 +104,13 @@ class TableFragment : Fragment(), TableAdapter.EventClickTableListener {
         if (table_status == 0) {
             findNavController().navigate(
                 R.id.action_tableFragment_to_orderFragment,
-                bundleOf("data" to itemTable.toJson())
+                bundleOf("tableObject" to itemTable.toJson())
             )
         }
         if (table_status == 2) {
             findNavController().navigate(
                 R.id.orderedTableFragment,
-                bundleOf("data" to itemTable.toJson())
+                bundleOf("tableObject" to itemTable.toJson())
             )
         }
     }

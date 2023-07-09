@@ -45,12 +45,14 @@ class LoginViewModel : ViewModel() {
                         SharedPreferencesUtils.setPassword(acc.password)*/
                         SharedPreferencesUtils.setAccountName(acc.account_name)
                         SharedPreferencesUtils.setAccountId(acc.account_id)
+                        SharedPreferencesUtils.setAccountRole(acc.role_id)
                         context.openActivity(MainManagerActivity::class.java)
                     }
 
                     1 -> {
                         SharedPreferencesUtils.setAccountName(acc.account_name)
                         SharedPreferencesUtils.setAccountId(acc.account_id)
+                        SharedPreferencesUtils.setAccountRole(acc.role_id)
                         context.openActivity(
                             MainReceptionistActivity::class.java,
                             bundleOf("NavigateByRole" to acc.role_id)
@@ -60,6 +62,7 @@ class LoginViewModel : ViewModel() {
                     2 -> {
                         SharedPreferencesUtils.setAccountName(acc.account_name)
                         SharedPreferencesUtils.setAccountId(acc.account_id)
+                        SharedPreferencesUtils.setAccountRole(acc.role_id)
                         context.openActivity(
                             MainReceptionistActivity::class.java,
                             bundleOf("NavigateByRole" to acc.role_id)

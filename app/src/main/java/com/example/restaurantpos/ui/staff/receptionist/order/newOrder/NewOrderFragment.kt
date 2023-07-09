@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -30,10 +29,6 @@ import com.example.restaurantpos.util.DateFormatUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
-import com.example.restaurantpos.util.showToast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class NewOrderFragment : Fragment() {
 
@@ -74,11 +69,10 @@ class NewOrderFragment : Fragment() {
         /** ----------------------------------------------------------------------------*/
         /** Xử lý Biến tableObject (data từ fragment trước) */
         // Chuyển TableEntity String thành 1 đối tượng để chuyển dữ liệu --> gán đối tượng này cho data
-        tableObject = TableEntity.toTableEntity(requireArguments().getString("data").toString())
+        tableObject = TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
         if (tableObject == null) {
             findNavController().popBackStack()
         }
-
 
 
         /** Tạo Đối Tượng ViewModel */
@@ -116,7 +110,7 @@ class NewOrderFragment : Fragment() {
                 0
             )
 
-// Vừa vào NewOrder là đã phải thay đổi trạng thái của bàn rồi. Tránh việc 2 bàn cùng order 1 lúc
+            // Vừa vào NewOrder là đã phải thay đổi trạng thái của bàn rồi. Tránh việc 2 bàn cùng order 1 lúc
             table.table_status_id = 1
             // Thêm bàn vào mà làm gì?
             viewModelTable.addTable(requireContext(), table)
@@ -151,8 +145,11 @@ class NewOrderFragment : Fragment() {
 
         /** Code for Order Button */
         binding.txtOrder.setOnClickListener {
-            // Add Order (Bill) vào OrderEntity
-            orderObject?.let { order -> viewModelCart.addOrder(order) }
+            // Add Order (Bill) vào OrderEntity, thay đôi status sang 1 (Đã được click order)
+            orderObject?.let { order ->
+                order.order_status_id = 1
+                viewModelCart.addOrder(order)
+            }
             // Add list Item_in_Cart into CartItemEntity. Lúc này mới viết vào Database!
             viewModelCart.addListCartItem(listCartItem)
             // Cập nhập trạng thái cho Table
@@ -207,14 +204,16 @@ class NewOrderFragment : Fragment() {
                         }
                     }
 
-                    // Đưa OrderItem --> Cart
+                    // Đưa OrderItem vừa Add vào --> Cart
                     listCartItem.add(
                         CartItemEntity(
                             0,
                             itemInCategory.item_id,
                             orderObject!!.order_id,
                             1,
+                            // Note thì xíu mới thêm
                             "",
+                            // 0: Waiting
                             0
                         )
                     )
@@ -390,6 +389,7 @@ class NewOrderFragment : Fragment() {
         dialog = build.create()
         dialog.show()
     }
+
     /** ----------------------------------------------------------*/
     // Set listData get được từ DB cho listData mà Adapter sử dụng, để đổ ra View.
     // Adapter:  CategoryInBottomOfOrderFragmentAdapter

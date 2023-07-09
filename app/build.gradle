@@ -80,6 +80,16 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.6.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.6.0"
 
+    // - - Retrofit2
+    def retrofit_version = "2.9.0"
+    def logging_version = "4.3.1"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$logging_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_version"
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
     // Gragh
 //    implementation 'com.github.PhilJay:MPAndroidChart:3.0.1'
 }

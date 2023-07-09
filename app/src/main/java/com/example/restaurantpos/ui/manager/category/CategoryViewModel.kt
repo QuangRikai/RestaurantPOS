@@ -35,6 +35,7 @@ class CategoryViewModel: ViewModel() {
 
 
     fun getAllCategory() = DatabaseUtil.getAllCategory()
+    fun getItemOfCategory(item_id: Int)  = DatabaseUtil.getItemOfCategory(item_id)
 
     fun getListCategoryComponentItem(categoryComponentId: Int) = DatabaseUtil.getListCategoryComponentItem(categoryComponentId)
 

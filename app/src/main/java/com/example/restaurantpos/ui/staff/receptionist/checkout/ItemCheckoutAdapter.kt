@@ -18,6 +18,8 @@ class ItemCheckoutAdapter(
     var lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<ItemCheckoutAdapter.ViewHolder>() {
 
+//    private var costOfItem = 0f;
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var txtNo: TextView = view.findViewById(R.id.txtNo)
         var txtItemName: TextView = view.findViewById(R.id.txtItemName)
@@ -49,6 +51,7 @@ class ItemCheckoutAdapter(
     }
 
 
+    @SuppressLint("SetTextI18n")
     fun showInfor(
         txtItemName: TextView,
         txtItemPrice: TextView,
@@ -58,8 +61,10 @@ class ItemCheckoutAdapter(
     ) {
         DatabaseUtil.getItemOfCategory(item_id).observe(lifecycleOwner) { listItem ->
             txtItemName.text = listItem[0].item_name
-            txtItemPrice.text = listItem[0].price.toString()
-            txtCost.text = (orderQuantity * listItem[0].price).toString()
+            txtItemPrice.text = String.format("%.1f", listItem[0].price) + " $"
+            txtCost.text = String.format("%.1f", (orderQuantity * listItem[0].price)) + " $"
+
+//            costOfItem = orderQuantity * listItem[0].price
         }
     }
 
@@ -67,10 +72,12 @@ class ItemCheckoutAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setListData(arr: ArrayList<CartItemEntity>) {
         listData.clear()
+//        costOfItem = 0f
         listData.addAll(arr)
         notifyDataSetChanged()
     }
 
+//    fun getCostOfItem() = costOfItem
     override fun getItemCount() = listData.size
 
 }

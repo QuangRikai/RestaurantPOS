@@ -51,8 +51,6 @@ data class OrderEntity constructor(
         }
     }
 
-
-
     fun toJson(): String {
         return Gson().toJson(this)
     }

@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.staff.receptionist.order
+package com.example.restaurantpos.ui.staff.receptionist.order.moreOrder
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,17 +19,21 @@ import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.manager.category.CategoryViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.newOrder.CartItemAdapter
 import com.example.restaurantpos.ui.staff.receptionist.order.newOrder.CategoryInBottomOfOrderFragmentAdapter
 import com.example.restaurantpos.ui.staff.receptionist.order.newOrder.ItemOfCategoryInBottomOfOrderFragmentAdapter
 import com.example.restaurantpos.ui.staff.receptionist.order.newOrder.NewOrderFragment
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
-import com.example.restaurantpos.util.showToast
+import com.example.restaurantpos.util.DateFormatUtil
+import com.example.restaurantpos.util.SharedPreferencesUtils
 
 
 class AddMoreOrderFragment : Fragment() {
 
     lateinit var binding: FragmentAddMoreOrderBinding
+
+    /** 3 Adapters */
     lateinit var adapterCategoryInBottomOfOrderFragment: CategoryInBottomOfOrderFragmentAdapter
     lateinit var adapterOrderItem: ItemOfCategoryInBottomOfOrderFragmentAdapter
     lateinit var adapterCartItem: CartItemAdapter
@@ -72,11 +76,11 @@ class AddMoreOrderFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        orderObject =
-            OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
-        if (orderObject == null) {
-            findNavController().popBackStack()
-        }
+//        orderObject =
+//            OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
+//        if (orderObject == null) {
+//            findNavController().popBackStack()
+//        }
 
         // Thằng này cần truyền sang 1 List<String>  --> Căng quá. Thay vì get từ Bếp, thì get từ order luôn.
         /*        listCartItem =
@@ -104,23 +108,35 @@ class AddMoreOrderFragment : Fragment() {
         tableObject?.let { table ->
             /** Code for Table's Name */
             binding.txtTableNameInOrderList.text = table.table_name
-
             // Xử lý cho Category View
             getListCategory(chooseCategory)
+
+            // Khi có Table (Đã click chọn Table) mới bắt đầu tạo Order
+            // Tạo trước 1 order default
+            orderObject = OrderEntity(
+                DateFormatUtil.getTimeForOrderId(),
+                0,
+                table.table_id,
+                SharedPreferencesUtils.getAccountId(),
+                DateFormatUtil.getTimeForOrderId(),
+                "",
+                0f,
+                0
+            )
 
 //            table.table_status = 1
 //            viewModelTable.addTable(requireContext(), table)
         }
 
         // 2. orderObject --> Lấy listCartItem from Order. Dùng ... Lọc ra những thằng của Table AND status Waiting.
-        orderObject?.let { order ->
+/*        orderObject?.let { order ->
             viewModelCart.getListCartItemOnWaiting(order.order_id)
                 .observe(viewLifecycleOwner) { listItem ->
 //                listCartItem.clear()
                     listCartItem.addAll(listItem)
                     adapterCartItem.setListData(listCartItem)
                 }
-        }
+        }*/
 
         /** Code for Back */
         binding.igmBackOfOrder.setOnClickListener {
@@ -146,14 +162,16 @@ class AddMoreOrderFragment : Fragment() {
         /** Code for Order Button */
         binding.txtOrder.setOnClickListener {
             // Add Order (Bill) vào OrderEntity
-            orderObject?.let { order -> viewModelCart.addOrder(order) }
+            orderObject?.let { order ->
+                order.order_status_id = 1
+                viewModelCart.addOrder(order) }
             // Add list Item_in_Cart into CartItemEntity. Lúc này mới viết vào Database!
             viewModelCart.addListCartItem(listCartItem)
             // Cập nhập trạng thái cho Table
             // Chú ý: 2 thằng không thể order cùng lúc cùng 1 cái bàn được
             /** ------------------------------????????-------------------------*/
-            tableObject?.table_status_id = 2
-            viewModelTable.addTable(requireContext(), tableObject!!)
+/*            tableObject?.table_status_id = 2
+            viewModelTable.addTable(requireContext(), tableObject!!)*/
 
             findNavController().popBackStack()
         }
@@ -199,7 +217,7 @@ class AddMoreOrderFragment : Fragment() {
                     }
 
                     // Đưa OrderItem --> Cart
-/*                    listCartItem.add(
+                    listCartItem.add(
                         CartItemEntity(
                             0,
                             itemInCategory.item_id,
@@ -208,7 +226,7 @@ class AddMoreOrderFragment : Fragment() {
                             "",
                             0
                         )
-                    )*/
+                    )
 
                     // Set Data (listCartItem) cho adapter --> Đổ lên View CartOrder
                     adapterCartItem.setListData(listCartItem)
