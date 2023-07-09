@@ -1,42 +1,61 @@
 package com.example.restaurantpos.ui.staff.receptionist.checkout
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Half.toFloat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentCheckoutBinding
 import com.example.restaurantpos.db.entity.CartItemEntity
+import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.manager.category.CategoryViewModel
+import com.example.restaurantpos.ui.manager.customer.CustomerViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
 import com.example.restaurantpos.util.DateFormatUtil
+import com.example.restaurantpos.util.gone
+import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
+import java.util.Calendar
 
 
 class CheckoutFragment : Fragment() {
-    lateinit var binding: FragmentCheckoutBinding
+    private lateinit var binding: FragmentCheckoutBinding
 
     /** ViewModel Object */
-    lateinit var viewModelCart: CartViewModel
-    lateinit var viewModelItem: CategoryViewModel
-    lateinit var viewModelTable: TableViewModel
+    private lateinit var viewModelCart: CartViewModel
+    private lateinit var viewModelItem: CategoryViewModel
+    private lateinit var viewModelTable: TableViewModel
+    private lateinit var viewModelCustomer: CustomerViewModel
 
-    lateinit var adapterItemCheckout: ItemCheckoutAdapter
+    private lateinit var adapterItemCheckout: ItemCheckoutAdapter
+    private lateinit var adapterCustomerInner: CustomerInnerAdapter
 
     // Tạo sẵn Object --> Xíu nữa hứng data get được. Từ database/fragment before
-    var tableObject: TableEntity? = null
-    var orderObject: OrderEntity? = null
+    private var tableObject: TableEntity? = null
+    private var orderObject: OrderEntity? = null
+    private var customerObject: CustomerEntity? = null
 
+    // Dialog cho Customer
+    lateinit var dialog: AlertDialog
+
+    val calendar = Calendar.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +65,7 @@ class CheckoutFragment : Fragment() {
         viewModelCart = ViewModelProvider(this).get(CartViewModel::class.java)
         viewModelItem = ViewModelProvider(this).get(CategoryViewModel::class.java)
         viewModelTable = ViewModelProvider(this).get(TableViewModel::class.java)
+        viewModelCustomer = ViewModelProvider(this).get(CustomerViewModel::class.java)
 
         return binding.root
     }
@@ -65,13 +85,13 @@ class CheckoutFragment : Fragment() {
             OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
         Log.d("Quanglt", "$orderObject")
 
-
         /** Handle Checkout */
         val tax = 0.1f
         var subTotal = 0.0f
         var billAmount = 0.0f
         var change = 0.0f
-        /** ---------------------------------------------------------- */
+
+        /** ----------------------------------------------------------------------------------*/
         binding.txtTax.text = "10 %"
 
         /** ----------------------------------------------------------------------------------*/
@@ -93,23 +113,18 @@ class CheckoutFragment : Fragment() {
                                 if (i == listCart.size - 1) {
                                     binding.txtSubTotal.text =
                                         String.format("%.1f", subTotal) + " $"
-                                    binding.txtBillAmount.text =
-                                        String.format("%.1f", (subTotal * (1 + tax))) + " $"
                                     binding.txtChange.text = "Invalid"
                                 }
                             }
                     }
 
                     /** 2. Bill Amount */
-                    binding.edtCoupon.doOnTextChanged { text, start, before, count ->
-                        if (text != null) {
-                            if (text.isEmpty()) {
-                                binding.edtCoupon.hint = "?"
-                                billAmount = subTotal * (1 + tax)
+                    binding.edtCoupon.doOnTextChanged { text1, _, _, _ ->
+                        if (text1 != null) {
+                            billAmount = if (text1.isEmpty()) {
+                                subTotal * (1 + tax)
                             } else {
-                                billAmount =
-                                    (subTotal * (1 - binding.edtCoupon.text.toString()
-                                        .toFloat() / 100)) * (1 + tax)
+                                (subTotal * (1 - text1.toString().toFloat() / 100)) * (1 + tax)
                             }
                             binding.txtBillAmount.text = String.format("%.1f", billAmount) + " $"
                         }
@@ -140,7 +155,6 @@ class CheckoutFragment : Fragment() {
         /** Code for CHECK OUT */
         binding.txtDone.setOnClickListener {
             if (binding.txtChange.text != "Invalid") {
-
                 orderObject?.order_status_id = 2
                 orderObject?.payment_amount = binding.edtCash.text.toString().toFloat()
                 orderObject?.paid_time = DateFormatUtil.getTimeForOrderId()
@@ -154,26 +168,10 @@ class CheckoutFragment : Fragment() {
                     viewModelTable.addTable(requireContext(), tableObject)
                 }
 
-                // Set ALL ORDER of TABLE Status into "Đã Thanh Toán" and update Status on Database
-
-/*                tableObject?.let { table ->
-                    viewModelCart.getListOrderOfTable(table.table_id)
-                        .observe(viewLifecycleOwner) { listOrder ->
-                            listOrder.forEach { order_i ->
-                                order_i.order_status_id = 2
-                                order_i.payment_amount = binding.edtCash.text.toString().toFloat()
-                                order_i.paid_time = DateFormatUtil.getTimeForOrderId()
-                                viewModelCart.addOrder(order_i)
-                            }
-                        }
-                }*/
-
-//                orderObject?.let { orderObject -> viewModelCart.addOrder(orderObject) }
-
                 // Xong thì trả về lại màn Table để order tiếp
                 findNavController().navigate(R.id.action_checkoutFragment_to_tableFragment2)
             } else {
-                context?.showToast("Customer has checked out?")
+                context?.showToast("Customer has paid?")
             }
         }
 
@@ -185,133 +183,118 @@ class CheckoutFragment : Fragment() {
         // 2. Dùng adapter vừa tạo cho View cần dùng
         binding.rcyItemInBill.adapter = adapterItemCheckout
 
-
+        /** Code for Customer TextView */
+        binding.txtCustomerInBill.setOnClickListener {
+            showDialogCustomer()
+        }
     }
-}
-/* @SuppressLint("SetTextI18n")
- override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-     super.onViewCreated(view, savedInstanceState)
-     */
-/** Handle Checkout *//*
-        val tax = 0.1f
-        var subTotal = 0.0f
-        var billAmount = 0.0f
-        var change = 0.0f
-        */
-/** ---------------------------------------------------------- *//*
-        binding.txtTax.text = "10 %"
 
-        */
-/** ----------------------------------------------------------------------------------*//*
-        tableObject?.let { table ->
-            viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
-                .observe(viewLifecycleOwner) { listCart ->
-                    Log.d("Quanglt", ("${listCart[0]}"))
-                    */
-/** 1. Sub Total *//*
-                    for (i in 1..listCart.size) {
-                        viewModelItem.getItemOfCategory(listCart[i - 1].item_id)
-                            .observe(viewLifecycleOwner) { listItem ->
-                                subTotal += ((listItem[0].price) * (listCart[i - 1].order_quantity))
-                            }
-                    }
-                    binding.txtSubTotal.text = String.format("%.1f", subTotal) + " $"
+    /** ----------------------------------------------------------*/
+    /** Add Customer Dialog */
 
-                    */
-/** 2. Bill Amount *//*
-                    binding.edtCoupon.doOnTextChanged { text, start, before, count ->
-                        if (text != null) {
-                            if (text.isEmpty()) {
-                                binding.edtCoupon.hint = "None"
-                                billAmount = subTotal * (1 - tax)
-                            } else {
-                                billAmount =
-                                    subTotal * (1 - tax) * (1 - binding.edtCoupon.text.toString()
-                                        .toFloat() / 100)
-                            }
+    val startYear = calendar.get(Calendar.YEAR) - 20
+    val startMonth = calendar.get(Calendar.MONTH) - 5
+    val startDay = calendar.get(Calendar.DAY_OF_MONTH) - 10
+    @SuppressLint("SetTextI18n")
+    private fun showDialogCustomer() {
+        // -----------------Prepare--------------------------------------------------//
+        // 1.  Build Dialog
+        // 2.  Designed XML --> View
+        // 3.  Set VIEW tra ve above --> Dialog
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_add_customer, null)
+        build.setView(view)
+        // 4.  Get Component of Dialog
+        val edtPhoneNumber = view.findViewById<EditText>(R.id.edtPhoneNumber)
+        val rcyCustomerInPhone = view.findViewById<RecyclerView>(R.id.rcyCustomerInPhone)
+        val edtCustomerName = view.findViewById<EditText>(R.id.edtCustomerName)
+        val txtCustomerBirthday = view.findViewById<TextView>(R.id.txtCustomerBirthday)
+        val btnAddCustomer = view.findViewById<Button>(R.id.btnAddCustomer)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+        val imgDate = view.findViewById<ImageView>(R.id.imgDate)
+        val imgCloseDialogCustomer = view.findViewById<ImageView>(R.id.imgCloseDialogCustomer)
+        // -----------------Code for Component----------------------------------------//
+        // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
+        adapterCustomerInner = CustomerInnerAdapter(requireParentFragment(), ArrayList(), object :
+            CustomerInnerAdapter.EventClickItemCustomerInnerListener {
+            override fun clickCustomerInner(itemCustomer: CustomerEntity) {
+                // Có sẵn thì pick-up ra thôi
+                customerObject = itemCustomer
+
+                /**???*/
+
+                /**???*/
+//                orderObject?.customer_id = itemCustomer.customer_id
+                // Tìm cách đưa Customer's Name lên NewOrderFragment
+                binding.txtCustomerInBill.text = itemCustomer.customer_name
+                dialog.dismiss()
+            }
+        })
+        rcyCustomerInPhone.adapter = adapterCustomerInner
+
+        // 2. Code for when staff types on edtPhoneNumber and contain >= 3 Chars. If exist --> Show for Picking-up
+        // SetData for (1)
+        edtPhoneNumber.doOnTextChanged { text, start, before, count ->
+            if (text.toString().length >= 3) {
+                viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
+                    .observe(viewLifecycleOwner) {
+                        if (it.size > 0) {
+                            adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
+                            rcyCustomerInPhone.show()
                         }
                     }
-                    binding.txtBillAmount.text = String.format("%.1f", billAmount) + " $"
-
-                    */
-/** 3. Change *//*
-                    binding.edtCash.doOnTextChanged { text, start, before, count ->
-                        if (text != null) {
-                            if (text.isEmpty() || text.toString()
-                                    .toFloat() < billAmount
-                            ) {
-                                binding.txtChange.text = "Invalid"
-                            } else {
-                                change = binding.edtCash.text.toString().toFloat() - billAmount
-                                binding.txtChange.text = String.format("%.1f", change) + " $"
-                            }
-                        }
-                    }
-
-                }
-        }
-        */
-/** ---------------------------------------------------------- *//*
-
-
-        */
-/** Code for Back *//*
-        binding.imgBack.setOnClickListener {
-            findNavController().popBackStack()
+            } else {
+                rcyCustomerInPhone.gone()
+            }
         }
 
-        */
-/** Code for DONE *//*
-        binding.txtDone.setOnClickListener {
-            // Set lại Table is Empty and update Status on Database
-            tableObject?.table_status_id = 0
-            tableObject?.let { tableObject ->
-                viewModelTable.addTable(requireContext(), tableObject)
+        // 3. Birthday
+        imgDate.setOnClickListener {
+            DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    txtCustomerBirthday.text = "$year/${1 + month}/$dayOfMonth"
+                },
+                startYear, startMonth, startDay
+            ).show()
+        }
+
+        // 4.  Add Customer
+        btnAddCustomer.setOnClickListener {
+            if (edtCustomerName.text.isEmpty() ||
+                edtPhoneNumber.text.isEmpty() ||
+                txtCustomerBirthday.text.isEmpty()
+            ) {
+                context?.showToast("Information must not be empty!")
+            } else {
+                viewModelCustomer.addCustomer(
+                    CustomerEntity(
+                        0,
+                        edtCustomerName.text.toString(),
+                        edtPhoneNumber.text.toString(),
+                        txtCustomerBirthday.text.toString()
+                    )
+                )
             }
 
 
-            // Set Bill's Status is "Đã Thanh Toán" and update Status on Database
-            orderObject?.order_status_id = 2
-            orderObject?.let { orderObject -> viewModelCart.addOrder(orderObject) }
-
-            // Xong thì trả về lại màn Table để order tiếp
-            findNavController().navigate(R.id.action_checkoutFragment_to_tableFragment2)
-        }
-
-        */
-/** ----------------------------------------------------------------------------------*//*
-        */
-/** Adapter BILL *//*
-        // Luôn nhìn từ setListData ra.
-        // 1. Tạo 1 adapter
-        adapterItemCheckout = ItemCheckoutAdapter(requireContext(), ArrayList(), viewLifecycleOwner)
-        // 2. Dùng adapter vừa tạo cho View cần dùng
-        binding.rcyItemInBill.adapter = adapterItemCheckout
-        // 3. Set data cho adapder chuyển đổi.
-        */
-/** Idea: Lấy ra tất cả cartItem của bàn*//*
-        // Okay đã lấy được nhưng nó lấy hết từ trước tới nay luôn ==> Tèo.
-        tableObject?.let { table ->
-            // Code cho tên Table
-            binding.txtTableName.text = table.table_name
-            viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
-                .observe(viewLifecycleOwner) { listCart ->
-                    adapterItemCheckout.setListData(listCart as ArrayList<CartItemEntity>)
-
+            viewModelCustomer.getListCustomerByPhoneForAdd(edtPhoneNumber.text.toString())
+                .observe(viewLifecycleOwner) { listCustomer ->
+                    if (listCustomer.size > 0) {
+                        customerObject = listCustomer[0]
+                        binding.txtCustomerInBill.text = listCustomer[0].customer_name
+                        dialog.dismiss()
+                    }
                 }
         }
 
-        //Get table_id for using
-        *//*            viewModelCart.getOrderByTable(table.table_id).observe(viewLifecycleOwner) { order ->
-                        orderObject = order
-                        viewModelCart.getListCartItemByTableId(order.table_id).observe(viewLifecycleOwner){listCart ->
-                            adapterItemCheckout.setListData(listCart as ArrayList<CartItemEntity>)
-                        }
-                    }*//*
 
+        // Other:  Dau X  &   Cancel Button
+        imgCloseDialogCustomer.setOnClickListener { dialog.dismiss() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
 
-        */
-/** ----------------------------------------------------------------------------------*//*
-
-
-    }*/
+        // End: Tao Dialog (Khi khai bao chua thuc hien) and Show len display
+        dialog = build.create()
+        dialog.show()
+    }
+}

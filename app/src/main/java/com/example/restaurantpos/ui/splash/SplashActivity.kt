@@ -120,9 +120,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         )
 
         /** 5. Customer  */
-        viewModel.addCustomer(CustomerEntity(1, "Quang 1", "08034931491", "19950302"))
-        viewModel.addCustomer(CustomerEntity(2, "Quang 2", "09034931492", "19950303"))
-        viewModel.addCustomer(CustomerEntity(3, "Quang 3", "07034931493", "19950304"))
+        viewModel.addCustomer(CustomerEntity(1, "Quang 1", "08034931491", "1995/03/02"))
+        viewModel.addCustomer(CustomerEntity(2, "Quang 2", "09034931492", "1995/03/03"))
+        viewModel.addCustomer(CustomerEntity(3, "Quang 3", "07034931493", "1995/03/04"))
 
         /** 6. Shift  */
 

@@ -1,5 +1,7 @@
 package com.example.restaurantpos.ui.staff.receptionist.order.newOrder
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +32,8 @@ import com.example.restaurantpos.util.DateFormatUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
+import com.example.restaurantpos.util.showToast
+import java.util.Calendar
 
 class NewOrderFragment : Fragment() {
 
@@ -62,6 +66,8 @@ class NewOrderFragment : Fragment() {
     // Dialog cho Customer
     lateinit var dialog: AlertDialog
 
+    val calendar = Calendar.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,7 +76,8 @@ class NewOrderFragment : Fragment() {
         /** ----------------------------------------------------------------------------*/
         /** Xử lý Biến tableObject (data từ fragment trước) */
         // Chuyển TableEntity String thành 1 đối tượng để chuyển dữ liệu --> gán đối tượng này cho data
-        tableObject = TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
+        tableObject =
+            TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
         if (tableObject == null) {
             findNavController().popBackStack()
         }
@@ -299,6 +306,11 @@ class NewOrderFragment : Fragment() {
 
     /** ----------------------------------------------------------*/
     /** Add Customer Dialog */
+
+    val startYear = calendar.get(Calendar.YEAR) - 20
+    val startMonth = calendar.get(Calendar.MONTH) - 5
+    val startDay = calendar.get(Calendar.DAY_OF_MONTH) - 10
+    @SuppressLint("SetTextI18n")
     private fun showDialogCustomer() {
         // -----------------Prepare--------------------------------------------------//
         // 1.  Build Dialog
@@ -311,25 +323,13 @@ class NewOrderFragment : Fragment() {
         val edtPhoneNumber = view.findViewById<EditText>(R.id.edtPhoneNumber)
         val rcyCustomerInPhone = view.findViewById<RecyclerView>(R.id.rcyCustomerInPhone)
         val edtCustomerName = view.findViewById<EditText>(R.id.edtCustomerName)
-        val edtCustomerBirthday = view.findViewById<EditText>(R.id.edtCustomerBirthday)
+        val txtCustomerBirthday = view.findViewById<TextView>(R.id.txtCustomerBirthday)
         val btnAddCustomer = view.findViewById<Button>(R.id.btnAddCustomer)
         val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+        val imgDate = view.findViewById<ImageView>(R.id.imgDate)
         val imgCloseDialogCustomer = view.findViewById<ImageView>(R.id.imgCloseDialogCustomer)
         // -----------------Code for Component----------------------------------------//
-        /*        */
-        /**???*//*
-        // 0.  Customer Info. Nếu Null thì không làm gì. Nếu get được thông tin đâu đó thì set vào.
-        // And Set Data for 1 if CAN do
-        customerObject?.let { customer ->
-            edtPhoneNumber.setText(customer.phone)
-            edtCustomerName.setText(customer.customer_name)
-            edtCustomerBirthday.setText(customer.birthday)
-            rcyCustomerInPhone.gone()
-        }*/
-        // -----------------Code for Component----------------------------------------//
         // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
-
-
         adapterCustomerInner = CustomerInnerAdapter(requireParentFragment(), ArrayList(), object :
             CustomerInnerAdapter.EventClickItemCustomerInnerListener {
             override fun clickCustomerInner(itemCustomer: CustomerEntity) {
@@ -361,17 +361,35 @@ class NewOrderFragment : Fragment() {
             }
         }
 
+        // 3. Birthday
+        imgDate.setOnClickListener {
+            DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    txtCustomerBirthday.text = "$year/${1 + month}/$dayOfMonth"
+                },
+                startYear, startMonth, startDay
+            ).show()
+        }
 
         // 4.  Add Customer
         btnAddCustomer.setOnClickListener {
-            viewModelCustomer.addCustomer(
-                CustomerEntity(
-                    0,
-                    edtCustomerName.text.toString(),
-                    edtPhoneNumber.text.toString(),
-                    edtCustomerBirthday.text.toString()
+            if (edtCustomerName.text.isEmpty() ||
+                edtPhoneNumber.text.isEmpty() ||
+                txtCustomerBirthday.text.isEmpty()
+            ) {
+                context?.showToast("Information must not be empty!")
+            } else {
+                viewModelCustomer.addCustomer(
+                    CustomerEntity(
+                        0,
+                        edtCustomerName.text.toString(),
+                        edtPhoneNumber.text.toString(),
+                        txtCustomerBirthday.text.toString()
+                    )
                 )
-            )
+            }
+
 
             viewModelCustomer.getListCustomerByPhoneForAdd(edtPhoneNumber.text.toString())
                 .observe(viewLifecycleOwner) { listCustomer ->

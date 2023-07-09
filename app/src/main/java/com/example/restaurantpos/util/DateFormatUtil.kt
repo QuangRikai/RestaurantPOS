@@ -12,7 +12,7 @@ object DateFormatUtil {
 
     @SuppressLint("SimpleDateFormat")
     fun convertStringToDate(data: String): Date? {
-        val dateFormat = SimpleDateFormat(formatNotContainDay)
+        val dateFormat = SimpleDateFormat(formatDate)
         return dateFormat.parse(data)
     }
 
