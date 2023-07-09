@@ -252,7 +252,7 @@
                         android:background="@drawable/bg_edt_login"
                         android:fontFamily="@font/inter_400"
                         android:gravity="right|center_vertical"
-                        android:hint="xxx"
+                        android:hint="none"
                         android:inputType="number"
                         android:paddingRight="@dimen/_10sdp"
                         android:textColor="@color/black"

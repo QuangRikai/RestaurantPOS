@@ -2,6 +2,7 @@ package com.example.restaurantpos.ui.staff.receptionist.checkout
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Half.toFloat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,8 @@ import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.manager.category.CategoryViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
+import com.example.restaurantpos.util.DateFormatUtil
+import com.example.restaurantpos.util.showToast
 
 
 class CheckoutFragment : Fragment() {
@@ -33,7 +36,6 @@ class CheckoutFragment : Fragment() {
     // Tạo sẵn Object --> Xíu nữa hứng data get được. Từ database/fragment before
     var tableObject: TableEntity? = null
     var orderObject: OrderEntity? = null
-    var listCartItem = ArrayList<CartItemEntity>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,20 +47,25 @@ class CheckoutFragment : Fragment() {
         viewModelItem = ViewModelProvider(this).get(CategoryViewModel::class.java)
         viewModelTable = ViewModelProvider(this).get(TableViewModel::class.java)
 
-        /** Xử lý đáp data từ fragment trước */
-        // Cần Table --> Chuyển Table về trạng thái Empty
-        // Cần Order --> Tính tiền cho Order đấy
-        tableObject =
-            TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
-        Log.d("Quanglt", "tableObject")
-        /*        orderObject =
-                    OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())*/
         return binding.root
     }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /** Xử lý đáp data từ fragment trước */
+        // Cần Table --> Chuyển Table về trạng thái Empty
+        // Cần Order --> Tính tiền cho Order đấy
+        tableObject =
+            TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
+        Log.d("Quanglt", "$tableObject")
+
+        orderObject =
+            OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
+        Log.d("Quanglt", "$orderObject")
+
+
         /** Handle Checkout */
         val tax = 0.1f
         var subTotal = 0.0f
@@ -97,7 +104,7 @@ class CheckoutFragment : Fragment() {
                     binding.edtCoupon.doOnTextChanged { text, start, before, count ->
                         if (text != null) {
                             if (text.isEmpty()) {
-                                binding.edtCoupon.hint = "None"
+                                binding.edtCoupon.hint = "?"
                                 billAmount = subTotal * (1 + tax)
                             } else {
                                 billAmount =
@@ -111,8 +118,8 @@ class CheckoutFragment : Fragment() {
                     /** 3. Change */
                     binding.edtCash.doOnTextChanged { text, start, before, count ->
                         if (text != null) {
-                            if (text.isEmpty() || text.toString()
-                                    .toFloat() < billAmount
+                            if (text.isEmpty() || (text.toString()
+                                    .toFloat() < billAmount)
                             ) {
                                 binding.txtChange.text = "Invalid"
                             } else {
@@ -130,20 +137,44 @@ class CheckoutFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        /** Code for DONE */
+        /** Code for CHECK OUT */
         binding.txtDone.setOnClickListener {
-            // Set lại Table is Empty and update Status on Database
-            tableObject?.table_status_id = 0
-            tableObject?.let { tableObject ->
-                viewModelTable.addTable(requireContext(), tableObject)
+            if (binding.txtChange.text != "Invalid") {
+
+                orderObject?.order_status_id = 2
+                orderObject?.payment_amount = binding.edtCash.text.toString().toFloat()
+                orderObject?.paid_time = DateFormatUtil.getTimeForOrderId()
+                orderObject?.let {
+                    viewModelCart.addOrder(it)
+                }
+
+                // Set lại Table is Empty and update Status on Database
+                tableObject?.table_status_id = 0
+                tableObject?.let { tableObject ->
+                    viewModelTable.addTable(requireContext(), tableObject)
+                }
+
+                // Set ALL ORDER of TABLE Status into "Đã Thanh Toán" and update Status on Database
+
+/*                tableObject?.let { table ->
+                    viewModelCart.getListOrderOfTable(table.table_id)
+                        .observe(viewLifecycleOwner) { listOrder ->
+                            listOrder.forEach { order_i ->
+                                order_i.order_status_id = 2
+                                order_i.payment_amount = binding.edtCash.text.toString().toFloat()
+                                order_i.paid_time = DateFormatUtil.getTimeForOrderId()
+                                viewModelCart.addOrder(order_i)
+                            }
+                        }
+                }*/
+
+//                orderObject?.let { orderObject -> viewModelCart.addOrder(orderObject) }
+
+                // Xong thì trả về lại màn Table để order tiếp
+                findNavController().navigate(R.id.action_checkoutFragment_to_tableFragment2)
+            } else {
+                context?.showToast("Customer has checked out?")
             }
-
-            // Set Bill's Status is "Đã Thanh Toán" and update Status on Database
-            orderObject?.order_status_id = 2
-            orderObject?.let { orderObject -> viewModelCart.addOrder(orderObject) }
-
-            // Xong thì trả về lại màn Table để order tiếp
-            findNavController().navigate(R.id.action_checkoutFragment_to_tableFragment2)
         }
 
         /** ----------------------------------------------------------------------------------*/
@@ -153,40 +184,31 @@ class CheckoutFragment : Fragment() {
         adapterItemCheckout = ItemCheckoutAdapter(requireContext(), ArrayList(), viewLifecycleOwner)
         // 2. Dùng adapter vừa tạo cho View cần dùng
         binding.rcyItemInBill.adapter = adapterItemCheckout
-        // 3. Set data cho adapter chuyển đổi.
 
-/*        tableObject?.let { table ->
-            // Code cho tên Table
-            binding.txtTableName.text = table.table_name
-            viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
-                .observe(viewLifecycleOwner) { listCart ->
-                    adapterItemCheckout.setListData(listCart as ArrayList<CartItemEntity>)
-                }
-        }*/
+
     }
-
-
-    /* @SuppressLint("SetTextI18n")
-     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-         super.onViewCreated(view, savedInstanceState)
-         */
-    /** Handle Checkout *//*
+}
+/* @SuppressLint("SetTextI18n")
+ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+     super.onViewCreated(view, savedInstanceState)
+     */
+/** Handle Checkout *//*
         val tax = 0.1f
         var subTotal = 0.0f
         var billAmount = 0.0f
         var change = 0.0f
         */
-    /** ---------------------------------------------------------- *//*
+/** ---------------------------------------------------------- *//*
         binding.txtTax.text = "10 %"
 
         */
-    /** ----------------------------------------------------------------------------------*//*
+/** ----------------------------------------------------------------------------------*//*
         tableObject?.let { table ->
             viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
                 .observe(viewLifecycleOwner) { listCart ->
                     Log.d("Quanglt", ("${listCart[0]}"))
                     */
-    /** 1. Sub Total *//*
+/** 1. Sub Total *//*
                     for (i in 1..listCart.size) {
                         viewModelItem.getItemOfCategory(listCart[i - 1].item_id)
                             .observe(viewLifecycleOwner) { listItem ->
@@ -196,7 +218,7 @@ class CheckoutFragment : Fragment() {
                     binding.txtSubTotal.text = String.format("%.1f", subTotal) + " $"
 
                     */
-    /** 2. Bill Amount *//*
+/** 2. Bill Amount *//*
                     binding.edtCoupon.doOnTextChanged { text, start, before, count ->
                         if (text != null) {
                             if (text.isEmpty()) {
@@ -212,7 +234,7 @@ class CheckoutFragment : Fragment() {
                     binding.txtBillAmount.text = String.format("%.1f", billAmount) + " $"
 
                     */
-    /** 3. Change *//*
+/** 3. Change *//*
                     binding.edtCash.doOnTextChanged { text, start, before, count ->
                         if (text != null) {
                             if (text.isEmpty() || text.toString()
@@ -229,17 +251,17 @@ class CheckoutFragment : Fragment() {
                 }
         }
         */
-    /** ---------------------------------------------------------- *//*
+/** ---------------------------------------------------------- *//*
 
 
         */
-    /** Code for Back *//*
+/** Code for Back *//*
         binding.imgBack.setOnClickListener {
             findNavController().popBackStack()
         }
 
         */
-    /** Code for DONE *//*
+/** Code for DONE *//*
         binding.txtDone.setOnClickListener {
             // Set lại Table is Empty and update Status on Database
             tableObject?.table_status_id = 0
@@ -257,9 +279,9 @@ class CheckoutFragment : Fragment() {
         }
 
         */
-    /** ----------------------------------------------------------------------------------*//*
+/** ----------------------------------------------------------------------------------*//*
         */
-    /** Adapter BILL *//*
+/** Adapter BILL *//*
         // Luôn nhìn từ setListData ra.
         // 1. Tạo 1 adapter
         adapterItemCheckout = ItemCheckoutAdapter(requireContext(), ArrayList(), viewLifecycleOwner)
@@ -267,7 +289,7 @@ class CheckoutFragment : Fragment() {
         binding.rcyItemInBill.adapter = adapterItemCheckout
         // 3. Set data cho adapder chuyển đổi.
         */
-    /** Idea: Lấy ra tất cả cartItem của bàn*//*
+/** Idea: Lấy ra tất cả cartItem của bàn*//*
         // Okay đã lấy được nhưng nó lấy hết từ trước tới nay luôn ==> Tèo.
         tableObject?.let { table ->
             // Code cho tên Table
@@ -289,8 +311,7 @@ class CheckoutFragment : Fragment() {
 
 
         */
-    /** ----------------------------------------------------------------------------------*//*
+/** ----------------------------------------------------------------------------------*//*
 
 
     }*/
-}

@@ -52,10 +52,6 @@
             android:defaultValue=""
             app:argType="string" />
 
-        <argument
-            android:name="orderObject"
-            android:defaultValue=""
-            app:argType="string" />
 
         <action
             android:id="@+id/action_orderedTableFragment_to_addMoreOrderFragment2"

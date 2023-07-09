@@ -33,7 +33,6 @@ class OldOrderFragment : Fragment() {
     // Xử lý lấy table_id --> Lấy ra Order của Table đấy
     var tableObject: TableEntity? = null
     var orderObject: OrderEntity? = null
-    var listCartItem = ArrayList<CartItemEntity>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,15 +44,11 @@ class OldOrderFragment : Fragment() {
         // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
         viewModelCart = ViewModelProvider(this).get(CartViewModel::class.java)
         /** Xử lý Biến tableObject (data từ fragment trước) */
-        tableObject = TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
+        tableObject =
+            TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
         if (tableObject == null) {
             findNavController().popBackStack()
         }
-
-//        orderObject = OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
-//        if (orderObject == null) {
-//            findNavController().popBackStack()
-//        }
 
         return binding.root
     }
@@ -70,9 +65,8 @@ class OldOrderFragment : Fragment() {
             findNavController().navigate(
                 R.id.action_orderedTableFragment_to_addMoreOrderFragment2,
                 bundleOf(
-                    "tableObject" to tableObject?.toJson()
-//                    ,
-//                    "orderObject" to orderObject?.toJson()
+                    "tableObject" to tableObject?.toJson(),
+                    "orderObject" to orderObject?.toJson()
                 )
             )
         }
@@ -85,9 +79,8 @@ class OldOrderFragment : Fragment() {
             findNavController().navigate(
                 R.id.action_orderedTableFragment_to_checkoutFragment4,
                 bundleOf(
-                    "tableObject" to tableObject?.toJson()
-//                    ,
-//                    "orderObject" to orderObject?.toJson()
+                    "tableObject" to tableObject?.toJson(),
+                    "orderObject" to orderObject?.toJson()
                 )
             )
         }
@@ -124,26 +117,23 @@ class OldOrderFragment : Fragment() {
         Click Table --> Mang theo Info của Table vào ---> Cần bundleOf (data)
          */
 
-        var listCartForDelete = ArrayList<CartItemEntity>()
         /** Handle data Object: tableEntity above*/
         tableObject?.let { table ->
             // Code cho tên Table
             binding.txtTableName.text = table.table_name
+
+            //Get order for sending to next fragment
+            viewModelCart.getOrderByTable(table.table_id)
+                .observe(viewLifecycleOwner) { order ->
+                    orderObject = order
+                }
+            //Get data for adapter
             viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
                 .observe(viewLifecycleOwner) { listCart ->
-                    listCartForDelete = listCart as ArrayList<CartItemEntity>
                     adapterCartItemInOldOrder.setListData(listCart)
                 }
 
-        //Get table_id for using
-/*            viewModelCart.getOrderByTable(table.table_id).observe(viewLifecycleOwner) { order ->
-                orderObject = order
-                viewModelCart.getListCartItemByOrderId(order.order_id)
-                    .observe(viewLifecycleOwner) { listCart ->
-                        listCartForDelete = listCart as ArrayList<CartItemEntity>
-                        adapterCartItemInOldOrder.setListData(listCart)
-                    }
-            }*/
+
         }
 
     }
@@ -169,13 +159,14 @@ class OldOrderFragment : Fragment() {
 
             tableObject?.let { table ->
                 //Get table_id for using getListCartItemByOrderId() --> setListData
-                viewModelCart.getOrderByTable(table.table_id).observe(viewLifecycleOwner) { order ->
-                    orderObject = order
-                    viewModelCart.getListCartItemByOrderId(order.order_id)
-                        .observe(viewLifecycleOwner) { listCart ->
-                            adapterCartItemInOldOrder.setListData(listCart)
-                        }
-                }
+                viewModelCart.getOrderByTable(table.table_id)
+                    .observe(viewLifecycleOwner) { order ->
+                        orderObject = order
+                        viewModelCart.getListCartItemByOrderId(order.order_id)
+                            .observe(viewLifecycleOwner) { listCart ->
+                                adapterCartItemInOldOrder.setListData(listCart)
+                            }
+                    }
             }
             dialog.dismiss()
         }

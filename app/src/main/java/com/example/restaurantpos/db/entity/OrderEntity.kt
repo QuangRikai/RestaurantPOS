@@ -30,10 +30,10 @@ data class OrderEntity constructor(
     val order_create_time: String,
 
     @ColumnInfo(name = "paid_time")
-    val paid_time: String,
+    var paid_time: String,
 
     @ColumnInfo(name = "payment_amount")
-    val payment_amount: Float,
+    var payment_amount: Float,
 
     @ColumnInfo(name = "order_status_id")
     var order_status_id: Int

@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -90,6 +91,32 @@ class NewOrderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /** Code for Back */
+        binding.igmBackOfOrder.setOnClickListener {
+            // Nếu là bàn Order thêm (status = 2) thì không làm gì
+            if (tableObject!!.table_status_id == 1) {
+                tableObject!!.table_status_id = 0
+            }
+            viewModelTable.addTable(requireContext(), tableObject!!)
+            findNavController().popBackStack()
+        }
+
+        /** Code for Search */
+        //Lọc listOrderItem theo Text và update lại listData cho adapter!
+        binding.edtSearchOrderItem.doOnTextChanged { text, start, before, count ->
+            if (text.toString().length > 1) {
+                searchItem(text.toString())
+            } else {
+                adapterOrderItem.setListData(listItemOfCategory)
+            }
+        }
+        /** Code for Clear Button */
+        binding.txtClear.setOnClickListener {
+            // Không dùng listCartItem.clear(). Tránh Crash
+            listCartItem = ArrayList()
+            adapterCartItem.setListData(listCartItem)
+        }
+        /** ----------------------------------------------------------------------------*/
         /** Handle data Object: tableEntity above*/
         tableObject?.let { table ->
             // Code cho tên Table
@@ -117,31 +144,7 @@ class NewOrderFragment : Fragment() {
 
         }
 
-        /** Code for Back */
-        binding.igmBackOfOrder.setOnClickListener {
-            // Nếu là bàn Order thêm (status = 2) thì không làm gì
-            if (tableObject!!.table_status_id == 1) {
-                tableObject!!.table_status_id = 0
-            }
-            viewModelTable.addTable(requireContext(), tableObject!!)
-            findNavController().popBackStack()
-        }
-
-        /** Code for Search */
-        //Lọc listOrderItem theo Text và update lại listData cho adapter!
-        binding.edtSearchOrderItem.doOnTextChanged { text, start, before, count ->
-            if (text.toString().length > 1) {
-                searchItem(text.toString())
-            } else {
-                adapterOrderItem.setListData(listItemOfCategory)
-            }
-        }
-        /** Code for Clear Button */
-        binding.txtClear.setOnClickListener {
-            // Không dùng listCartItem.clear(). Tránh Crash
-            listCartItem = ArrayList()
-            adapterCartItem.setListData(listCartItem)
-        }
+        /** ----------------------------------------------------------------------------*/
 
         /** Code for Order Button */
         binding.txtOrder.setOnClickListener {

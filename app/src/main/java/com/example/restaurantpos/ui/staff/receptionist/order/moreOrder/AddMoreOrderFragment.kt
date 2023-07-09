@@ -70,24 +70,18 @@ class AddMoreOrderFragment : Fragment() {
         binding = FragmentAddMoreOrderBinding.inflate(inflater, container, false)
         /** ----------------------------------------------------------------------------*/
         /** Đáp Data từ Fragment trước sang */
+        // Table
         tableObject =
             TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
         if (tableObject == null) {
             findNavController().popBackStack()
         }
-
-//        orderObject =
-//            OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
-//        if (orderObject == null) {
-//            findNavController().popBackStack()
-//        }
-
-        // Thằng này cần truyền sang 1 List<String>  --> Căng quá. Thay vì get từ Bếp, thì get từ order luôn.
-        /*        listCartItem =
-                    Gson().fromJson(requireArguments().getString("listCartItem").toString(), ArrayList<CartItemEntity>)
-                if (listCartItem == null) {
-                    findNavController().popBackStack()
-                }*/
+        // OldOrder
+        orderObject =
+            OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
+        if (orderObject == null) {
+            findNavController().popBackStack()
+        }
 
         /** Tạo Đối Tượng ViewModel */
         // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
@@ -102,42 +96,6 @@ class AddMoreOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /** Handle data Object: tableEntity above*/
-        // 1. tableObject
-        tableObject?.let { table ->
-            /** Code for Table's Name */
-            binding.txtTableNameInOrderList.text = table.table_name
-            // Xử lý cho Category View
-            getListCategory(chooseCategory)
-
-            // Khi có Table (Đã click chọn Table) mới bắt đầu tạo Order
-            // Tạo trước 1 order default
-            orderObject = OrderEntity(
-                DateFormatUtil.getTimeForOrderId(),
-                0,
-                table.table_id,
-                SharedPreferencesUtils.getAccountId(),
-                DateFormatUtil.getTimeForOrderId(),
-                "",
-                0f,
-                0
-            )
-
-//            table.table_status = 1
-//            viewModelTable.addTable(requireContext(), table)
-        }
-
-        // 2. orderObject --> Lấy listCartItem from Order. Dùng ... Lọc ra những thằng của Table AND status Waiting.
-/*        orderObject?.let { order ->
-            viewModelCart.getListCartItemOnWaiting(order.order_id)
-                .observe(viewLifecycleOwner) { listItem ->
-//                listCartItem.clear()
-                    listCartItem.addAll(listItem)
-                    adapterCartItem.setListData(listCartItem)
-                }
-        }*/
-
         /** Code for Back */
         binding.igmBackOfOrder.setOnClickListener {
             findNavController().popBackStack()
@@ -159,11 +117,48 @@ class AddMoreOrderFragment : Fragment() {
             adapterCartItem.setListData(listCartItem)
         }
 
+        /** ------------------------------------------------------------------ */
+
+        /** Handle data Object: tableEntity above*/
+        // 1. tableObject
+        tableObject?.let { table ->
+            binding.txtTableNameInOrderList.text = table.table_name
+
+            // Xử lý cho Category View
+            getListCategory(chooseCategory)
+
+            // Khi có Table (Đã click chọn Table) mới bắt đầu tạo Order
+            // Order này chỉ ở trạng thái 0 (Chưa place an order)
+
+/*            orderObject = OrderEntity(
+                DateFormatUtil.getTimeForOrderId(),
+                0,
+                table.table_id,
+                SharedPreferencesUtils.getAccountId(),
+                DateFormatUtil.getTimeForOrderId(),
+                "",
+                0f,
+                0
+            )*/
+
+//            table.table_status = 1
+//            viewModelTable.addTable(requireContext(), table)
+        }
+
+        // 2. orderObject --> Lấy listCartItem from Order. Dùng ... Lọc ra những thằng của Table AND status Waiting.
+/*        orderObject?.let { order ->
+            viewModelCart.getListCartItemOnWaiting(order.order_id)
+                .observe(viewLifecycleOwner) { listItem ->
+//                listCartItem.clear()
+                    listCartItem.addAll(listItem)
+                    adapterCartItem.setListData(listCartItem)
+                }
+        }*/
+        /** ------------------------------------------------------------------ */
         /** Code for Order Button */
         binding.txtOrder.setOnClickListener {
             // Add Order (Bill) vào OrderEntity
             orderObject?.let { order ->
-                order.order_status_id = 1
                 viewModelCart.addOrder(order) }
             // Add list Item_in_Cart into CartItemEntity. Lúc này mới viết vào Database!
             viewModelCart.addListCartItem(listCartItem)
