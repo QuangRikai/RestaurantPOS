@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -21,9 +22,12 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentShiftBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.AccountShiftEntity
+import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.ui.manager.user.UserViewModel
+import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
+import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
 import java.util.Calendar
 
@@ -170,9 +174,45 @@ class ShiftFragment : Fragment() {
         val btnAdd = view.findViewById<Button>(R.id.btnAdd)
         val btnCancel = view.findViewById<Button>(R.id.btnCancel)
 
-        /**  Xử lý role trong spinner  */
-        handleShiftNameBySpinner(spnShift)
+        val rcyAccountInner = view.findViewById<RecyclerView>(R.id.rcyAccountInner)
+
+
+
         // -----------------Code for Component----------------------------------------//
+        /** 1.  Xử lý role trong spinner  */
+        handleShiftNameBySpinner(spnShift)
+        /** 2.  Xử lý selectAccount and get account_id for account_shift */
+        // 2.1 Xử lý adpater cho rcyAccountInner
+        adapterStaffSelection = StaffSelectionAdapter(
+            requireParentFragment(),
+            ArrayList(),
+            object : StaffSelectionAdapter.EventClickStaffListener {
+                override fun clickStaff(itemStaff: AccountEntity) {
+                    staffObject = itemStaff
+                    edtAccount.setText(itemStaff.account_name)
+                    accountID = itemStaff.account_id
+                }
+            })
+        rcyAccountInner.adapter = adapterStaffSelection
+        // ------------------------------------------------------------
+        // 2.2 Xử lý doOnTextChanged cho accountName
+        edtAccount.doOnTextChanged { text3, _, _, _ ->
+            if (text3.toString().length >= 2) {
+                viewModelUser.getAllUserActiveByName(text3.toString())
+                    .observe(viewLifecycleOwner) {
+                        if (it.size > 0) {
+                            adapterStaffSelection.setListData(it as ArrayList<AccountEntity>)
+                            rcyAccountInner.show()
+                        }
+                    }
+            } else {
+                rcyAccountInner.gone()
+            }
+
+        }
+
+        /** ------------------------------------------------------------ */
+
         // 3. Pick-up-Date
         imgDate.setOnClickListener {
             DatePickerDialog(
@@ -187,10 +227,9 @@ class ShiftFragment : Fragment() {
 
         // 4.  Add Account_Shift
         btnAdd.setOnClickListener {
-            accountID = edtAccount?.text.toString().toIntOrNull() ?: 0
             shiftID = txtShiftDate?.text.toString() + "  $shiftName"
 
-            if (txtShiftDate.text.isNotEmpty() && edtAccount.text.isNotEmpty() && accountID in 1..3) {
+            if (txtShiftDate.text.isNotEmpty() && edtAccount.text.isNotEmpty() && accountID != 0) {
                 viewModelShift.addAccountShift(
                     AccountShiftEntity(0, shiftID, accountID)
                 )

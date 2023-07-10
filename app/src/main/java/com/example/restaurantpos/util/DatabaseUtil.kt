@@ -69,6 +69,10 @@ object DatabaseUtil {
     fun getAccountById(account_id: Int) = accountDAO.getAccountById(account_id)
     fun getAllUser() = accountDAO.getAllUser()
     fun getAllUserActive() = accountDAO.getAllUserActive()
+
+    // Phục vụ cho việc add account_shift
+    fun getAllUserActiveByName(name: String) =
+        accountDAO.getAllUserActiveByName("${name}%")
     fun getStaffByName(staffName: String) = accountDAO.getStaffByName("%${staffName}%")
 
     /** 2. CATEGORY && ITEM MANAGEMENT  */

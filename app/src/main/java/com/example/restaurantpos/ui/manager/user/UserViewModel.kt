@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 class UserViewModel : ViewModel() {
     fun getAllUser() = DatabaseUtil.getAllUser()
     fun getAllUserActive() = DatabaseUtil.getAllUserActive()
+    fun getAllUserActiveByName(name: String) = DatabaseUtil.getAllUserActiveByName(name)
 
     fun getAllUser(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {

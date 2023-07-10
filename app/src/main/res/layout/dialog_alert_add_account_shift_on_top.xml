@@ -58,14 +58,13 @@
         <EditText
             android:id="@+id/edtAccount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_25sdp"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/_18sdp"
             android:background="@drawable/bg_edt_login"
             android:fontFamily="@font/inter_400"
             android:gravity="left"
             android:hint="Quang"
-            android:inputType="number"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
             android:textSize="@dimen/_15sdp"
@@ -84,7 +83,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/llCustomerName"
         app:spanCount="1"
-        tools:listitem="@layout/item_customer_in_phone" />
+        tools:listitem="@layout/item_staff_selection" />
 
     <LinearLayout
         android:id="@+id/llItemPrice"
@@ -109,7 +108,7 @@
         <Spinner
             android:id="@+id/spnShift"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_25sdp"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/_18sdp"
             android:background="@drawable/bg_edt_login"
