@@ -107,10 +107,10 @@
             android:name="orderObject"
             android:defaultValue=""
             app:argType="string" />
-
         <action
-            android:id="@+id/action_checkoutFragment_to_tableFragment2"
-            app:destination="@id/tableFragment" />
+            android:id="@+id/action_checkoutFragment_to_checkoutDoneFragment"
+            app:destination="@id/checkoutDoneFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/shiftOfStaffFragment"
@@ -132,6 +132,15 @@
             android:name="updateStaffInfo"
             android:defaultValue="1"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutDoneFragment"
+        android:name="com.example.restaurantpos.ui.staff.receptionist.checkout.CheckoutDoneFragment"
+        android:label="fragment_checkout_done"
+        tools:layout="@layout/fragment_checkout_done" >
+        <action
+            android:id="@+id/action_checkoutDoneFragment_to_tableFragment"
+            app:destination="@id/tableFragment" />
     </fragment>
 
 </navigation>

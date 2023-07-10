@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -60,6 +61,13 @@ class ShiftOfStaffFragment : Fragment() {
         // Trả về hôm nay, và các ngày tiếp theo được xử lý tự động
         day = getFirst()
 
+        /** Device's Back Button*/
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         /** imgBack */
         binding.imgBack.setOnClickListener {

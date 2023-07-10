@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -146,6 +147,13 @@ class CheckoutFragment : Fragment() {
                 }
         }
         /** ---------------------------------------------------------- */
+        /** Device's Back Button*/
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         /** Code for Back */
         binding.imgBack.setOnClickListener {
@@ -169,7 +177,7 @@ class CheckoutFragment : Fragment() {
                 }
 
                 // Xong thì trả về lại màn Table để order tiếp
-                findNavController().navigate(R.id.action_checkoutFragment_to_tableFragment2)
+                findNavController().navigate(R.id.action_checkoutFragment_to_checkoutDoneFragment)
             } else {
                 context?.showToast("Customer has paid?")
             }
