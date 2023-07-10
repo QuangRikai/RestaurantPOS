@@ -113,7 +113,7 @@ class CheckoutFragment : Fragment() {
                                 if (i == listCart.size - 1) {
                                     binding.txtSubTotal.text =
                                         String.format("%.1f", subTotal) + " $"
-                                    binding.txtChange.text = "Invalid"
+                                    binding.txtChange.text = "0.0 $"
                                 }
                             }
                     }
@@ -136,7 +136,7 @@ class CheckoutFragment : Fragment() {
                             if (text.isEmpty() || (text.toString()
                                     .toFloat() < billAmount)
                             ) {
-                                binding.txtChange.text = "Invalid"
+                                binding.txtChange.text = "0.0 $"
                             } else {
                                 change = binding.edtCash.text.toString().toFloat() - billAmount
                                 binding.txtChange.text = String.format("%.1f", change) + " $"
