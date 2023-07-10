@@ -52,9 +52,9 @@
         app:layout_constraintTop_toBottomOf="@+id/txtEditUser" />
 
     <TextView
-        android:layout_width="@dimen/_25sdp"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/_30sdp"
-        android:text="ID: "
+        android:text="Username: "
         android:textColor="@color/white"
         android:gravity="center"
         android:fontFamily="@font/inter_600"

@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
             android:fontFamily="@font/inter_600"
-            android:text="@string/user_s_name"
+            android:text="Staff's Name"
             android:textColor="@color/text_blue"
             android:textSize="@dimen/_14sdp" />
 

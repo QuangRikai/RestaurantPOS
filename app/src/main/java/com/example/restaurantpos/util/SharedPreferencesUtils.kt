@@ -71,15 +71,15 @@ object SharedPreferencesUtils {
 
     @SuppressLint("CommitPrefEdits")
     fun setAccountRole(data: Int) {
-        pref.edit().putInt(Constant.ID, data).apply()
+        pref.edit().putInt(Constant.ROLE_ID, data).apply()
     }
 
     @SuppressLint("CommitPrefEdits")
     fun getAccountRole(): Int {
-        return pref.getInt(Constant.ID, 0)
+        return pref.getInt(Constant.ROLE_ID, 0)
     }
 
-    /** Token */
+/*    *//** Token *//*
     @SuppressLint("CommitPrefEdits")
     fun setToken(data: String) {
         pref.edit().putString(Constant.ID, data).apply()
@@ -88,7 +88,7 @@ object SharedPreferencesUtils {
     @SuppressLint("CommitPrefEdits")
     fun getToken(): String {
         return pref.getString(Constant.ID, "").toString()
-    }
+    }*/
 
 
 }

@@ -44,30 +44,33 @@ class UpdateAccountInfoActivity : AppCompatActivity() {
         val accountId: Int = SharedPreferencesUtils.getAccountId()
         viewModel.getAccountById(accountId)
             .observe(this) { admin: MutableList<AccountEntity> ->
-                binding.edtAdminName.hint = admin[0].account_name
-                binding.edtUserName.hint = admin[0].user_name
-                /** Update Button */
-                binding.txtUpdate.setOnClickListener {
-                    if (binding.edtAdminName.text.toString() != "") {
-                        admin[0].account_name = binding.edtAdminName.text.toString()
-                    }
+                if (admin.isNotEmpty()) {
+                    binding.edtAdminName.hint = admin[0].account_name
+                    binding.edtUserName.hint = admin[0].user_name
+                    /** Update Button */
+                    binding.txtUpdate.setOnClickListener {
+                        if (binding.edtAdminName.text.toString() != "") {
+                            admin[0].account_name = binding.edtAdminName.text.toString()
+                        }
 
-                    if (binding.edtUserName.text.toString() != "") {
-                        admin[0].user_name = binding.edtUserName.text.toString()
-                    }
+                        if (binding.edtUserName.text.toString() != "") {
+                            admin[0].user_name = binding.edtUserName.text.toString()
+                        }
 
-                    if (binding.edtPassword.text.toString() != "") {
-                        admin[0].password = DataUtil.convertToMD5(binding.edtPassword.text.toString())
-                    }
+                        if (binding.edtPassword.text.toString() != "") {
+                            admin[0].password =
+                                DataUtil.convertToMD5(binding.edtPassword.text.toString())
+                        }
 
-                    viewModel.addUser(this, admin[0])
-                    backToManager()
+                        viewModel.addUser(this@UpdateAccountInfoActivity, admin[0])
+                        backToManager()
+                    }
                 }
             }
     }
 
     private fun backToManager() {
-        openActivity(MainManagerActivity::class.java)
+        openActivity(MainManagerActivity::class.java, true)
     }
 }
 

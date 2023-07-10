@@ -110,27 +110,27 @@ class ShiftFragment : Fragment() {
             object : ShiftAdapter.EventClickShiftListener {
                 override fun clickMorningShift(shift_id: String) {
                     if (SharedPreferencesUtils.getAccountRole() == 0) {
-                        viewModelShift.addAccountShift(
-                            AccountShiftEntity(0, shift_id, 2)
-                        )
+//                        viewModelShift.addAccountShift(
+//                            AccountShiftEntity(0, shift_id, 2)
+//                        )
 //                        showAddAccountShiftDialog(shift_id)
                     }
                 }
 
                 override fun clickAfternoonShift(shift_id: String) {
                     if (SharedPreferencesUtils.getAccountRole() == 0) {
-                        viewModelShift.addAccountShift(
-                            AccountShiftEntity(0, shift_id, 3)
-                        )
+//                        viewModelShift.addAccountShift(
+//                            AccountShiftEntity(0, shift_id, 3)
+//                        )
 //                        showAddAccountShiftDialog(shift_id)
                     }
                 }
 
                 override fun clickNightShift(shift_id: String) {
                     if (SharedPreferencesUtils.getAccountRole() == 0) {
-                        viewModelShift.addAccountShift(
-                            AccountShiftEntity(0, shift_id, 2)
-                        )
+//                        viewModelShift.addAccountShift(
+//                            AccountShiftEntity(0, shift_id, 2)
+//                        )
 //                        showAddAccountShiftDialog(shift_id)
                     }
                 }
@@ -192,13 +192,12 @@ class ShiftFragment : Fragment() {
 
             if (txtShiftDate.text.isNotEmpty() && edtAccount.text.isNotEmpty() && accountID in 1..3) {
                 viewModelShift.addAccountShift(
-                    AccountShiftEntity(accountID, shiftID, shiftName)
+                    AccountShiftEntity(0, shiftID, accountID)
                 )
                 dialog.dismiss()
             } else {
                 txtError.show()
             }
-
         }
 
         // Other:  Dau X  &   Cancel Button

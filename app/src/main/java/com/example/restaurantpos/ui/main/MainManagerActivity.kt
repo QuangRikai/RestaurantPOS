@@ -35,7 +35,6 @@ class MainManagerActivity : AppCompatActivity() {
         // 1. Get Account's Name
         binding.txtLoginAccountName.text = SharedPreferencesUtils.getAccountName()
 
-
 //        accountObject = AccountEntity.toAccount(requireArguments("accountObject").toString())
         /** 2. Handle popupMenu in Top-Right */
         binding.imgMenuToolBar.setOnClickListener { imgMenu ->
@@ -51,7 +50,7 @@ class MainManagerActivity : AppCompatActivity() {
 
                     // Logout
                     R.id.menu_update_info -> {
-                        openActivity(UpdateAccountInfoActivity::class.java )
+                        openActivity(UpdateAccountInfoActivity::class.java)
                         true
                     }
 

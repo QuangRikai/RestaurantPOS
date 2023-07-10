@@ -5,15 +5,12 @@ import android.content.Context
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
-import com.example.restaurantpos.R
-import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 import com.example.restaurantpos.ui.main.MainManagerActivity
 import com.example.restaurantpos.ui.main.MainReceptionistActivity
 import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 import com.example.restaurantpos.util.show
-import com.example.restaurantpos.util.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,18 +18,11 @@ import kotlinx.coroutines.launch
 class LoginViewModel : ViewModel() {
     //    private val view: MutableLiveData<View> = MutableLiveData()
 
-    fun checkLoginAccountDAO(userName: String, password: String) =
-        CoroutineScope(Dispatchers.IO).launch {
-            DatabaseUtil.checkLogin(userName, password)
-        }
-
-
     @SuppressLint("StaticFieldLeak")
     fun checkLogin(context: Context, textView: TextView, userName: String, password: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val loginAccountList =
-                PosRoomDatabase.getInstance(context).accountDAO().checkLogin(userName, password)
-            if (loginAccountList.size < 1) {
+            val loginAccountList = DatabaseUtil.checkLogin(userName, password)
+            if (loginAccountList.isEmpty()) {
                 CoroutineScope(Dispatchers.Main).launch {
                     textView.text = "Username or password is wrong!"
                     textView.show()

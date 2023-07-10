@@ -194,6 +194,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         dialog.show()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showDeleteItemDialog(itemOfCategory: ItemEntity) {
         val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
         val view = layoutInflater.inflate(R.layout.dialog_alert_delete_category_item, null)
@@ -208,7 +209,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         imgClose.setOnClickListener { dialog.dismiss() }
         btnNo.setOnClickListener { dialog.dismiss() }
-        txtDeleteItem.text = "Delete " + itemOfCategory.item_name
+        txtDeleteItem.text = "Delete " + itemOfCategory.item_name + "?"
 
 
         btnYes.setOnClickListener {

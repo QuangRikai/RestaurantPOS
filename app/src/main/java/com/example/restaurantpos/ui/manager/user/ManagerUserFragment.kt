@@ -69,36 +69,43 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
         txtUserName.text = itemUser.user_name
 
         // 5.  Handle Lock
-        txtLock?.setOnClickListener {
-            itemUser.account_status_id = false
-            requireContext().showToast("${itemUser.account_name} was locked ")
-            itemUser.account_name = "(Locked) " + itemUser.account_name
-            viewModel.addUser(requireContext(),itemUser)
-            viewModel.getAllUser().observe(viewLifecycleOwner){
-                adapter.setListData(it)
-            }
-
-            dialog.dismiss()
-        }
-        // 6.  Handle Lock
         txtResetPassword?.setOnClickListener {
             itemUser.password = DataUtil.convertToMD5("123")
             requireContext().showToast("Password was changed  into 123")
-            viewModel.addUser(requireContext(),itemUser)
+            viewModel.addUser(requireContext(), itemUser)
             dialog.dismiss()
         }
 
-        // 5.  Handle UnLock
-        txtUnlock?.setOnClickListener {
-            itemUser.account_status_id = true
-            itemUser.account_name =itemUser.account_name.substring(8)
-            viewModel.addUser(requireContext(),itemUser)
-
-            requireContext().showToast("${itemUser.account_name} was unlocked")
-            viewModel.getAllUser().observe(viewLifecycleOwner){
-                adapter.setListData(it)
+        // 6.  Handle Lock
+        txtLock?.setOnClickListener {
+            if (itemUser.account_status_id) {
+                itemUser.account_status_id = false
+                requireContext().showToast("${itemUser.account_name} was locked!")
+                itemUser.account_name = "(Locked) " + itemUser.account_name
+                viewModel.addUser(requireContext(), itemUser)
+                viewModel.getAllUser().observe(viewLifecycleOwner) {
+                    adapter.setListData(it)
+                }
+            }else{
+                context?.showToast("This account was already locked!")
             }
+            dialog.dismiss()
+        }
 
+        // 7.  Handle UnLock
+        txtUnlock?.setOnClickListener {
+            if (itemUser.account_status_id) {
+                itemUser.account_status_id = true
+                itemUser.account_name = itemUser.account_name.substring(8)
+                viewModel.addUser(requireContext(), itemUser)
+
+                requireContext().showToast("${itemUser.account_name} was unlocked!")
+                viewModel.getAllUser().observe(viewLifecycleOwner) {
+                    adapter.setListData(it)
+                }
+            }else{
+                context?.showToast("This account is active now!")
+            }
             dialog.dismiss()
         }
 

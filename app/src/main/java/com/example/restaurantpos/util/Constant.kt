@@ -5,4 +5,5 @@ object Constant {
     const val PASSWORD = "password"
     const val NAME = "name"
     const val ID = "id"
+    const val ROLE_ID = "role_id"
 }
