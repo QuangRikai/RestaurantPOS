@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/inter_500"
             android:gravity="center"
-            android:text="Shift Management"
+            android:text="Revenue Statistic"
             android:textColor="@color/text_blue"
             android:textSize="@dimen/_15sdp" />
 
@@ -42,6 +42,7 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
             android:padding="@dimen/_8sdp"
+            android:visibility="invisible"
             android:src="@drawable/img_checkout"
             app:tint="@color/text_blue" />
 
@@ -51,10 +52,114 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
             android:padding="@dimen/_8sdp"
+            android:visibility="invisible"
             android:src="@drawable/img_add_circle"
             app:tint="@color/text_blue" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/inter_500"
+            android:gravity="center"
+            android:text="Time:"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Week"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_600"
+            android:background="@drawable/bg_txt_login"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Month"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_600"
+            android:background="@drawable/bg_txt_login"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Year"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_600"
+            android:background="@drawable/bg_txt_login"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/inter_500"
+            android:gravity="center"
+            android:text="Category:"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Foods"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_600"
+            android:background="@drawable/bg_txt_login"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Drinks"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_600"
+            android:background="@drawable/bg_txt_login"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Desserts"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_600"
+            android:background="@drawable/bg_txt_login"/>
+
+
+    </LinearLayout>
+
+
 
     <View
         android:layout_width="match_parent"
@@ -86,7 +191,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcyStatistic"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_400sdp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
         android:scrollbars="none"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

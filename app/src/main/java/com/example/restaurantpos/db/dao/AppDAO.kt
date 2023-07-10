@@ -6,6 +6,21 @@ import androidx.room.Query
 @Dao
 interface AppDAO {
 
+    //Get Doanh thu
+
+    //Doanh thu theo ngày, của TOÀN BỘ: 2023/07/11 -> 2023 (của năm), 2023/07 (của tháng), 2023/07/11 (của ngày) ==> Tùy time truyền vào là lụm ra filter ưng ý
+    @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM `order` JOIN cart_item ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id   WHERE `order`.order_create_time LIKE :time")
+    fun getRevenueOfDay(time: String): Float
+
+    //Doanh thu theo ngày, của Item: Đưa vào Item và ngày rồi lọc ra
+    // 2023/07/11-> 2023/07/11 (time --> Dùng LIKE)
+    // Lọc ra Doanh thu (Order) theo ngày (Order Time)
+    // Cart chứa toàn bộ món ăn đã được order  ==> Lọc ra THẰNG ITEM mà mình muốn thống kê
+    // Join tiếp với item để lấy giá ra.
+    @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM `order` Join cart_item ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id  WHERE cart_item.item_id = :id_item AND `order`.order_create_time LIKE :time")
+    fun getRevenueOfDayOfItem(id_item: Int, time: String): Float
+
+
     /** Join Table (Select) */
     // ON: Điều kiện Join --> Nhìn giữa 2 thằng xem thằng nào bằng thằng nào.
     // Không cần when nữa.
@@ -34,11 +49,10 @@ interface AppDAO {
     // Vậy việc gộp này để lưu dữ liệu lại, khi cần thì export file ra, hay gì đó thôi
     // Data Class dùng để hứng từ CSDL và Call Database
 
-/*
-    @Query("SELECT * FROM `order` JOIN `table` ON `order`.table_id = `table`.table_id")
-    fun getAllMeme(): MutableList<TableOrderEntity>
-*/
-
+    /*
+        @Query("SELECT * FROM `order` JOIN `table` ON `order`.table_id = `table`.table_id")
+        fun getAllMeme(): MutableList<TableOrderEntity>
+    */
 
 
     /*

@@ -118,31 +118,31 @@
 
     </LinearLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/llStatistic"
+    <TextView
+        android:id="@+id/txtStatistic"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_gravity="top"
+        android:background="@color/text_blue"
+        android:gravity="center"
+        android:text="Revenue Statistic"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_35sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llApiWeather" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:background="@color/bg_light_blue"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llShift">
-
-        <TextView
-            android:id="@+id/txtStatistic"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/text_blue"
-            android:text="Revenue Statistic"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_35sdp" />
+        app:layout_constraintTop_toBottomOf="@+id/txtStatistic" />
 
 
-    </androidx.core.widget.NestedScrollView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

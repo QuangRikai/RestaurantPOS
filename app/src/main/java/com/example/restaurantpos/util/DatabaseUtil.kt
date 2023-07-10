@@ -1,7 +1,6 @@
 package com.example.restaurantpos.util
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import com.example.restaurantpos.db.dao.AccountDAO
 import com.example.restaurantpos.db.dao.AppDAO
 import com.example.restaurantpos.db.dao.CartItemDAO
@@ -55,7 +54,7 @@ object DatabaseUtil {
     }
 
     /** 1. USER MANAGEMENT  */
-    fun checkLogin(user_name: String, password: String)= accountDAO.checkLogin(user_name, password)
+    fun checkLogin(user_name: String, password: String) = accountDAO.checkLogin(user_name, password)
     fun addAccount(accountEntity: AccountEntity) = accountDAO.addAccount(accountEntity)
 
     fun addListAccount(listAccount: List<AccountEntity>) = accountDAO.addListAccount(listAccount)
@@ -73,6 +72,7 @@ object DatabaseUtil {
     // Phục vụ cho việc add account_shift
     fun getAllUserActiveByName(name: String) =
         accountDAO.getAllUserActiveByName("${name}%")
+
     fun getStaffByName(staffName: String) = accountDAO.getStaffByName("%${staffName}%")
 
     /** 2. CATEGORY && ITEM MANAGEMENT  */
@@ -110,7 +110,9 @@ object DatabaseUtil {
 
     fun deleteCart(data: CartItemEntity) = cartItemDAO.deleteCartItem(data)
     fun getListCartItemByOrderId(order_id: String) = cartItemDAO.getListCartItemByOrderId(order_id)
-    fun getListCartItemByTableIdAndOrderStatus(tableId: Int) = cartItemDAO.getListCartItemByTableIdAndOrderStatus(tableId)
+    fun getListCartItemByTableIdAndOrderStatus(tableId: Int) =
+        cartItemDAO.getListCartItemByTableIdAndOrderStatus(tableId)
+
     fun getListCartItemByTableId(table_id: Int) = cartItemDAO.getListCartItemByTableId(table_id)
 
     // 2 hàm dưới làm gì?
@@ -183,4 +185,12 @@ object DatabaseUtil {
 //
 //    fun checkToken(token: String, now : String) = tokenDAO.checkToken(token, now)
 //    fun getAccountToken(token: String, now : String) = tokenDAO.getAccountToken(token, now)
+
+
+    /** 9. APP  */
+    fun getRevenueOfDay(time: String) = appDAO.getRevenueOfDay("${time}%")
+
+    fun getRevenueOfDayOfItem(id_item: Int, time: String) =
+        appDAO.getRevenueOfDayOfItem(id_item, "${time}%")
+
 }
