@@ -2,6 +2,7 @@ package com.example.restaurantpos.ui.staff.receptionist.checkout
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ class ItemCheckoutAdapter(
     var lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<ItemCheckoutAdapter.ViewHolder>() {
 
-//    private var costOfItem = 0f;
+    private var costOfItem = 0f;
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var txtNo: TextView = view.findViewById(R.id.txtNo)
@@ -48,6 +49,9 @@ class ItemCheckoutAdapter(
             viewHolder.txtCost,
             itemInBill.item_id
         )
+
+
+//        getSubTotal(itemInBill.order_quantity, )
     }
 
 
@@ -64,7 +68,7 @@ class ItemCheckoutAdapter(
             txtItemPrice.text = String.format("%.1f", listItem[0].price) + " $"
             txtCost.text = String.format("%.1f", (orderQuantity * listItem[0].price)) + " $"
 
-//            costOfItem = orderQuantity * listItem[0].price
+            costOfItem = orderQuantity * listItem[0].price
         }
     }
 
@@ -75,9 +79,25 @@ class ItemCheckoutAdapter(
 //        costOfItem = 0f
         listData.addAll(arr)
         notifyDataSetChanged()
+        Log.d("Quanglt", "${listData.size}")
+
+//        for (i in 1..listData.size){
+//            Log.d("Quanglt", "${listData[i].item_id}")
+//            Log.d("Quanglt", "${listData[i].order_quantity}")
+//
+//        }
+
     }
 
-//    fun getCostOfItem() = costOfItem
+    fun getCostOfItem() = costOfItem
+
+
+//    fun getSubTotal()
+//    {
+//        for (i in 1..listData.size){
+//            holder
+//        }
+//    }
     override fun getItemCount() = listData.size
 
 }

@@ -187,10 +187,15 @@ object DatabaseUtil {
 //    fun getAccountToken(token: String, now : String) = tokenDAO.getAccountToken(token, now)
 
 
-    /** 9. APP  */
-    fun getRevenueOfDay(time: String) = appDAO.getRevenueOfDay("${time}%")
+    /** 9. Statistic  */
+    fun getRevenueOfDay(time: String) = cartItemDAO.getRevenueOfDay("${time}%")
 
     fun getRevenueOfDayOfItem(id_item: Int, time: String) =
-        appDAO.getRevenueOfDayOfItem(id_item, "${time}%")
+        cartItemDAO.getRevenueOfDayOfItem(id_item, "${time}%")
+
+    /** 10. Checkout  */
+
+    fun getSubTotal(orderId: String) = cartItemDAO.getSubTotal(orderId)
+
 
 }

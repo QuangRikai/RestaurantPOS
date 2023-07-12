@@ -62,4 +62,16 @@ interface CartItemDAO {
     @Query("SELECT * FROM `order`  JOIN cart_item  ON (`order`.order_id = cart_item .order_id) JOIN `table`  ON (`order`.table_id = `table`.table_id) WHERE `table`.table_id = :tableId")
     fun getListCartItemByTableId(tableId: Int): LiveData<MutableList<CartItemEntity>>
 
+
+    @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM cart_item JOIN `order` ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id   WHERE `order`.order_id = :orderID")
+    fun getSubTotal(orderID: String): Float
+
+    /** Revenue */
+    @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM `order` JOIN cart_item ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id   WHERE `order`.order_create_time LIKE :time")
+    fun getRevenueOfDay(time: String): Float
+
+
+    @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM `order` Join cart_item ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id  WHERE cart_item.item_id = :id_item AND `order`.order_create_time LIKE :time")
+    fun getRevenueOfDayOfItem(id_item: Int, time: String): Float
+
 }

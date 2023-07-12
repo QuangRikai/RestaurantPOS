@@ -33,7 +33,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun initOnCreate() {
         viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
         /** Set Data for DB */
-        createDataFirst()
+//        createDataFirst()
         /** Start Login Screen */
         startLoginActivity()
     }

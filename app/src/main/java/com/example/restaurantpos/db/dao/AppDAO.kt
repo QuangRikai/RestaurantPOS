@@ -6,7 +6,20 @@ import androidx.room.Query
 @Dao
 interface AppDAO {
 
-    //Get Doanh thu
+    /** Checkout */
+    @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM cart_item JOIN `order` ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id   WHERE `order`.order_id = :orderID")
+    fun getSubTotal(orderID: String): Float
+
+
+//    @Query("SELECT item.price FROM `order` JOIN cart_item ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id   WHERE `order`.order_id = :orderID")
+//    fun getSubTotal(orderID: String): List<Float>
+//    @Query("SELECT `order`.table_id FROM `order`  WHERE `order`.order_id = :orderID")
+//    fun getSubTotal(orderID: String): Int
+
+
+
+
+    /** Revenue */
 
     //Doanh thu theo ngày, của TOÀN BỘ: 2023/07/11 -> 2023 (của năm), 2023/07 (của tháng), 2023/07/11 (của ngày) ==> Tùy time truyền vào là lụm ra filter ưng ý
     @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM `order` JOIN cart_item ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id   WHERE `order`.order_create_time LIKE :time")

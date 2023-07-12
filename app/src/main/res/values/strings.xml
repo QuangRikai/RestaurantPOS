@@ -6,7 +6,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
-    <string name="welcome">RIKAI Bakery&amp;Coffee</string>
+    <string name="welcome">RIKAI Bakery &amp; Coffee</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="Login_Empty">Username and password cannot be empty!</string>
     <!-- Button Navigation Item-->

@@ -1,10 +1,7 @@
 package com.example.restaurantpos.ui.manager.home
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentManagerHomeBinding
-import com.example.restaurantpos.ui.login.LoginActivity
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.DatabaseUtil
 import com.github.mikephil.charting.charts.BarChart
@@ -85,35 +81,27 @@ class ManagerHomeFragment : Fragment() {
         binding.chart.moveViewToX(0.5f)*/
 
 
-
-/*        viewModelHome.getRevenueOfDay("2023/07")
-        viewModelHome.getRevenueOfDayOfItem(1, "2023/07")*/
+        /*        viewModelHome.getRevenueOfDay("2023/07")
+                viewModelHome.getRevenueOfDayOfItem(1, "2023/07")*/
 
 
         val graph_label = ArrayList<String>()
         val listRevenue = ArrayList<Float>()
-
-        // Data đi cùng
-
-/*        Handler(Looper.getMainLooper()).postDelayed({
-            CoroutineScope(Dispatchers.IO).launch {
-                for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
-                    revenue += DatabaseUtil.getRevenueOfDay("$nowYear/$nowMonth/$i")
-                    listRevenue.add(revenue)
-                    revenue = 0f
-                }
-            }
-        }, 2000)*/
-
-
-
 
         // Title
         for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
             graph_label.add("Day $i")
         }
 
+        // Data đi cùng
 
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
+//                revenue = DatabaseUtil.getRevenueOfDay("$nowYear/$nowMonth/$i")
+//                listRevenue.add(revenue)
+//            }
+//        }
 
 
         listRevenue.add(5f)

@@ -58,7 +58,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginHorizontal="@dimen/_4sdp"
                 android:background="@color/text_blue" />
 
 
@@ -111,7 +110,6 @@
                 android:id="@+id/viewUnderCustomer"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:background="@color/text_blue"
                 app:layout_constraintTop_toBottomOf="@+id/txtTableName"
@@ -131,14 +129,19 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_20sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:layout_gravity="top">
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="@dimen/_5sdp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2" />
 
                     <TextView
                         android:id="@+id/txtCustomerInBill"
                         android:layout_width="0dp"
-                        android:layout_weight="4"
                         android:layout_height="match_parent"
+                        android:layout_weight="6"
                         android:background="@drawable/bg_edt_login"
                         android:gravity="center"
                         android:paddingHorizontal="@dimen/_8sdp"
@@ -160,8 +163,8 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/inter_500"
                         android:gravity="center"
-                        android:textColor="@color/text_rank_1"
-                        android:text="-5%"/>
+                        android:text="-5%"
+                        android:textColor="@color/text_rank_1" />
 
                 </LinearLayout>
 
@@ -189,8 +192,7 @@
                         android:layout_weight="2"
                         android:fontFamily="@font/inter_400"
                         android:gravity="right|center_vertical"
-                        android:hint="100 $"
-                        android:paddingRight="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_5sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13sdp" />
 
@@ -220,8 +222,8 @@
                         android:layout_weight="2"
                         android:fontFamily="@font/inter_400"
                         android:gravity="right|center_vertical"
-                        android:hint="10%"
-                        android:paddingRight="@dimen/_10sdp"
+                        android:text="10    %"
+                        android:paddingRight="@dimen/_5sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13sdp" />
 
@@ -235,55 +237,68 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:fontFamily="@font/inter_400"
                         android:gravity="center_vertical"
                         android:text="Coupon:"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13sdp" />
 
-                    <EditText
-                        android:id="@+id/edtCoupon"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
-                        android:background="@drawable/bg_edt_login"
-                        android:fontFamily="@font/inter_400"
-                        android:gravity="right|center_vertical"
-                        android:hint="none"
-                        android:inputType="number"
-                        android:paddingRight="@dimen/_10sdp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_13sdp" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="match_parent"
-                        android:text="%"
-                        android:fontFamily="@font/inter_500"
-                        android:gravity="center"/>
+                        <EditText
+                            android:id="@+id/edtCoupon"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_edt_login"
+                            android:fontFamily="@font/inter_400"
+                            android:gravity="right|center_vertical"
+                            android:hint="---"
+                            android:inputType="number"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:textColor="@color/black"
+                            android:textFontWeight="5"
+                            android:textSize="@dimen/_13sdp" />
+
+                        <TextView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_400"
+                            android:gravity="center"
+                            android:text="%"
+                            android:textSize="@dimen/_13sdp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:background="@color/black" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_22sdp"
-                    android:layout_marginVertical="@dimen/_1sdp"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:background="@drawable/bg__none_rounded_corner_and_light_color"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_3sdp">
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/inter_400"
+                        android:fontFamily="@font/inter_600"
                         android:gravity="center_vertical"
-                        android:text="Bill Amount:"
+                        android:text="Total:"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13sdp" />
 
@@ -292,11 +307,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
-                        android:fontFamily="@font/inter_400"
+                        android:fontFamily="@font/inter_600"
                         android:gravity="right|center_vertical"
-                        android:hint="coupon?"
-                        android:paddingRight="@dimen/_10sdp"
-                        android:textColor="@color/text_red"
+                        android:paddingRight="@dimen/_5sdp"
                         android:textSize="@dimen/_13sdp" />
 
                 </LinearLayout>
@@ -310,36 +323,45 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:fontFamily="@font/inter_400"
                         android:gravity="center_vertical"
                         android:text="Cash:"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13sdp" />
 
-                    <EditText
-                        android:id="@+id/edtCash"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
-                        android:inputType="numberDecimal"
-                        android:background="@drawable/bg_edt_login"
-                        android:fontFamily="@font/inter_400"
-                        android:gravity="right|center_vertical"
-                        android:hint="200"
-                        android:paddingEnd="@dimen/_10sdp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_13sdp"
-                        tools:ignore="RtlHardcoded,RtlSymmetry" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="match_parent"
-                        android:text="$"
-                        android:fontFamily="@font/inter_500"
-                        android:gravity="center"/>
+                        <EditText
+                            android:id="@+id/edtCash"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_edt_login"
+                            android:fontFamily="@font/inter_400"
+                            android:gravity="right|center_vertical"
+                            android:hint="___"
+                            android:inputType="numberDecimal"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_13sdp"
+                            tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+                        <TextView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_400"
+                            android:gravity="center"
+                            android:text="$"
+                            android:textSize="@dimen/_13sdp" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
 
@@ -348,9 +370,7 @@
                     android:layout_height="@dimen/_22sdp"
                     android:layout_marginVertical="@dimen/_3sdp"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:background="@drawable/bg__none_rounded_corner_and_light_color"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_1sdp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -367,10 +387,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
-                        android:fontFamily="@font/inter_400"
+                        android:fontFamily="@font/inter_600"
                         android:gravity="right|center_vertical"
-                        android:hint="90 $"
-                        android:paddingRight="@dimen/_10sdp"
+                        android:hint="0.0     $"
+                        android:paddingRight="@dimen/_5sdp"
                         android:textColor="@color/text_red"
                         android:textSize="@dimen/_13sdp" />
 
@@ -379,6 +399,20 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/txtError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:text=" Insufficient deposit amount to complete the payment!"
+                android:textColor="@color/bg_orange"
+                android:textSize="11dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/llCustomerInfo"
+                app:layout_constraintEnd_toEndOf="@+id/view"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="RtlSymmetry" />
 
             <View
                 android:id="@+id/view"
@@ -387,13 +421,13 @@
                 android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_marginBottom="@dimen/_2sdp"
                 android:background="@color/text_blue"
-                app:layout_constraintBottom_toTopOf="@+id/txtDone"
+                app:layout_constraintBottom_toTopOf="@+id/txtCheckout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
 
             <TextView
-                android:id="@+id/txtDone"
+                android:id="@+id/txtCheckout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_22sdp"
                 android:layout_marginHorizontal="@dimen/_30sdp"

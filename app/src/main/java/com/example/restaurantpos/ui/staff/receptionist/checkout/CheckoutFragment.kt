@@ -29,10 +29,14 @@ import com.example.restaurantpos.ui.manager.customer.CustomerViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
+import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.DateFormatUtil
 import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 
@@ -52,6 +56,9 @@ class CheckoutFragment : Fragment() {
     private var tableObject: TableEntity? = null
     private var orderObject: OrderEntity? = null
     private var customerObject: CustomerEntity? = null
+
+
+
 
     // Dialog cho Customer
     lateinit var dialog: AlertDialog
@@ -74,6 +81,18 @@ class CheckoutFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val tax = 0.1f
+        var subTotal = 0.0f
+        var billAmount = 0.0f
+        var billAmountText = ""
+        var change = 0.0f
+
+        /** Adapter BILL */
+        // Luôn nhìn từ setListData ra.
+        // 1. Tạo 1 adapter
+        adapterItemCheckout = ItemCheckoutAdapter(requireContext(), ArrayList(), viewLifecycleOwner)
+        // 2. Dùng adapter vừa tạo cho View cần dùng
+        binding.rcyItemInBill.adapter = adapterItemCheckout
 
         /** Xử lý đáp data từ fragment trước */
         // Cần Table --> Chuyển Table về trạng thái Empty
@@ -86,65 +105,56 @@ class CheckoutFragment : Fragment() {
             OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
         Log.d("Quanglt", "$orderObject")
 
-        /** Handle Checkout */
-        val tax = 0.1f
-        var subTotal = 0.0f
-        var billAmount = 0.0f
-        var change = 0.0f
 
-        /** ----------------------------------------------------------------------------------*/
-        binding.txtTax.text = "10 %"
-
-        /** ----------------------------------------------------------------------------------*/
         tableObject?.let { table ->
             binding.txtTableName.text = table.table_name
             viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
                 .observe(viewLifecycleOwner) { listCart ->
                     adapterItemCheckout.setListData(listCart as ArrayList<CartItemEntity>)
-                    subTotal = 0.0f
-                    /** 1. Sub Total */
-                    for (i in 0 until listCart.size) {
-                        val cartItem = listCart[i]
-                        viewModelItem.getItemOfCategory(cartItem.item_id)
-                            .observe(viewLifecycleOwner) { listItem ->
-                                val item = listItem[0]
-                                subTotal += (item.price * cartItem.order_quantity)
-
-                                // Nếu là phần tử cuối cùng, cập nhật giá trị Sub Total
-                                if (i == listCart.size - 1) {
-                                    binding.txtSubTotal.text =
-                                        String.format("%.1f", subTotal) + " $"
-                                    binding.txtChange.text = "0.0 $"
-                                }
-                            }
-                    }
-
-                    /** 2. Bill Amount */
-                    binding.edtCoupon.doOnTextChanged { text1, _, _, _ ->
-                        if (text1 != null) {
-                            billAmount = if (text1.isEmpty()) {
-                                subTotal * (1 + tax)
-                            } else {
-                                (subTotal * (1 - text1.toString().toFloat() / 100)) * (1 + tax)
-                            }
-                            binding.txtBillAmount.text = String.format("%.1f", billAmount) + " $"
-                        }
-                    }
-
-                    /** 3. Change */
-                    binding.edtCash.doOnTextChanged { text, start, before, count ->
-                        if (text != null) {
-                            if (text.isEmpty() || (text.toString()
-                                    .toFloat() < billAmount)
-                            ) {
-                                binding.txtChange.text = "0.0 $"
-                            } else {
-                                change = binding.edtCash.text.toString().toFloat() - billAmount
-                                binding.txtChange.text = String.format("%.1f", change) + " $"
-                            }
-                        }
-                    }
                 }
+        }
+        /** ----------------------------------------------------------------------------------*/
+        /** Handle Checkout */
+        // Total = subTotal - subTotal*coupon + subTotal*Tax
+        // Change = Total - Cash
+        /** subTotal */
+        CoroutineScope(Dispatchers.IO).launch {
+            subTotal = DatabaseUtil.getSubTotal(orderObject!!.order_id)
+            binding.txtSubTotal.text = String.format("%.1f", subTotal) + "    $"
+        }
+
+        /** ---------------------------------------------------------- */
+        /** 2. Bill Amount */
+        billAmount = subTotal * (1 + tax)
+
+        billAmountText = String.format("%.1f", billAmount)
+
+
+        binding.edtCoupon.doOnTextChanged { text1, _, _, _ ->
+            if (text1 != null) {
+                if (text1.isNotEmpty()) {
+                    billAmount = (subTotal * (1 - text1.toString().toFloat() / 100)) * (1 + tax)
+                } else {
+                    binding.txtBillAmount.text = String.format("%.1f", billAmount) + "    $"
+                }
+            }
+
+        }
+        binding.txtBillAmount.text = "$billAmountText    $"
+
+        /** ---------------------------------------------------------- */
+        //                    * 3. Change
+        binding.edtCash.doOnTextChanged { text, _, _, _ ->
+            if (text != null) {
+                if (text.isNotEmpty() && (text.toString()
+                        .toFloat() > billAmount)
+                ) {
+                    change = binding.edtCash.text.toString().toFloat() - billAmount
+                    binding.txtChange.text = String.format("%.1f", change) + " $"
+                } else {
+                    binding.txtChange.text = "0.0     $"
+                }
+            }
         }
         /** ---------------------------------------------------------- */
         /** Device's Back Button*/
@@ -161,35 +171,36 @@ class CheckoutFragment : Fragment() {
         }
 
         /** Code for CHECK OUT */
-        binding.txtDone.setOnClickListener {
-            if (binding.txtChange.text != "0.0 $") {
-                orderObject?.order_status_id = 2
-                orderObject?.payment_amount = binding.edtCash.text.toString().toFloat()
-                orderObject?.paid_time = DateFormatUtil.getTimeForOrderId()
-                orderObject?.let {
-                    viewModelCart.addOrder(it)
-                }
+        binding.txtCheckout.setOnClickListener {
+            if (binding.edtCash.text.isNotEmpty()) {
+                if (binding.txtChange.text != "0.0     $" && (binding.edtCash.text.toString()
+                        .toFloat() > billAmount)
+                ) {
+                    orderObject?.order_status_id = 2
+                    orderObject?.payment_amount = binding.edtCash.text.toString().toFloat()
+                    orderObject?.paid_time = DateFormatUtil.getTimeForOrderId()
+                    orderObject?.let {
+                        viewModelCart.addOrder(it)
+                    }
 
-                // Set lại Table is Empty and update Status on Database
-                tableObject?.table_status_id = 0
-                tableObject?.let { tableObject ->
-                    viewModelTable.addTable(requireContext(), tableObject)
-                }
+                    // Set lại Table is Empty and update Status on Database
+                    tableObject?.table_status_id = 0
+                    tableObject?.let { tableObject ->
+                        viewModelTable.addTable(requireContext(), tableObject)
+                    }
 
-                // Xong thì trả về lại màn Table để order tiếp
-                findNavController().navigate(R.id.action_checkoutFragment_to_checkoutDoneFragment)
+                    findNavController().navigate(R.id.action_checkoutFragment_to_checkoutDoneFragment)
+                } else {
+                    binding.txtError.show()
+                }
             } else {
-                context?.showToast("Customer has paid?")
+                binding.txtError.show()
             }
+
         }
 
         /** ----------------------------------------------------------------------------------*/
-        /** Adapter BILL */
-        // Luôn nhìn từ setListData ra.
-        // 1. Tạo 1 adapter
-        adapterItemCheckout = ItemCheckoutAdapter(requireContext(), ArrayList(), viewLifecycleOwner)
-        // 2. Dùng adapter vừa tạo cho View cần dùng
-        binding.rcyItemInBill.adapter = adapterItemCheckout
+
 
         /** Code for Customer TextView */
         binding.txtCustomerInBill.setOnClickListener {
@@ -203,6 +214,7 @@ class CheckoutFragment : Fragment() {
     val startYear = calendar.get(Calendar.YEAR) - 20
     val startMonth = calendar.get(Calendar.MONTH) - 5
     val startDay = calendar.get(Calendar.DAY_OF_MONTH) - 10
+
     @SuppressLint("SetTextI18n")
     private fun showDialogCustomer() {
         // -----------------Prepare--------------------------------------------------//
