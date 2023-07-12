@@ -43,6 +43,8 @@ class ManagerHomeFragment : Fragment() {
     private val nowDay = calendar.get(Calendar.DAY_OF_MONTH)
 
 
+    var revenue = 0f
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,23 +93,27 @@ class ManagerHomeFragment : Fragment() {
         val graph_label = ArrayList<String>()
         val listRevenue = ArrayList<Float>()
 
+        // Data đi cùng
+
+/*        Handler(Looper.getMainLooper()).postDelayed({
+            CoroutineScope(Dispatchers.IO).launch {
+                for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
+                    revenue += DatabaseUtil.getRevenueOfDay("$nowYear/$nowMonth/$i")
+                    listRevenue.add(revenue)
+                    revenue = 0f
+                }
+            }
+        }, 2000)*/
+
+
+
 
         // Title
         for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
             graph_label.add("Day $i")
         }
 
-        // Data đi cùng
-/*        var revenue = 0f
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            CoroutineScope(Dispatchers.IO).launch {
-                for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
-                    revenue += DatabaseUtil.getRevenueOfDay("$nowYear/$nowMonth/$i")
-                    listRevenue.add(revenue)
-                }
-            }
-        }, 2000)*/
 
 
         listRevenue.add(5f)
@@ -126,12 +132,21 @@ class ManagerHomeFragment : Fragment() {
         listRevenue.add(15f)
         listRevenue.add(25f)
         listRevenue.add(25f)
-        listRevenue.add(25f)
-        listRevenue.add(25f)
-        listRevenue.add(25f)
+        listRevenue.add(21f)
+        listRevenue.add(21f)
+        listRevenue.add(21f)
         listRevenue.add(15f)
         listRevenue.add(15f)
         listRevenue.add(15f)
+        listRevenue.add(15f)
+        listRevenue.add(11f)
+        listRevenue.add(11f)
+        listRevenue.add(11f)
+        listRevenue.add(11f)
+        listRevenue.add(21f)
+        listRevenue.add(21f)
+        listRevenue.add(21f)
+        listRevenue.add(21f)
 
         create_graph(binding.chart, graph_label, listRevenue)
 

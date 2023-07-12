@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.manager.user
+package com.example.restaurantpos.ui.manager
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.restaurantpos.databinding.ActivityUpdateAccountInfoBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.ui.main.MainManagerActivity
+import com.example.restaurantpos.ui.manager.user.UserViewModel
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
@@ -46,11 +47,21 @@ class UpdateAccountInfoActivity : AppCompatActivity() {
             .observe(this) { admin: MutableList<AccountEntity> ->
                 if (admin.isNotEmpty()) {
                     binding.edtAdminName.hint = admin[0].account_name
+                    binding.edtBirthday.hint = admin[0].account_birthday
+                    binding.edtPhone.hint = admin[0].account_phone
                     binding.edtUserName.hint = admin[0].user_name
                     /** Update Button */
                     binding.txtUpdate.setOnClickListener {
                         if (binding.edtAdminName.text.toString() != "") {
                             admin[0].account_name = binding.edtAdminName.text.toString()
+                        }
+
+                        if (binding.edtUserName.text.toString() != "") {
+                            admin[0].account_birthday = binding.edtBirthday.text.toString()
+                        }
+
+                        if (binding.edtUserName.text.toString() != "") {
+                            admin[0].account_phone = binding.edtPhone.text.toString()
                         }
 
                         if (binding.edtUserName.text.toString() != "") {

@@ -18,6 +18,12 @@ data class AccountEntity constructor(
     @ColumnInfo(name = "account_name")
     var account_name: String,
 
+    @ColumnInfo(name = "account_birthday")
+    var account_birthday: String,
+
+    @ColumnInfo(name = "account_phone")
+    var account_phone: String,
+
     @ColumnInfo(name = "user_name")
     var user_name: String,
 

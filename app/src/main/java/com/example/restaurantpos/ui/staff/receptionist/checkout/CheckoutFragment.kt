@@ -101,7 +101,7 @@ class CheckoutFragment : Fragment() {
             viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
                 .observe(viewLifecycleOwner) { listCart ->
                     adapterItemCheckout.setListData(listCart as ArrayList<CartItemEntity>)
-
+                    subTotal = 0.0f
                     /** 1. Sub Total */
                     for (i in 0 until listCart.size) {
                         val cartItem = listCart[i]
@@ -162,7 +162,7 @@ class CheckoutFragment : Fragment() {
 
         /** Code for CHECK OUT */
         binding.txtDone.setOnClickListener {
-            if (binding.txtChange.text != "Invalid") {
+            if (binding.txtChange.text != "0.0 $") {
                 orderObject?.order_status_id = 2
                 orderObject?.payment_amount = binding.edtCash.text.toString().toFloat()
                 orderObject?.paid_time = DateFormatUtil.getTimeForOrderId()

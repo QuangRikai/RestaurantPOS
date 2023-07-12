@@ -33,7 +33,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun initOnCreate() {
         viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
         /** Set Data for DB */
-//        createDataFirst()
+        createDataFirst()
         /** Start Login Screen */
         startLoginActivity()
     }
@@ -42,9 +42,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         /** 1. Account */
         viewModel.addListAccount(
             listOf(
-                AccountEntity(1,"Quang Test Manager","quang0", DataUtil.convertToMD5("123"),0,true),
-                AccountEntity(2, "Quang Test Receptionist", "quang1", DataUtil.convertToMD5("123"), 1, true),
-                AccountEntity(3, "Quang Test Kitchen", "quang2", DataUtil.convertToMD5("123"), 2, true),
+                AccountEntity(1,"Quang Manager", "1995/03/02", "08010802100","quang0", DataUtil.convertToMD5("123"),0,true),
+                AccountEntity(2, "Quang Receptionist", "1995/03/02", "080101232100", "quang1", DataUtil.convertToMD5("123"), 1, true),
+                AccountEntity(3, "Quang Kitchen", "1995/03/02", "08010531100", "quang2", DataUtil.convertToMD5("123"), 2, true),
             )
         )
         /** 1.1. Account_Role */

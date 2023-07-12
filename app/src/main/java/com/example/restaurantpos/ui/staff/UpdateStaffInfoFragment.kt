@@ -57,11 +57,21 @@ class UpdateStaffInfoFragment : Fragment() {
             .observe(viewLifecycleOwner) { admin: MutableList<AccountEntity> ->
                 if (admin.isNotEmpty()) {
                     binding.edtStaffName.hint = admin[0].account_name
+                    binding.edtBirthday.hint = admin[0].account_birthday
+                    binding.edtPhone.hint = admin[0].account_phone
                     binding.edtUserName.hint = admin[0].user_name
                     /** Update Button */
                     binding.txtUpdate.setOnClickListener {
                         if (binding.edtStaffName.text.toString() != "") {
                             admin[0].account_name = binding.edtStaffName.text.toString()
+                        }
+
+                        if (binding.edtUserName.text.toString() != "") {
+                            admin[0].account_birthday = binding.edtBirthday.text.toString()
+                        }
+
+                        if (binding.edtUserName.text.toString() != "") {
+                            admin[0].account_phone = binding.edtPhone.text.toString()
                         }
 
                         if (binding.edtUserName.text.toString() != "") {

@@ -65,6 +65,8 @@ class AddUserFragment : Fragment() {
                     requireActivity(), AccountEntity(
                         0,
                         binding.edtAddAccountName.text.toString().trim(),
+                        "",
+                        "",
                         binding.edtAddUserName.text.toString().trim(),
                         DataUtil.convertToMD5("123"),
                         role,
