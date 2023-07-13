@@ -63,7 +63,7 @@ interface CartItemDAO {
     fun getListCartItemByTableId(tableId: Int): LiveData<MutableList<CartItemEntity>>
 
 
-    @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM cart_item JOIN `order` ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id   WHERE `order`.order_id = :orderID")
+    @Query("SELECT SUM(cart_item.order_quantity * item.price) FROM cart_item JOIN `order` ON `order`.order_id = cart_item.order_id JOIN item ON cart_item.item_id = item.item_id   WHERE `order`.order_id = :orderID AND `order`.order_status_id = 1")
     fun getSubTotal(orderID: String): Float
 
     /** Revenue */

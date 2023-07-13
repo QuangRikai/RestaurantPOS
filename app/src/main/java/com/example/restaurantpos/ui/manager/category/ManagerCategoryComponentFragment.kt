@@ -20,6 +20,7 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentManagerCategoryComponentBinding
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.ItemEntity
+import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.RealPathUtil
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
@@ -50,7 +51,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         viewModel = ViewModelProvider(this).get(CategoryViewModel::class.java)
 
-        binding.rcyCategoryCoponentManagement.adapter = adapter
+        binding.rcyCategoryComponentManagement.adapter = adapter
 
         return binding.root
     }
@@ -70,6 +71,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showAddCategoryItemDialog() {
         itemImagePath = ""
         val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
@@ -104,6 +106,8 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         // 4.  Code cho AddItem Button
         btnAddItem.setOnClickListener {
+
+
             if (edtItemName.text.toString() != "" && edtItemPrice.text.toString() != "" && edtItemInventoryQuantity.text.toString() != "") {
                 viewModel.addCategoryItem(
                     ItemEntity(
@@ -117,6 +121,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                 )
                 dialog.dismiss()
             } else {
+                txtInform.text = "Information below must not be empty!"
                 txtInform.show()
             }
         }

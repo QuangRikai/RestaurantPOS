@@ -89,6 +89,7 @@ object DatabaseUtil {
         itemDAO.getListCategoryComponentItem(categoryComponentId)
 
     fun getItemOfCategory(item_id: Int) = itemDAO.getItemOfCategory(item_id)
+    fun getItemByName(name: String) = itemDAO.getItemByName(name)
 
 
     /** 3. TABLE MANAGEMENT  */

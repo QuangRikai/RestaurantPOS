@@ -26,7 +26,7 @@ class CheckoutDoneFragment : Fragment() {
         /** Device's Back Button*/
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().popBackStack()
+//                findNavController().popBackStack()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)

@@ -13,4 +13,7 @@
     <color name="text_rank_1">#E6A340</color>
     <color name="text_rank_2">#A9A5AA</color>
     <color name="text_rank_3">#FFE500</color>
+
+
+    <color name="money">#268A1B</color>
 </resources>

@@ -8,37 +8,41 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CategoryViewModel: ViewModel() {
+class CategoryViewModel : ViewModel() {
     fun addCategory(data: CategoryEntity) {
-      CoroutineScope(Dispatchers.IO).launch {
-          DatabaseUtil.addCategory(data)
-      }
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseUtil.addCategory(data)
+        }
     }
 
     fun addCategoryItem(categoryItem: ItemEntity) {
-      CoroutineScope(Dispatchers.IO).launch {
-          DatabaseUtil.addCategoryItem(categoryItem)
-      }
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseUtil.addCategoryItem(categoryItem)
+        }
     }
 
     fun deleteItemOfCategory(itemOfCategory: ItemEntity) {
-      CoroutineScope(Dispatchers.IO).launch {
-          DatabaseUtil.deleteItemOfCategory(itemOfCategory)
-      }
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseUtil.deleteItemOfCategory(itemOfCategory)
+        }
     }
 
     fun addListCategoryItem(listCategoryItem: List<ItemEntity>) {
-      CoroutineScope(Dispatchers.IO).launch {
-          DatabaseUtil.addListCategoryItem(listCategoryItem)
-      }
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseUtil.addListCategoryItem(listCategoryItem)
+        }
     }
 
 
     fun getAllCategory() = DatabaseUtil.getAllCategory()
-    fun getItemOfCategory(item_id: Int)  = DatabaseUtil.getItemOfCategory(item_id)
+    fun getItemOfCategory(item_id: Int) = DatabaseUtil.getItemOfCategory(item_id)
 
-    fun getListCategoryComponentItem(categoryComponentId: Int) = DatabaseUtil.getListCategoryComponentItem(categoryComponentId)
+    fun getListCategoryComponentItem(categoryComponentId: Int) =
+        DatabaseUtil.getListCategoryComponentItem(categoryComponentId)
 
+    fun getItemByName(name: String) = CoroutineScope(Dispatchers.IO).launch {
+        DatabaseUtil.getItemByName(name)
+    }
 
 
 }

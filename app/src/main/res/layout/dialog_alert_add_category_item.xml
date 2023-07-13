@@ -79,6 +79,7 @@
             android:fontFamily="@font/inter_400"
             android:gravity="left"
             android:hint="Name"
+            android:maxLength="20"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
             android:textSize="@dimen/_15sdp" />
@@ -113,6 +114,7 @@
             android:background="@drawable/bg_edt_login"
             android:fontFamily="@font/inter_400"
             android:gravity="left"
+            android:maxLength="9"
             android:hint="Price"
             android:inputType="numberDecimal"
             android:padding="@dimen/_4sdp"
@@ -151,6 +153,7 @@
             android:fontFamily="@font/inter_400"
             android:gravity="left"
             android:inputType="number"
+            android:maxLength="3"
             android:hint="Inventory Quantity"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"

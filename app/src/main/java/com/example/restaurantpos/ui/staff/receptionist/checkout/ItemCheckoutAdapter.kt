@@ -35,9 +35,10 @@ class ItemCheckoutAdapter(
         return ViewHolder(view)
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val itemInBill = listData[position]
+
 
         viewHolder.txtNo.text = "${position + 1}"
         viewHolder.txtOrderQuantity.text = itemInBill.order_quantity.toString()
@@ -49,9 +50,6 @@ class ItemCheckoutAdapter(
             viewHolder.txtCost,
             itemInBill.item_id
         )
-
-
-//        getSubTotal(itemInBill.order_quantity, )
     }
 
 
@@ -67,8 +65,6 @@ class ItemCheckoutAdapter(
             txtItemName.text = listItem[0].item_name
             txtItemPrice.text = String.format("%.1f", listItem[0].price) + " $"
             txtCost.text = String.format("%.1f", (orderQuantity * listItem[0].price)) + " $"
-
-            costOfItem = orderQuantity * listItem[0].price
         }
     }
 
@@ -76,28 +72,11 @@ class ItemCheckoutAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setListData(arr: ArrayList<CartItemEntity>) {
         listData.clear()
-//        costOfItem = 0f
         listData.addAll(arr)
         notifyDataSetChanged()
         Log.d("Quanglt", "${listData.size}")
-
-//        for (i in 1..listData.size){
-//            Log.d("Quanglt", "${listData[i].item_id}")
-//            Log.d("Quanglt", "${listData[i].order_quantity}")
-//
-//        }
-
     }
 
-    fun getCostOfItem() = costOfItem
-
-
-//    fun getSubTotal()
-//    {
-//        for (i in 1..listData.size){
-//            holder
-//        }
-//    }
     override fun getItemCount() = listData.size
 
 }

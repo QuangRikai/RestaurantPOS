@@ -50,6 +50,8 @@ class CheckoutFragment : Fragment() {
     private lateinit var viewModelCustomer: CustomerViewModel
 
     private lateinit var adapterItemCheckout: ItemCheckoutAdapter
+
+
     private lateinit var adapterCustomerInner: CustomerInnerAdapter
 
     // Tạo sẵn Object --> Xíu nữa hứng data get được. Từ database/fragment before
@@ -58,12 +60,18 @@ class CheckoutFragment : Fragment() {
     private var customerObject: CustomerEntity? = null
 
 
-
-
     // Dialog cho Customer
     lateinit var dialog: AlertDialog
 
     val calendar = Calendar.getInstance()
+
+
+    private val tax = 0.1f
+    var subTotal = 0.0f
+    var billAmount = 0.0f
+    var change = 0.0f
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,20 +86,13 @@ class CheckoutFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val tax = 0.1f
-        var subTotal = 0.0f
-        var billAmount = 0.0f
-        var billAmountText = ""
-        var change = 0.0f
+
 
         /** Adapter BILL */
-        // Luôn nhìn từ setListData ra.
-        // 1. Tạo 1 adapter
         adapterItemCheckout = ItemCheckoutAdapter(requireContext(), ArrayList(), viewLifecycleOwner)
-        // 2. Dùng adapter vừa tạo cho View cần dùng
         binding.rcyItemInBill.adapter = adapterItemCheckout
 
         /** Xử lý đáp data từ fragment trước */
@@ -105,14 +106,56 @@ class CheckoutFragment : Fragment() {
             OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
         Log.d("Quanglt", "$orderObject")
 
+        /** ----------------------------------------------------------------------------------*/
+        // Map(Key, Value)
+        // Key: Item_id
+        // Value: CartItem (Object)
 
         tableObject?.let { table ->
             binding.txtTableName.text = table.table_name
             viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
                 .observe(viewLifecycleOwner) { listCart ->
-                    adapterItemCheckout.setListData(listCart as ArrayList<CartItemEntity>)
+
+                    val mergedMap = mutableMapOf<Int, CartItemEntity>()
+
+                    // Gộp các phần tử trùng nhau và tính tổng số lượng
+                    for (cartItem in listCart) {
+                        if (mergedMap.containsKey(cartItem.item_id)) {
+                            val existingItem = mergedMap[cartItem.item_id]!!
+                            existingItem.order_quantity += cartItem.order_quantity
+                        } else {
+                            // Nếu phần tử chưa tồn tại trong mergedMap, thêm cartItem vào mergedMap dựa trên item_id.
+                            mergedMap[cartItem.item_id] = cartItem
+                        }
+                    }
+
+                    /*                    val newList = ArrayList<CartItemEntity>()
+                                        for (i in 0 until listCart.size)
+                                        {
+                                            if (newList.contains(listCart[i]))
+                                            {
+                                                for (j in 0 until newList.size)
+                                                {
+                                                    if(newList[j].cart_item_id == listCart[i].cart_item_id)
+                                                    {
+                                                        newList[j].order_quantity +=  listCart[i].order_quantity
+                    //                                    break
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                newList.add(listCart[i])
+                                            }
+                                        }*/
+
+                    // Chuyển đổi map thành list đã gộp
+                    val mergedList = ArrayList(mergedMap.values)
+
+                    adapterItemCheckout.setListData(mergedList)
                 }
         }
+
         /** ----------------------------------------------------------------------------------*/
         /** Handle Checkout */
         // Total = subTotal - subTotal*coupon + subTotal*Tax
@@ -120,42 +163,68 @@ class CheckoutFragment : Fragment() {
         /** subTotal */
         CoroutineScope(Dispatchers.IO).launch {
             subTotal = DatabaseUtil.getSubTotal(orderObject!!.order_id)
-            binding.txtSubTotal.text = String.format("%.1f", subTotal) + "    $"
+            binding.txtSubTotal.text = String.format("%.1f", subTotal)
+
+            billAmount = (subTotal * (1.0f + tax))
+            binding.txtBillAmount.text = String.format("%.1f", billAmount)
+
+            binding.txtChange.text = "0.0"
         }
 
+
         /** ---------------------------------------------------------- */
-        /** 2. Bill Amount */
-        billAmount = subTotal * (1 + tax)
+        /** 2. COUPON --> BILL AMOUNT */
+        // 1. Nhấp vào Apply Coupon --> Hiện ra để nhập
+        // 2. Đối chiếu xem đúng mã hay không --> Đúng thì apply thành công, sai thì hiện thông báo fail
+        // 3. Cancel thì trả lại trạng thái ban đầu
 
-        billAmountText = String.format("%.1f", billAmount)
 
-
-        binding.edtCoupon.doOnTextChanged { text1, _, _, _ ->
-            if (text1 != null) {
-                if (text1.isNotEmpty()) {
-                    billAmount = (subTotal * (1 - text1.toString().toFloat() / 100)) * (1 + tax)
-                } else {
-                    binding.txtBillAmount.text = String.format("%.1f", billAmount) + "    $"
-                }
+        binding.txtAddCoupon.setOnClickListener {
+            if (binding.llCoupon.visibility == View.VISIBLE) {
+                binding.llCoupon.visibility = View.GONE
+                binding.txtAddCoupon.text = "Apply Coupon?"
+            } else {
+                binding.llCoupon.visibility = View.VISIBLE
+                binding.txtAddCoupon.text = ""
             }
-
         }
-        binding.txtBillAmount.text = "$billAmountText    $"
 
-        /** ---------------------------------------------------------- */
-        //                    * 3. Change
+
+        binding.txtApplyCoupon.setOnClickListener {
+            if (binding.edtCoupon.text.toString() == "Quang") {
+                billAmount = (subTotal * (1 - 10 / 100.0) * (1 + tax)).toFloat()
+                binding.txtBillAmount.text = String.format("%.1f", billAmount)
+                binding.txtAddCoupon.text = "Coupon was applied successfully! - 10%"
+                binding.txtAddCoupon.setTextColor(R.color.money)
+            } else {
+                binding.txtAddCoupon.text = ""
+                binding.txtAddCoupon.text = "Failed to apply coupon!"
+                binding.txtAddCoupon.setTextColor(R.color.text_red)
+            }
+        }
+
+        binding.txtCancelCoupon.setOnClickListener {
+            binding.llCoupon.gone()
+            binding.txtAddCoupon.text = "Apply Coupon?"
+            billAmount = (subTotal * (1.0f + tax))
+            binding.txtBillAmount.text = String.format("%.1f", billAmount)
+        }
+
+        /** 3. CASH --> CHANGE */
         binding.edtCash.doOnTextChanged { text, _, _, _ ->
-            if (text != null) {
-                if (text.isNotEmpty() && (text.toString()
-                        .toFloat() > billAmount)
-                ) {
-                    change = binding.edtCash.text.toString().toFloat() - billAmount
-                    binding.txtChange.text = String.format("%.1f", change) + " $"
+            if (text.toString().isNotEmpty()) {
+                val cash = text.toString().toFloat()
+                if (cash > billAmount) {
+                    change = cash - billAmount
+                    binding.txtChange.text = String.format("%.1f", change)
                 } else {
-                    binding.txtChange.text = "0.0     $"
+                    binding.txtChange.text = "0.0"
                 }
+            } else {
+                binding.txtChange.text = "0.0"
             }
         }
+
         /** ---------------------------------------------------------- */
         /** Device's Back Button*/
         val callback = object : OnBackPressedCallback(true) {
@@ -173,7 +242,7 @@ class CheckoutFragment : Fragment() {
         /** Code for CHECK OUT */
         binding.txtCheckout.setOnClickListener {
             if (binding.edtCash.text.isNotEmpty()) {
-                if (binding.txtChange.text != "0.0     $" && (binding.edtCash.text.toString()
+                if (binding.txtChange.text != "0.0" && (binding.edtCash.text.toString()
                         .toFloat() > billAmount)
                 ) {
                     orderObject?.order_status_id = 2
@@ -240,9 +309,6 @@ class CheckoutFragment : Fragment() {
             override fun clickCustomerInner(itemCustomer: CustomerEntity) {
                 // Có sẵn thì pick-up ra thôi
                 customerObject = itemCustomer
-
-                /**???*/
-
                 /**???*/
 //                orderObject?.customer_id = itemCustomer.customer_id
                 // Tìm cách đưa Customer's Name lên NewOrderFragment
