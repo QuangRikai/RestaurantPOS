@@ -22,7 +22,7 @@ object DateFormatUtil {
         return dateFormat.format(data)
     }
 
-    fun getTimeForOrderId(): String {
+    fun getTimeForOrderCreateTime(): String {
         val simpleDateFormat = SimpleDateFormat(formatDateAndMore, Locale.getDefault())
         return simpleDateFormat.format(Date())
     }

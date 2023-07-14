@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentCheckoutBinding
+import com.example.restaurantpos.db.entity.BillEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.OrderEntity
@@ -30,6 +31,7 @@ import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
 import com.example.restaurantpos.util.DatabaseUtil
+import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
@@ -57,6 +59,7 @@ class CheckoutFragment : Fragment() {
     private var tableObject: TableEntity? = null
     private var orderObject: OrderEntity? = null
     private var customerObject: CustomerEntity? = null
+    private var billObject: BillEntity? = null
 
 
     // Dialog cho Customer
@@ -81,6 +84,8 @@ class CheckoutFragment : Fragment() {
         viewModelItem = ViewModelProvider(this).get(CategoryViewModel::class.java)
         viewModelTable = ViewModelProvider(this).get(TableViewModel::class.java)
         viewModelCustomer = ViewModelProvider(this).get(CustomerViewModel::class.java)
+
+        setChange(binding.edtCash.text.toString())
 
         return binding.root
     }
@@ -171,7 +176,7 @@ class CheckoutFragment : Fragment() {
             billAmount = (subTotal * (1.0f + tax))
             binding.txtBillAmount.text = String.format("%.1f", billAmount)
 
-            binding.txtChange.text = "0.0"
+//            binding.txtChange.text = "0.0"
         }
 
 
@@ -215,17 +220,9 @@ class CheckoutFragment : Fragment() {
 
         /** 3. CASH --> CHANGE */
         binding.edtCash.doOnTextChanged { text, _, _, _ ->
-            if (text.toString().isNotEmpty()) {
-                val cash = text.toString().toFloat()
-                if (cash > billAmount) {
-                    change = cash - billAmount
-                    binding.txtChange.text = String.format("%.1f", change)
-                } else {
-                    binding.txtChange.text = "0.0"
-                }
-            } else {
-                binding.txtChange.text = "0.0"
-            }
+
+            setChange(text)
+
         }
 
         /** ---------------------------------------------------------- */
@@ -242,21 +239,34 @@ class CheckoutFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+
+
+
         /** Code for CHECK OUT */
         binding.txtCheckout.setOnClickListener {
             if (binding.edtCash.text.isNotEmpty()) {
                 if (binding.txtChange.text != "0.0" && (binding.edtCash.text.toString()
                         .toFloat() > billAmount)
                 ) {
-                    orderObject?.payment_amount = binding.edtCash.text.toString().toFloat()
-                    orderObject?.let {
-                        viewModelCart.addOrder(it)
-                    }
-
+                    /** Put data for billObject  -----> BillFragment */
+                    billObject = BillEntity(
+                        orderObject!!.order_id,
+                        tableObject!!.table_name,
+                        "",
+                        SharedPreferencesUtils.getAccountName(),
+                        subTotal,
+                        0,
+                        0,
+                        10,
+                        billAmount,
+                        binding.edtCash.text.toString().trim(),
+                        binding.txtChange.text.toString()
+                    )
                     findNavController().navigate(
                         R.id.action_checkoutFragment_to_checkoutConfirmFragment, bundleOf(
                             "tableObjectQ" to tableObject?.toJson(),
-                            "orderObjectQ" to orderObject?.toJson()
+                            "orderObjectQ" to orderObject?.toJson(),
+                            "billObjectQ" to billObject?.toJson()
                         )
                     )
                 } else {
@@ -274,6 +284,21 @@ class CheckoutFragment : Fragment() {
         /** Code for Customer TextView */
         binding.txtCustomerInBill.setOnClickListener {
             showDialogCustomer()
+        }
+    }
+
+    // 再利用コード    Võ chỉ cho
+    private fun setChange(text: CharSequence?) {
+        if (text.toString().isNotEmpty()) {
+            val cash = text.toString().toFloat()
+            if (cash > billAmount) {
+                change = cash - billAmount
+                binding.txtChange.text = String.format("%.1f", change)
+            } else {
+                binding.txtChange.text = "0.0"
+            }
+        } else {
+            binding.txtChange.text = "0.0"
         }
     }
 

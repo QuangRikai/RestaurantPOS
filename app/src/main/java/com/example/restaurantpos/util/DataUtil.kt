@@ -172,7 +172,7 @@ object DataUtil {
     }
 
     fun getDateCreateToken() : String {
-        return convertToMD5(DateFormatUtil.getTimeForOrderId())
+        return convertToMD5(DateFormatUtil.getTimeForOrderCreateTime())
     }
 //    const val formatDateAndMore = "yyyy/MM/dd  HH:mm:ss"
 //    Từ 1 thằng không trùng, lại tạo thêm 1 thằng không trùng, vậy nên không sợ bị trùng

@@ -134,11 +134,11 @@ class NewOrderFragment : Fragment() {
             // Khi có Table (Đã click chọn Table) mới bắt đầu tạo Order
             // Tạo trước 1 order default
             orderObject = OrderEntity(
-                DateFormatUtil.getTimeForOrderId(),
+                DateFormatUtil.getTimeForOrderCreateTime(),
                 0,
                 table.table_id,
                 SharedPreferencesUtils.getAccountId(),
-                DateFormatUtil.getTimeForOrderId(),
+                DateFormatUtil.getTimeForOrderCreateTime(),
                 "",
                 0f,
                 0
@@ -219,7 +219,7 @@ class NewOrderFragment : Fragment() {
                         CartItemEntity(
                             0,
                             itemInCategory.item_id,
-                            orderObject!!.order_id,
+                            orderObject!!.order_create_time,
                             1,
                             // Note thì xíu mới thêm
                             "",

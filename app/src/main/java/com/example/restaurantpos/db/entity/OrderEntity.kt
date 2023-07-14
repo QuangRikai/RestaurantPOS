@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "order")
 data class OrderEntity constructor(
 
-    // Sử dụng order_create_time
+    // Sử dụng order_create_time  (First Time)
     @PrimaryKey
     @ColumnInfo(name = "order_id")
     val order_id: String,
@@ -26,8 +26,9 @@ data class OrderEntity constructor(
     @ColumnInfo(name = "created_by_account_id")
     val created_by_account_id: Int,
 
+    // Latest Time
     @ColumnInfo(name = "order_create_time")
-    val order_create_time: String,
+    var order_create_time: String,
 
     @ColumnInfo(name = "paid_time")
     var paid_time: String,

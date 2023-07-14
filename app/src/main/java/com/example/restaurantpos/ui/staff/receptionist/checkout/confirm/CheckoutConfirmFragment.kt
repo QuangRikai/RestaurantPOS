@@ -10,7 +10,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentCheckoutConfirmBinding
+import com.example.restaurantpos.db.entity.BillEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.OrderEntity
@@ -21,6 +23,7 @@ import com.example.restaurantpos.ui.staff.receptionist.checkout.ItemCheckoutAdap
 import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
+import com.example.restaurantpos.util.DateFormatUtil
 import java.util.Calendar
 
 class CheckoutConfirmFragment : Fragment() {
@@ -41,6 +44,7 @@ class CheckoutConfirmFragment : Fragment() {
     private var tableObject: TableEntity? = null
     private var orderObject: OrderEntity? = null
     private var customerObject: CustomerEntity? = null
+    private var billObject: BillEntity? = null
 
 
     // Dialog cho Customer
@@ -86,6 +90,12 @@ class CheckoutConfirmFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.txtBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+
+
         /** Adapter BILL */
         adapterItemCheckout = ItemCheckoutAdapter(requireContext(), ArrayList(), viewLifecycleOwner)
         binding.rcyItemInBill.adapter = adapterItemCheckout
@@ -99,13 +109,29 @@ class CheckoutConfirmFragment : Fragment() {
         orderObject =
             OrderEntity.toOrderObject(requireArguments().getString("orderObjectQ").toString())
 
+        billObject =
+            BillEntity.toBill(requireArguments().getString("billObjectQ").toString())
+
+
+        binding.txtDate.text = billObject?.bill_date
+        binding.txtTable.text = billObject?.bill_table_name
+        binding.txtCustomer.text = billObject?.bill_customer
+        binding.txtStaff.text = billObject?.bill_staff
+        binding.txtSubTotal.text = billObject?.bill_subTotal.toString()
+        binding.txtCoupon.text = billObject?.bill_coupon.toString()
+        binding.txtCustomerRank.text = billObject?.bill_customer_rank_percent.toString()
+        binding.txtTax.text = billObject?.bill_tax.toString()
+        binding.txtTotal.text = billObject?.bill_total.toString()
+        binding.txtCash.text = billObject?.bill_cash
+        binding.txtChange.text = billObject?.bill_change
+
         /** ----------------------------------------------------------------------------------*/
         // Map(Key, Value)
         // Key: Item_id
         // Value: CartItem (Object)
 
         tableObject?.let { table ->
-            binding.txtTable.text = table.table_name
+//            binding.txtTable.text = table.table_name
             viewModelCart.getListCartItemByTableIdAndOrderStatus(table.table_id)
                 .observe(viewLifecycleOwner) { listCart ->
 
@@ -127,6 +153,28 @@ class CheckoutConfirmFragment : Fragment() {
                     adapterItemCheckout.setListData(mergedList)
                 }
         }
+
+
+        /** Code for Done */
+        binding.txtDone.setOnClickListener {
+
+            // Chốt Order này
+            orderObject?.order_status_id = 2
+            orderObject?.payment_amount = billObject!!.bill_cash.toFloat()
+            orderObject?.paid_time = DateFormatUtil.getTimeForOrderCreateTime()
+            orderObject?.let {
+                viewModelCart.addOrder(it)
+            }
+
+            // Set lại Table is Empty and update Status on Database
+            tableObject?.table_status_id = 0
+            tableObject?.let { tableObject ->
+                viewModelTable.addTable(requireContext(), tableObject)
+            }
+
+            findNavController().navigate(R.id.action_checkoutConfirmFragment_to_checkoutDoneFragment)
+        }
+
 
         /** ----------------------------------------------------------------------------------*/
         /** Handle Checkout */

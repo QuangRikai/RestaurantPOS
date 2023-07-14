@@ -158,6 +158,11 @@
             android:defaultValue=""
             app:argType="string" />
 
+        <argument
+            android:name="billObjectQ"
+            android:defaultValue=""
+            app:argType="string" />
+
         <action
             android:id="@+id/action_checkoutConfirmFragment_to_checkoutDoneFragment"
             app:destination="@id/checkoutDoneFragment" />

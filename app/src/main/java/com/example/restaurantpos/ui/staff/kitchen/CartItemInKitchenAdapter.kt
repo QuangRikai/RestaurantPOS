@@ -81,6 +81,9 @@ class CartItemInKitchenAdapter(
         item_id: Int
     ) {
 
+        /** Vấn đề time ở bếp. Cứ lấy theo order time. Lúc này những thằng order cũ đều update theo order moi nhat. */
+        // Lấy CartItemEntity mới đúng. Get List Cart của bàn của order
+
         DatabaseUtil.getOrder(order_id).observe(lifecycleOwner) { order ->
             // Order
             txtTime.text = order.order_create_time.substring(12, order.order_create_time.length)

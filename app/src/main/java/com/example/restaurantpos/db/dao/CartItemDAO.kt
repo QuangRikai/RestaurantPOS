@@ -54,8 +54,8 @@ interface CartItemDAO {
     @Query(
         "SELECT * FROM cart_item WHERE cart_item_status_id < 2  \n" +
                 "ORDER BY \n" +
-                "CASE WHEN :sortByTimeOfOrder = 0 THEN order_id END ASC, \n" +
-                "CASE WHEN :sortByTimeOfOrder = 1 THEN order_id END DESC"
+                "CASE WHEN :sortByTimeOfOrder = 0 THEN order_id END DESC, \n" +
+                "CASE WHEN :sortByTimeOfOrder = 1 THEN order_id END ASC"
     )
     fun getListCartItemOfKitchenBySortTime(sortByTimeOfOrder: Int): LiveData<MutableList<CartItemEntity>>
 
