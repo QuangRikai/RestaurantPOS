@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.manager.UpdateAccountInfoActivity">
+    tools:context=".ui.manager.UpdateAdminInfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +31,8 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/inter_600"
                 android:gravity="center"
-                android:text="Update Infomation"
+                android:text="Update Information"
+                android:textSize="@dimen/_18sdp"
                 android:textColor="@color/text_blue" />
 
         </LinearLayout>
@@ -40,6 +41,16 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/text_blue" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_20sdp"
+            android:gravity="center"
+            android:textColor="@color/text_blue"
+            android:fontFamily="@font/inter_400"
+            android:text="@string/instruction_update_info"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +61,7 @@
             android:layout_marginVertical="@dimen/_5sdp">
 
             <TextView
-                android:layout_width="@dimen/_100sdp"
+                android:layout_width="@dimen/_70sdp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="Name: "
@@ -64,6 +75,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/bg_edt_login"
                 android:paddingStart="@dimen/_18sdp"
+                android:maxLength="16"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
@@ -79,7 +91,7 @@
             android:layout_marginVertical="@dimen/_5sdp">
 
             <TextView
-                android:layout_width="@dimen/_100sdp"
+                android:layout_width="@dimen/_70sdp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="Birthday: "
@@ -93,6 +105,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/bg_edt_login"
                 android:paddingStart="@dimen/_18sdp"
+                android:maxLength="16"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
@@ -106,7 +119,7 @@
             android:layout_marginVertical="@dimen/_5sdp">
 
             <TextView
-                android:layout_width="@dimen/_100sdp"
+                android:layout_width="@dimen/_70sdp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="Phone: "
@@ -119,6 +132,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/bg_edt_login"
                 android:paddingStart="@dimen/_18sdp"
+                android:maxLength="16"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
@@ -132,7 +146,7 @@
             android:layout_marginVertical="@dimen/_5sdp">
 
             <TextView
-                android:layout_width="@dimen/_100sdp"
+                android:layout_width="@dimen/_70sdp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="Username: "
@@ -145,6 +159,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/bg_edt_login"
                 android:paddingStart="@dimen/_18sdp"
+                android:maxLength="16"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
@@ -158,7 +173,7 @@
             android:layout_marginVertical="@dimen/_5sdp">
 
             <TextView
-                android:layout_width="@dimen/_100sdp"
+                android:layout_width="@dimen/_70sdp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="Password: "
@@ -172,20 +187,10 @@
                 android:background="@drawable/bg_edt_login"
                 android:inputType="textPassword"
                 android:paddingStart="@dimen/_18sdp"
+                android:maxLength="16"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
 
         <TextView
             android:id="@+id/txtError"

@@ -107,9 +107,10 @@
             android:name="orderObject"
             android:defaultValue=""
             app:argType="string" />
+
         <action
-            android:id="@+id/action_checkoutFragment_to_checkoutDoneFragment"
-            app:destination="@id/checkoutDoneFragment" />
+            android:id="@+id/action_checkoutFragment_to_checkoutConfirmFragment"
+            app:destination="@id/checkoutConfirmFragment" />
 
     </fragment>
     <fragment
@@ -135,12 +136,31 @@
     </fragment>
     <fragment
         android:id="@+id/checkoutDoneFragment"
-        android:name="com.example.restaurantpos.ui.staff.receptionist.checkout.CheckoutDoneFragment"
+        android:name="com.example.restaurantpos.ui.staff.receptionist.checkout.confirm.CheckoutDoneFragment"
         android:label="fragment_checkout_done"
         tools:layout="@layout/fragment_checkout_done" >
         <action
             android:id="@+id/action_checkoutDoneFragment_to_tableFragment"
             app:destination="@id/tableFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutConfirmFragment"
+        android:name="com.example.restaurantpos.ui.staff.receptionist.checkout.confirm.CheckoutConfirmFragment"
+        android:label="CheckoutConfirmFragment" >
+
+        <argument
+            android:name="tableObjectQ"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="orderObjectQ"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_checkoutConfirmFragment_to_checkoutDoneFragment"
+            app:destination="@id/checkoutDoneFragment" />
     </fragment>
 
 </navigation>

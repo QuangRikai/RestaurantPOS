@@ -19,44 +19,60 @@ class LoginViewModel : ViewModel() {
     //    private val view: MutableLiveData<View> = MutableLiveData()
 
     @SuppressLint("StaticFieldLeak")
-    fun checkLogin(context: Context, textView: TextView, userName: String, password: String) {
+    fun checkLogin(context: Context, txtInform: TextView, userName: String, password: String) {
+
         CoroutineScope(Dispatchers.IO).launch {
             val loginAccountList = DatabaseUtil.checkLogin(userName, password)
-            if (loginAccountList.isEmpty()) {
+
+            if (loginAccountList.isEmpty())
+            {
                 CoroutineScope(Dispatchers.Main).launch {
-                    textView.text = "Username or password is wrong!"
-                    textView.show()
+                    txtInform.text = "Username or password is wrong!"
+                    txtInform.show()
                 }
-            } else {
+
+            }
+            else
+            {
                 val acc = loginAccountList[0]
-                when (acc.role_id) {
-                    0 -> {
-                        /*                       SharedPreferencesUtils.setUserName(acc.user_name)
-                        SharedPreferencesUtils.setPassword(acc.password)*/
-                        SharedPreferencesUtils.setAccountName(acc.account_name)
-                        SharedPreferencesUtils.setAccountId(acc.account_id)
-                        SharedPreferencesUtils.setAccountRole(acc.role_id)
-                        context.openActivity(MainManagerActivity::class.java)
+
+                if (!acc.account_status_id){
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        txtInform.text = "Your account was disabled!"
+                        txtInform.show()
                     }
 
-                    1 -> {
-                        SharedPreferencesUtils.setAccountName(acc.account_name)
-                        SharedPreferencesUtils.setAccountId(acc.account_id)
-                        SharedPreferencesUtils.setAccountRole(acc.role_id)
-                        context.openActivity(
-                            MainReceptionistActivity::class.java,
-                            bundleOf("NavigateByRole" to acc.role_id)
-                        )
-                    }
+                }else{
+                    when (acc.role_id) {
+                        0 -> {
+                            /*                       SharedPreferencesUtils.setUserName(acc.user_name)
+                            SharedPreferencesUtils.setPassword(acc.password)*/
+                            SharedPreferencesUtils.setAccountName(acc.account_name)
+                            SharedPreferencesUtils.setAccountId(acc.account_id)
+                            SharedPreferencesUtils.setAccountRole(acc.role_id)
+                            context.openActivity(MainManagerActivity::class.java)
+                        }
 
-                    2 -> {
-                        SharedPreferencesUtils.setAccountName(acc.account_name)
-                        SharedPreferencesUtils.setAccountId(acc.account_id)
-                        SharedPreferencesUtils.setAccountRole(acc.role_id)
-                        context.openActivity(
-                            MainReceptionistActivity::class.java,
-                            bundleOf("NavigateByRole" to acc.role_id)
-                        )
+                        1 -> {
+                            SharedPreferencesUtils.setAccountName(acc.account_name)
+                            SharedPreferencesUtils.setAccountId(acc.account_id)
+                            SharedPreferencesUtils.setAccountRole(acc.role_id)
+                            context.openActivity(
+                                MainReceptionistActivity::class.java,
+                                bundleOf("NavigateByRole" to acc.role_id)
+                            )
+                        }
+
+                        2 -> {
+                            SharedPreferencesUtils.setAccountName(acc.account_name)
+                            SharedPreferencesUtils.setAccountId(acc.account_id)
+                            SharedPreferencesUtils.setAccountRole(acc.role_id)
+                            context.openActivity(
+                                MainReceptionistActivity::class.java,
+                                bundleOf("NavigateByRole" to acc.role_id)
+                            )
+                        }
                     }
                 }
             }

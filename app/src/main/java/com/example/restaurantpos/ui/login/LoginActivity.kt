@@ -46,8 +46,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         binding.txtInformLogin.show()
     }
 
-    private fun checkLogin(textView: TextView, userName: String, password: String) {
-        viewModel.checkLogin(this@LoginActivity,textView, userName, password)
+    private fun checkLogin(txtInform: TextView, userName: String, password: String) {
+        viewModel.checkLogin(this@LoginActivity,txtInform, userName, password)
     }
 
     // End

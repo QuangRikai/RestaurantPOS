@@ -1,6 +1,9 @@
 package com.example.restaurantpos.ui.manager.category
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.util.DatabaseUtil
@@ -9,6 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CategoryViewModel : ViewModel() {
+
+
+
     fun addCategory(data: CategoryEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseUtil.addCategory(data)
@@ -40,9 +46,16 @@ class CategoryViewModel : ViewModel() {
     fun getListCategoryComponentItem(categoryComponentId: Int) =
         DatabaseUtil.getListCategoryComponentItem(categoryComponentId)
 
-    fun getItemByName(name: String) = CoroutineScope(Dispatchers.IO).launch {
-        DatabaseUtil.getItemByName(name)
-    }
+
+//    lateinit var listItemByName: List<ItemEntity>
+//
+//    fun getItemByName(name: String) : List<ItemEntity> {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            listItemByName =  DatabaseUtil.getItemByName(name)
+//            return listItemByName
+//        }
+//    }
+
 
 
 }

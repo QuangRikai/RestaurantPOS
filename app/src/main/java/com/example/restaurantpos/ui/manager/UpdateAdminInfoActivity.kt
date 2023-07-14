@@ -12,7 +12,7 @@ import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 
-class UpdateAccountInfoActivity : AppCompatActivity() {
+class UpdateAdminInfoActivity : AppCompatActivity() {
     lateinit var binding: ActivityUpdateAccountInfoBinding
     private lateinit var viewModel: UserViewModel
 
@@ -73,7 +73,7 @@ class UpdateAccountInfoActivity : AppCompatActivity() {
                                 DataUtil.convertToMD5(binding.edtPassword.text.toString())
                         }
 
-                        viewModel.addUser(this@UpdateAccountInfoActivity, admin[0])
+                        viewModel.addUser(this@UpdateAdminInfoActivity, admin[0])
                         backToManager()
                     }
                 }

@@ -51,35 +51,113 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtEditUser" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
-        android:text="Username: "
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:fontFamily="@font/inter_600"
-        android:textSize="@dimen/_15sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/txtUserName"
-        app:layout_constraintEnd_toStartOf="@+id/txtUserName"
-        app:layout_constraintTop_toTopOf="@+id/txtUserName" />
-
-    <TextView
-        android:id="@+id/txtUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:gravity="center"
-        android:paddingStart="@dimen/_8sdp"
-        android:text="Username"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_15sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAccountName" />
 
     <LinearLayout
-        android:id="@+id/llUpdateInfo"
+        android:id="@+id/llAccountInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAccountName">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25sdp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Username:"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:id="@+id/txtUserName"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/inter_500"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25sdp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Birthday:"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:id="@+id/txtBirthday"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/inter_500"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25sdp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Phone:"
+                android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:id="@+id/txtPhone"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/inter_500"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/txtInform"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_rank_1"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llAccountInfo" />
+
+    <LinearLayout
+        android:id="@+id/llResetPassword"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_25sdp"
@@ -87,14 +165,14 @@
         app:layout_constraintBottom_toTopOf="@id/llLockUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtUserName">
+        app:layout_constraintTop_toBottomOf="@+id/llAccountInfo">
 
 
         <ImageView
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_60sdp"
             android:src="@drawable/img_right_arrow"
             app:tint="@color/white" />
 
@@ -115,17 +193,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/llResetAccount"
+        app:layout_constraintBottom_toTopOf="@+id/llEnableAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llUpdateInfo">
+        app:layout_constraintTop_toBottomOf="@id/llResetPassword">
 
 
         <ImageView
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_60sdp"
             android:src="@drawable/img_right_arrow"
             app:tint="@color/white" />
 
@@ -136,13 +214,13 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingStart="@dimen/_8sdp"
-            android:text="@string/lock_this_account"
+            android:text="@string/disable_this_account"
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llResetAccount"
+        android:id="@+id/llEnableAccount"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginBottom="@dimen/_40sdp"
@@ -157,7 +235,7 @@
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_60sdp"
             android:src="@drawable/img_right_arrow"
             app:tint="@color/white" />
 
@@ -168,7 +246,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingStart="@dimen/_8sdp"
-            android:text="Unlock this Account"
+            android:text="@string/enable_this_account"
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp" />
     </LinearLayout>

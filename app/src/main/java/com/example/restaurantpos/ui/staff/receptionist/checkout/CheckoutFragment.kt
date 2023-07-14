@@ -3,7 +3,6 @@ package com.example.restaurantpos.ui.staff.receptionist.checkout
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,7 +30,6 @@ import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
 import com.example.restaurantpos.util.DatabaseUtil
-import com.example.restaurantpos.util.DateFormatUtil
 import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
@@ -96,15 +95,19 @@ class CheckoutFragment : Fragment() {
         binding.rcyItemInBill.adapter = adapterItemCheckout
 
         /** Xử lý đáp data từ fragment trước */
+        // 1. tableObject lấy từ ............... This <-- OldOrderFragment <-- TableFragment.
+        // <--- bundleOf("tableObject" to itemTable.toJson())   <--  override fun clickTable(itemTable: TableEntity, table_status: Int)
+
         // Cần Table --> Chuyển Table về trạng thái Empty
         // Cần Order --> Tính tiền cho Order đấy
         tableObject =
             TableEntity.toTableEntity(requireArguments().getString("tableObject").toString())
-        Log.d("Quanglt", "$tableObject")
 
+        // 2. orderObject lấy từ ...............This <-- OldOrderFragment <-- TableFragment.
+        // <--- bundleOf("tableObject" to itemTable.toJson())   <--  tableObject?.let { table ->
+        // viewModelCart.getOrderByTable(table.table_id).observe(viewLifecycleOwner) { order -> orderObject = order }
         orderObject =
             OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
-        Log.d("Quanglt", "$orderObject")
 
         /** ----------------------------------------------------------------------------------*/
         // Map(Key, Value)
@@ -245,20 +248,17 @@ class CheckoutFragment : Fragment() {
                 if (binding.txtChange.text != "0.0" && (binding.edtCash.text.toString()
                         .toFloat() > billAmount)
                 ) {
-                    orderObject?.order_status_id = 2
                     orderObject?.payment_amount = binding.edtCash.text.toString().toFloat()
-                    orderObject?.paid_time = DateFormatUtil.getTimeForOrderId()
                     orderObject?.let {
                         viewModelCart.addOrder(it)
                     }
 
-                    // Set lại Table is Empty and update Status on Database
-                    tableObject?.table_status_id = 0
-                    tableObject?.let { tableObject ->
-                        viewModelTable.addTable(requireContext(), tableObject)
-                    }
-
-                    findNavController().navigate(R.id.action_checkoutFragment_to_checkoutDoneFragment)
+                    findNavController().navigate(
+                        R.id.action_checkoutFragment_to_checkoutConfirmFragment, bundleOf(
+                            "tableObjectQ" to tableObject?.toJson(),
+                            "orderObjectQ" to orderObject?.toJson()
+                        )
+                    )
                 } else {
                     binding.txtError.show()
                 }
@@ -304,18 +304,19 @@ class CheckoutFragment : Fragment() {
         val imgCloseDialogCustomer = view.findViewById<ImageView>(R.id.imgCloseDialogCustomer)
         // -----------------Code for Component----------------------------------------//
         // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
-        adapterCustomerInner = CustomerInnerAdapter(requireParentFragment(), ArrayList(), object :
-            CustomerInnerAdapter.EventClickItemCustomerInnerListener {
-            override fun clickCustomerInner(itemCustomer: CustomerEntity) {
-                // Có sẵn thì pick-up ra thôi
-                customerObject = itemCustomer
-                /**???*/
+        adapterCustomerInner =
+            CustomerInnerAdapter(requireParentFragment(), ArrayList(), object :
+                CustomerInnerAdapter.EventClickItemCustomerInnerListener {
+                override fun clickCustomerInner(itemCustomer: CustomerEntity) {
+                    // Có sẵn thì pick-up ra thôi
+                    customerObject = itemCustomer
+                    /**???*/
 //                orderObject?.customer_id = itemCustomer.customer_id
-                // Tìm cách đưa Customer's Name lên NewOrderFragment
-                binding.txtCustomerInBill.text = itemCustomer.customer_name
-                dialog.dismiss()
-            }
-        })
+                    // Tìm cách đưa Customer's Name lên NewOrderFragment
+                    binding.txtCustomerInBill.text = itemCustomer.customer_name
+                    dialog.dismiss()
+                }
+            })
         rcyCustomerInPhone.adapter = adapterCustomerInner
 
         // 2. Code for when staff types on edtPhoneNumber and contain >= 3 Chars. If exist --> Show for Picking-up

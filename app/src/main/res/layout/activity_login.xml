@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:fontFamily="@font/inter_300"
+                android:gravity="center"
                 android:text="Username or Password is wrong/empty!"
                 android:textColor="@color/text_red"
                 android:visibility="invisible" />

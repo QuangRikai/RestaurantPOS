@@ -20,8 +20,8 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentManagerCategoryComponentBinding
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.ItemEntity
-import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.RealPathUtil
+import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import java.io.IOException
@@ -106,9 +106,22 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         // 4.  Code cho AddItem Button
         btnAddItem.setOnClickListener {
+            /**===========================================================*/
+            txtInform.hide()
+
+            if (edtItemName.text.toString()
+                != "" && edtItemPrice.text.toString()
+                != "" && edtItemInventoryQuantity.text.toString() != ""
+            ) {
 
 
-            if (edtItemName.text.toString() != "" && edtItemPrice.text.toString() != "" && edtItemInventoryQuantity.text.toString() != "") {
+//                val listItem = viewModel.getItemByName(edtItemName.text.toString())
+//
+//                if (listItem.isEmpty()) {
+//                    if (listItem[0].item_name == edtItemName.text.toString()) {
+//                        txtInform.text = "This item already exists!"
+//                        txtInform.show()
+//                    } else {
                 viewModel.addCategoryItem(
                     ItemEntity(
                         0,
@@ -121,15 +134,22 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                 )
                 dialog.dismiss()
             } else {
+//                }
+
+//        } else {
                 txtInform.text = "Information below must not be empty!"
                 txtInform.show()
             }
+
+
+            /**===========================================================*/
         }
 
         // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display
         dialog = build.create()
         dialog.show()
     }
+
     override fun clickUpdateItem(itemCategory: ItemEntity) {
         showChangeItemDialog(itemCategory)
     }

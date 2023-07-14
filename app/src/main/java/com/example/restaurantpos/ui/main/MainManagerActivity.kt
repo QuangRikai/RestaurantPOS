@@ -9,7 +9,7 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.ActivityMainManagerBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.ui.login.LoginActivity
-import com.example.restaurantpos.ui.manager.UpdateAccountInfoActivity
+import com.example.restaurantpos.ui.manager.UpdateAdminInfoActivity
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
 
@@ -18,7 +18,6 @@ class MainManagerActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
 
-    var accountObject: AccountEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +49,7 @@ class MainManagerActivity : AppCompatActivity() {
 
                     // Logout
                     R.id.menu_update_info -> {
-                        openActivity(UpdateAccountInfoActivity::class.java)
+                        openActivity(UpdateAdminInfoActivity::class.java)
                         true
                     }
 

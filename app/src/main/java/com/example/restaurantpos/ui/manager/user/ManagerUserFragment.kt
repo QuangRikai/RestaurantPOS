@@ -13,6 +13,7 @@ import com.example.restaurantpos.base.BaseFragment
 import com.example.restaurantpos.databinding.FragmentManagerUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.util.DataUtil
+import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 
 class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
@@ -58,14 +59,19 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
         // 4.  Get Component of Dialog
         val txtAccountName = view.findViewById<TextView>(R.id.txtAccountName)
         val txtUserName = view.findViewById<TextView>(R.id.txtUserName)
+        val txtBirthday = view.findViewById<TextView>(R.id.txtBirthday)
+        val txtPhone = view.findViewById<TextView>(R.id.txtPhone)
         val txtResetPassword = view.findViewById<TextView>(R.id.txtResetPassword)
         val txtLock = view.findViewById<TextView>(R.id.txtLock)
         val txtUnlock = view.findViewById<TextView>(R.id.txtUnlock)
+        val txtInform = view.findViewById<TextView>(R.id.txtInform)
 
         val imgClose = view.findViewById<ImageView>(R.id.imgClose)
         //------------------------------------------------------------------------------//
         // 5. Show Info
         txtAccountName.text = itemUser.account_name
+        txtBirthday.text = itemUser.account_birthday
+        txtPhone.text = itemUser.account_phone
         txtUserName.text = itemUser.user_name
 
         // 5.  Handle Lock
@@ -78,35 +84,40 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
 
         // 6.  Handle Lock
         txtLock?.setOnClickListener {
+
             if (itemUser.account_status_id) {
                 itemUser.account_status_id = false
                 requireContext().showToast("${itemUser.account_name} was locked!")
-                itemUser.account_name = "(Locked) " + itemUser.account_name
+//                itemUser.account_name = "(Locked) " + itemUser.account_name
                 viewModel.addUser(requireContext(), itemUser)
                 viewModel.getAllUser().observe(viewLifecycleOwner) {
                     adapter.setListData(it)
                 }
+
+                dialog.dismiss()
             }else{
-                context?.showToast("This account was already locked!")
+                txtInform.setText(R.string.account_disabled_message)
+                txtInform.show()
             }
-            dialog.dismiss()
         }
 
         // 7.  Handle UnLock
         txtUnlock?.setOnClickListener {
-            if (itemUser.account_status_id) {
+            if (!itemUser.account_status_id) {
                 itemUser.account_status_id = true
-                itemUser.account_name = itemUser.account_name.substring(8)
+//                itemUser.account_name = itemUser.account_name.substring(8)
                 viewModel.addUser(requireContext(), itemUser)
 
                 requireContext().showToast("${itemUser.account_name} was unlocked!")
                 viewModel.getAllUser().observe(viewLifecycleOwner) {
                     adapter.setListData(it)
                 }
+
+                dialog.dismiss()
             }else{
-                context?.showToast("This account is active now!")
+                txtInform.setText(R.string.account_active_message)
+                txtInform.show()
             }
-            dialog.dismiss()
         }
 
         // Other: Close or Cancel

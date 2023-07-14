@@ -1,4 +1,4 @@
-package com.example.restaurantpos.ui.staff.receptionist.checkout
+package com.example.restaurantpos.ui.staff.receptionist.checkout.confirm
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

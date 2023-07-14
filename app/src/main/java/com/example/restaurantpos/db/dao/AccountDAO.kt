@@ -31,7 +31,7 @@ interface AccountDAO {
     @Query("SELECT * from account WHERE account_id = :account_id")
     fun getAccountById(account_id: Int): LiveData<MutableList<AccountEntity>>
 
-    @Query("SELECT * from account WHERE user_name = :user_name AND password = :password AND account_status_id = 1")
+    @Query("SELECT * from account WHERE user_name = :user_name AND password = :password")
     fun checkLogin(user_name: String, password: String): List<AccountEntity>
 
     @Query("SELECT * from account WHERE role_id != 0")

@@ -24,7 +24,16 @@
     <string name="add">ADD</string>
     <string name="staff_s_name">Staff\'s name</string>
     <string name="loginaccount_name">LoginAccount Name</string>
-    <string name="lock_this_account">Lock this Account</string>
+    <string name="disable_this_account">Disable this Account</string>
     <string name="cancel">CANCEL</string>
+    <string name="enable_this_account">Enable this Account</string>
+
+
+    <string name="account_disabled_message">This account was already disabled!</string>
+    <string name="account_active_message">This account is active now!</string>
+
+
+    <string name="instruction_update_info">You can update only the necessary information.</string>
+
 
 </resources>

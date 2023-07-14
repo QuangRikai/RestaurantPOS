@@ -29,7 +29,7 @@ interface ItemDAO {
     fun getItemOfCategory(item_id: Int): LiveData<MutableList<ItemEntity>>
 
     @Query("SELECT * from `item` WHERE item_name = :name")
-    fun getItemByName(name: String): LiveData<MutableList<ItemEntity>>
+    fun getItemByName(name: String): List<ItemEntity>
 
     /* @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun addTable(table: TableEntity): Long

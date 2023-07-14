@@ -23,6 +23,7 @@ class ManagerUserAdapter(
         var txtAccountName = itemView.findViewById<TextView>(R.id.txtUserName)
         var txtUserRole = itemView.findViewById<TextView>(R.id.txtUserRole)
         var imgEditUser = itemView.findViewById<ImageView>(R.id.imgEditUser)
+        var imgLock = itemView.findViewById<ImageView>(R.id.imgLock)
     }
 
     //Method 1: Main in Adapter: XML Layout ==> View
@@ -45,6 +46,12 @@ class ManagerUserAdapter(
             "Receptionist"
         } else {
             "Kitchen"
+        }
+
+        holder.imgLock.visibility = if (!itemUser.account_status_id){
+            View.VISIBLE
+        }  else {
+            View.INVISIBLE
         }
 
         holder.imgEditUser.setOnClickListener {
