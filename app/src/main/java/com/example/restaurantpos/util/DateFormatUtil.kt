@@ -27,6 +27,11 @@ object DateFormatUtil {
         return simpleDateFormat.format(Date())
     }
 
+    fun getTimeForKitchen(): String {
+        val simpleDateFormat = SimpleDateFormat(formatNotContainDay, Locale.getDefault())
+        return simpleDateFormat.format(Date())
+    }
+
     fun getShiftId(year: Int, month: Int): String {
         return "${year}/${month}"
     }

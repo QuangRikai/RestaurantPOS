@@ -174,9 +174,9 @@ class AddMoreOrderFragment : Fragment() {
         /** Code for Order Button */
         binding.txtOrder.setOnClickListener {
             // Add Order (Bill) vào OrderEntity
-            orderObject?.let { order ->
-                orderObject!!.order_create_time = DateFormatUtil.getTimeForOrderCreateTime()
-                viewModelCart.addOrder(order) }
+//            orderObject?.let { order ->
+////                orderObject!!.order_create_time = DateFormatUtil.getTimeForOrderCreateTime()
+//                viewModelCart.addOrder(order) }
             // Add list Item_in_Cart into CartItemEntity. Lúc này mới viết vào Database!
             viewModelCart.addListCartItem(listCartItem)
             // Cập nhập trạng thái cho Table
@@ -236,6 +236,7 @@ class AddMoreOrderFragment : Fragment() {
                             orderObject!!.order_create_time,
                             1,
                             "",
+                            DateFormatUtil.getTimeForKitchen(),
                             0
                         )
                     )

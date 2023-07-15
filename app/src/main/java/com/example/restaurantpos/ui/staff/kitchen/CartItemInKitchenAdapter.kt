@@ -53,6 +53,7 @@ class CartItemInKitchenAdapter(
         /** Đổ data lên View */
         holder.txtNo.text = "${position + 1}"
         holder.txtOrderQuantity.text = cartItem.order_quantity.toString()
+        holder.txtTime.text = cartItem.cart_order_time
         holder.txtNote.text = cartItem.note
 
         holder.txtCartItemStatus.setOnClickListener {
@@ -60,7 +61,7 @@ class CartItemInKitchenAdapter(
         }
 
         showInfo(
-            holder.txtTime,
+//            holder.txtTime,
             holder.txtItemName,
             holder.txtTableName,
             holder.txtCartItemStatus,
@@ -72,7 +73,7 @@ class CartItemInKitchenAdapter(
 
     // Những thông tin về Table, Item thì phải get bằng order_id, item_id nha
     fun showInfo(
-        txtTime: TextView,
+//        txtTime: TextView,
         txtItemName: TextView,
         txtTableName: TextView,
         txtCartItemStatus: TextView,
@@ -86,7 +87,7 @@ class CartItemInKitchenAdapter(
 
         DatabaseUtil.getOrder(order_id).observe(lifecycleOwner) { order ->
             // Order
-            txtTime.text = order.order_create_time.substring(12, order.order_create_time.length)
+//            txtTime.text = order.order_create_time.substring(12, order.order_create_time.length)
             // Table
             getTableName(txtTableName, order.table_id)
         }
@@ -122,7 +123,7 @@ class CartItemInKitchenAdapter(
     }
 
     // Làm sao để từ order_id lấy table_id--> Lấy table_name ?
-    fun getTableName(txtTableName: TextView, table_id: Int) {
+    private fun getTableName(txtTableName: TextView, table_id: Int) {
         DatabaseUtil.getTableById(table_id).observe(lifecycleOwner) { table ->
             txtTableName.text = table.table_name
         }

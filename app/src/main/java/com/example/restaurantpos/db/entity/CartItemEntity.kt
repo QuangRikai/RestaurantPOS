@@ -29,6 +29,9 @@ data class CartItemEntity constructor(
     @ColumnInfo(name = "note")
     var note: String,
 
+    @ColumnInfo(name = "cart_order_time")
+    var cart_order_time: String,
+
     @ColumnInfo(name = "cart_item_status_id")
     var cart_item_status_id: Int
 

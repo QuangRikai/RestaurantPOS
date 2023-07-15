@@ -219,10 +219,11 @@ class NewOrderFragment : Fragment() {
                         CartItemEntity(
                             0,
                             itemInCategory.item_id,
-                            orderObject!!.order_create_time,
+                            orderObject!!.order_id,
                             1,
                             // Note thì xíu mới thêm
                             "",
+                            DateFormatUtil.getTimeForKitchen(),
                             // 0: Waiting
                             0
                         )
