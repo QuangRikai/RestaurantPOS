@@ -6,10 +6,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.CartItemStatusEntity
-import com.example.restaurantpos.db.entity.TableStatusEntity
 
 @Dao
 interface CartItemDAO {
@@ -35,7 +33,7 @@ interface CartItemDAO {
     @Query("SELECT * FROM cart_item WHERE order_id = :order_id")
     fun getListCartItemByOrderId(order_id: String): LiveData<MutableList<CartItemEntity>>
 
-//    cart_item_status = 0: Những thứ vẫn chưa làm thì cho phép Edit/Delete
+    //    cart_item_status = 0: Những thứ vẫn chưa làm thì cho phép Edit/Delete
     @Query("SELECT * FROM cart_item WHERE order_id = :order_id AND cart_item_status_id = 0")
     fun getListCartItemOnWaiting(order_id: String): LiveData<MutableList<CartItemEntity>>
 
@@ -49,15 +47,58 @@ interface CartItemDAO {
     sortByTimeOfOrder = 1 --> Sort ngược (Giảm dần)               Descending
     sortByTimeOfOrder = 2 --> Bỏ qua
 
-    Con số status có thể quyết định việc bỏ đi hoặc không á.
+    Bỏ qua thằng 2. Vì thường thì call API từ server về thì mới cần trạng thái Không Sort
+    Chỉ có những thằng sort không theo thời gian thì mới có trạng thái không sort thôi
+
+    Status cũng Livedata, kiểu LiveData kép ấy
+
+    Con số status có thể quyết định việc bỏ đi hoặc không.
+    SORT theo order_id chính là time luôn. (<-- Đổi order_id thành dạng time)
+    Nhưng rốt cuộc thì mình lại thêm 1 trường time (cart_order_time) vào rồi, vậy nên quả order_id đâu cần phải dạng time làm gì nữa đâu.
     */
     @Query(
         "SELECT * FROM cart_item WHERE cart_item_status_id < 2  \n" +
                 "ORDER BY \n" +
-                "CASE WHEN :sortByTimeOfOrder = 0 THEN order_id END DESC, \n" +
-                "CASE WHEN :sortByTimeOfOrder = 1 THEN order_id END ASC"
+                "CASE WHEN :sortByTimeOfOrder = 0 THEN cart_order_time END DESC, \n" +
+                "CASE WHEN :sortByTimeOfOrder = 1 THEN cart_order_time END ASC"
     )
     fun getListCartItemOfKitchenBySortTime(sortByTimeOfOrder: Int): LiveData<MutableList<CartItemEntity>>
+    @Query(
+        "SELECT * FROM cart_item JOIN `order` ON cart_item.order_id = `order`.order_id JOIN `table` ON `table`.table_id = `order`.table_id WHERE cart_item_status_id < 2  \n" +
+                "ORDER BY \n" +
+                "CASE WHEN :sortByTable = 0 THEN `order`.table_id END DESC, \n" +
+                "CASE WHEN :sortByTable = 1 THEN `order`.table_id END ASC"
+    )
+    fun getListCartItemOfKitchenSortByTable(sortByTable: Int): LiveData<MutableList<CartItemEntity>>
+    @Query(
+        "SELECT * FROM cart_item WHERE cart_item_status_id < 2  \n" +
+                "ORDER BY \n" +
+                "CASE WHEN :sortByStatus = 0 THEN cart_item_status_id END DESC, \n" +
+                "CASE WHEN :sortByStatus = 1 THEN cart_item_status_id END ASC"
+    )
+    fun getListCartItemOfKitchenSortByStatus(sortByStatus: Int): LiveData<MutableList<CartItemEntity>>
+    @Query(
+        "SELECT * FROM cart_item JOIN item ON cart_item.item_id = item.item_id WHERE cart_item_status_id < 2  \n" +
+                "ORDER BY \n" +
+                "CASE WHEN :sortByItemName = 0 THEN item.item_name END DESC, \n" +
+                "CASE WHEN :sortByItemName = 1 THEN item.item_name END ASC"
+    )
+    fun getListCartItemOfKitchenSortByItemName(sortByItemName: Int): LiveData<MutableList<CartItemEntity>>
+
+    @Query(
+        "SELECT * FROM cart_item WHERE cart_item_status_id < 2  \n" +
+                "ORDER BY \n" +
+                "CASE WHEN :sortByOrderQuantity = 0 THEN order_quantity END DESC, \n" +
+                "CASE WHEN :sortByOrderQuantity = 1 THEN order_quantity END ASC"
+    )
+    fun getListCartItemOfKitchenSortByOrderQuantity(sortByOrderQuantity: Int): LiveData<MutableList<CartItemEntity>>
+    @Query(
+        "SELECT * FROM cart_item WHERE cart_item_status_id < 2  \n" +
+                "ORDER BY \n" +
+                "CASE WHEN :sortByNote = 0 THEN note END DESC, \n" +
+                "CASE WHEN :sortByNote = 1 THEN note END ASC"
+    )
+    fun getListCartItemOfKitchenSortByNote(sortByNote: Int): LiveData<MutableList<CartItemEntity>>
 
     @Query("SELECT * FROM `order`  JOIN cart_item  ON (`order`.order_id = cart_item .order_id) JOIN `table`  ON (`order`.table_id = `table`.table_id) WHERE `table`.table_id = :tableId")
     fun getListCartItemByTableId(tableId: Int): LiveData<MutableList<CartItemEntity>>

@@ -62,7 +62,7 @@
         android:background="@color/text_blue"/>
 
     <include
-        android:id="@+id/layoutCartItemInKitchen"
+        android:id="@+id/layoutTitleOfCartItemInKitchen"
         layout="@layout/item_cart_item_header_in_kitchen" />
 
     <View

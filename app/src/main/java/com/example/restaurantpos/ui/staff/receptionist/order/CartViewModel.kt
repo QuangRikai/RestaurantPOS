@@ -52,6 +52,21 @@ class CartViewModel : ViewModel() {
     fun getListCartItemOfKitchenBySortTime(sortByTimeOfOrder: Int) =
         DatabaseUtil.getListCartItemOfKitchenBySortTime(sortByTimeOfOrder)
 
+    fun getListCartItemOfKitchenSortByTable(sortByTable: Int) =
+        DatabaseUtil.getListCartItemOfKitchenSortByTable(sortByTable)
+
+    fun getListCartItemOfKitchenSortByStatus(sortByStatus: Int) =
+        DatabaseUtil.getListCartItemOfKitchenSortByStatus(sortByStatus)
+
+    fun getListCartItemOfKitchenSortByItemName(sortByItemName: Int) =
+        DatabaseUtil.getListCartItemOfKitchenSortByItemName(sortByItemName)
+
+    fun getListCartItemOfKitchenSortByOrderQuantity(sortByOrderQuantity: Int) =
+        DatabaseUtil.getListCartItemOfKitchenSortByOrderQuantity(sortByOrderQuantity)
+
+    fun getListCartItemOfKitchenSortByNote(sortByNote: Int) =
+        DatabaseUtil.getListCartItemOfKitchenSortByNote(sortByNote)
+
 
     fun deleteCartItem(data: CartItemEntity) {
         CoroutineScope(Dispatchers.IO).launch {

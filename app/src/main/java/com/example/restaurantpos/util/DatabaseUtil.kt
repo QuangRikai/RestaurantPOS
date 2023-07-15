@@ -120,6 +120,16 @@ object DatabaseUtil {
     fun getListCartItemOfKitchen() = cartItemDAO.getListCartItemOfKitchen()
     fun getListCartItemOfKitchenBySortTime(sortByTimeOfOrder: Int) =
         cartItemDAO.getListCartItemOfKitchenBySortTime(sortByTimeOfOrder)
+    fun getListCartItemOfKitchenSortByTable(sortByTable: Int) =
+        cartItemDAO.getListCartItemOfKitchenSortByTable(sortByTable)
+    fun getListCartItemOfKitchenSortByStatus(sortByStatus: Int) =
+        cartItemDAO.getListCartItemOfKitchenSortByStatus(sortByStatus)
+    fun getListCartItemOfKitchenSortByItemName(sortByItemName: Int) =
+        cartItemDAO.getListCartItemOfKitchenSortByItemName(sortByItemName)
+    fun getListCartItemOfKitchenSortByOrderQuantity(sortByOrderQuantity: Int) =
+        cartItemDAO.getListCartItemOfKitchenSortByOrderQuantity(sortByOrderQuantity)
+    fun getListCartItemOfKitchenSortByNote(sortByNote: Int) =
+        cartItemDAO.getListCartItemOfKitchenSortByNote(sortByNote)
 
     fun getListCartItemOnWaiting(order_id: String) = cartItemDAO.getListCartItemOnWaiting(order_id)
 

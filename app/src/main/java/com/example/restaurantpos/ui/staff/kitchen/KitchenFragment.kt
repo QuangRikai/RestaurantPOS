@@ -42,6 +42,11 @@ class KitchenFragment : Fragment() {
     Chuyển sortByTimeOfOrder sang MutableLiveData --> Lắng nghe
     */
     private var sortByTimeOfOrder = MutableLiveData(0)
+    private var sortByTable = MutableLiveData(0)
+    private var sortByStatus = MutableLiveData(0)
+    private var sortByItemName = MutableLiveData(0)
+    private var sortByOrderQuantity = MutableLiveData(0)
+    private var sortByNote = MutableLiveData(0)
 
 //    var listCartItem = ArrayList<CartItemEntity>()
 
@@ -52,7 +57,7 @@ class KitchenFragment : Fragment() {
         binding = FragmentKitchenBinding.inflate(inflater, container, false)
 
         /** Tạo Đối Tượng ViewModel */
-        // ViewModelProvider: Lấy&quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
+        // ViewModelProvider: Lấy & quản lý ViewModels trong 1 LifecycleOwner như 1 Activity or 1 Fragment.
         viewModelCart = ViewModelProvider(this).get(CartViewModel::class.java)
 
 
@@ -127,23 +132,114 @@ class KitchenFragment : Fragment() {
             })
         // 2. Dùng adapter vừa tạo cho View cần dùng
         binding.rcyCartItemInKitchen.adapter = adapterCartItemInKitchen
-        // 3. Set data cho adapder chuyển đổi.
+        // 3. Set data cho adapter chuyển đổi.
         // Thêm quả Sort!. Sort bao nhiêu thằng thì truyền vào bấy nhiêu thằng
-        // sortByTimeOfOrder sang MutableLiveData --> Lắng nghe --> Thay đổi thì cập nhật lại listData
-        // sortValue--> sortByTimeOfOrder.value!!  <--  Do nó cập nhật lại thằng nó lại ở trạng thái không có gì nên nó không load lại nữa.
-        // 59:15 !!!
+        // sortByTimeOfOrder sang MutableLiveData --> Lắng nghe --> Sort thay đổi thì cập nhật lại listData
 
-        sortByTimeOfOrder.observe(viewLifecycleOwner) { sortValue ->
+        sortByTimeOfOrder.observe(viewLifecycleOwner) {
             viewModelCart.getListCartItemOfKitchenBySortTime(sortByTimeOfOrder.value!!)
                 .observe(viewLifecycleOwner) { listCart ->
                     adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
                 }
         }
 
-        when (sortByTimeOfOrder.value) {
-            1 -> sortByTimeOfOrder.value = 0
-            0 -> sortByTimeOfOrder.value = 1
+        /** SORT theo TITlE */
+        // Muốn sort cái gì thì cứ cập nhập cái list đó vào
+
+        // 1. Theo TIME
+        binding.layoutTitleOfCartItemInKitchen.txtTime.setOnClickListener {
+            when (sortByTimeOfOrder.value) {
+                1 -> sortByTimeOfOrder.value = 0
+                0 -> sortByTimeOfOrder.value = 1
+            }
         }
+
+        // 2. Theo TABLE
+        binding.layoutTitleOfCartItemInKitchen.txtTableName.setOnClickListener {
+
+            sortByTable.observe(viewLifecycleOwner) {
+                viewModelCart.getListCartItemOfKitchenSortByTable(sortByTable.value!!)
+                    .observe(viewLifecycleOwner) { listCart ->
+                        adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
+                    }
+            }
+
+            when (sortByTable.value) {
+                1 -> sortByTable.value = 0
+                0 -> sortByTable.value = 1
+            }
+
+        /*    when (sortByTable.value) {
+                1 -> sortByTable.value = 2
+                2 -> sortByTable.value = 0
+                else -> sortByTable.value = 1
+            }*/
+        }
+
+        // 3. Theo STATUS
+        binding.layoutTitleOfCartItemInKitchen.txtCondition.setOnClickListener {
+
+            sortByStatus.observe(viewLifecycleOwner) {
+                viewModelCart.getListCartItemOfKitchenSortByStatus(sortByStatus.value!!)
+                    .observe(viewLifecycleOwner) { listCart ->
+                        adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
+                    }
+            }
+
+            when (sortByStatus.value) {
+                1 -> sortByStatus.value = 0
+                0 -> sortByStatus.value = 1
+            }
+        }
+
+        // 4. Theo ITEM NAME
+        binding.layoutTitleOfCartItemInKitchen.txtItemName.setOnClickListener {
+
+            sortByItemName.observe(viewLifecycleOwner) {
+                viewModelCart.getListCartItemOfKitchenSortByItemName(sortByItemName.value!!)
+                    .observe(viewLifecycleOwner) { listCart ->
+                        adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
+                    }
+            }
+
+            when (sortByItemName.value) {
+                1 -> sortByItemName.value = 0
+                0 -> sortByItemName.value = 1
+            }
+        }
+
+        // 5. Theo ORDER QUANTITY
+        binding.layoutTitleOfCartItemInKitchen.txtOrderQuantity.setOnClickListener {
+
+            sortByOrderQuantity.observe(viewLifecycleOwner) {
+                viewModelCart.getListCartItemOfKitchenSortByOrderQuantity(sortByOrderQuantity.value!!)
+                    .observe(viewLifecycleOwner) { listCart ->
+                        adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
+                    }
+            }
+
+            when (sortByOrderQuantity.value) {
+                1 -> sortByOrderQuantity.value = 0
+                0 -> sortByOrderQuantity.value = 1
+            }
+        }
+
+        // 6. Theo NOTE
+        binding.layoutTitleOfCartItemInKitchen.txtNote.setOnClickListener {
+
+            sortByNote.observe(viewLifecycleOwner) {
+                viewModelCart.getListCartItemOfKitchenSortByNote(sortByNote.value!!)
+                    .observe(viewLifecycleOwner) { listCart ->
+                        adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
+                    }
+            }
+
+            when (sortByNote.value) {
+                1 -> sortByNote.value = 0
+                0 -> sortByNote.value = 1
+            }
+        }
+
 
 
     }
