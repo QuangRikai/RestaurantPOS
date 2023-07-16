@@ -239,10 +239,8 @@ class KitchenFragment : Fragment() {
                 0 -> sortByNote.value = 1
             }
         }
-
-
-
     }
+
 
     private fun showConfirmItemStatusDialog(cartItemInKitchen: CartItemEntity) {
         val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
