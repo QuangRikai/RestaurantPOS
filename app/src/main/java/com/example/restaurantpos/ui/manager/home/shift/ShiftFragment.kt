@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -22,9 +23,7 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentShiftBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.AccountShiftEntity
-import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.ui.manager.user.UserViewModel
-import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.gone
@@ -61,6 +60,11 @@ class ShiftFragment : Fragment() {
         return binding.root
     }
 
+    // Qnew
+    private fun showMessage(content: String) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,6 +78,11 @@ class ShiftFragment : Fragment() {
             // Sao cứ phải làm việc khó khăn thế này. Xử lý bà nó trong Adapter luôn đi
             15-45:00
             */
+
+        // Qnew
+        viewModelShift.isDuplicate.observe(viewLifecycleOwner) {
+            if (it) showMessage("Duplication")
+        }
 
         /**---------------------------------------------------------------------------------------*/
         // Code for add Account_Shift
@@ -175,7 +184,6 @@ class ShiftFragment : Fragment() {
         val btnCancel = view.findViewById<Button>(R.id.btnCancel)
 
         val rcyAccountInner = view.findViewById<RecyclerView>(R.id.rcyAccountInner)
-
 
 
         // -----------------Code for Component----------------------------------------//

@@ -24,7 +24,8 @@
             android:text="description"
             android:layout_marginBottom="@dimen/_5sdp"
             android:gravity= "center"
-            android:fontFamily="@font/inter_400"/>
+            android:textColor="@color/text_blue"
+            android:fontFamily="@font/inter_500"/>
 
 
 
@@ -34,7 +35,7 @@
             android:layout_height="@dimen/_50sdp"
             android:src="@drawable/img_cake_coffee"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:textSize="@dimen/_35sdp" />
 
         <LinearLayout
@@ -47,7 +48,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:fontFamily="@font/inter_500"
+                android:fontFamily="@font/inter_400"
+                android:textColor="@color/text_blue"
                 android:gravity="center"
                 android:text="0 " />
 
@@ -57,6 +59,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
                 android:fontFamily="@font/inter_500"
+                android:textColor="@color/text_blue"
                 android:gravity="center"
                 android:text="10" />
 
@@ -65,7 +68,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:fontFamily="@font/inter_500"
+                android:fontFamily="@font/inter_400"
+                android:textColor="@color/text_blue"
                 android:gravity="center"
                 android:text="20" />
 

@@ -7,16 +7,14 @@ import com.google.gson.annotations.SerializedName
 // ==> Có thể không hứng nha
 
 // Tên đặt trùng thì okay, nhưng khác thì cần chỉ định (Y như Room)
-data class WeatherAPIDataModel(
+data class WeatherResponse(
 
     @SerializedName("weather")
     val weather: List<WeatherItem>,
 
-//    @SerializedName("base")
     val base: String,
 
-//    @SerializedName("main")
     val main: MainWeather
 
-    ) {
+) {
 }

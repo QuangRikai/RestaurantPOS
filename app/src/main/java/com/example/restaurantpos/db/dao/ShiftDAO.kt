@@ -23,6 +23,11 @@ interface ShiftDAO {
     @Query("SELECT * from shift WHERE shift_id = :shift_id")
     fun getShiftById(shift_id: String): LiveData<ShiftEntity>
 
+
+    // Qnew
+    @Query("SELECT * from account_shift WHERE shift_id = :shift_id AND account_id = :account_id")
+    fun getShiftByNameAndShift(shift_id: String, account_id: Int): AccountShiftEntity
+
     @Query("SELECT * from shift")
     fun getListShift(): LiveData<MutableList<ShiftEntity>>
 
@@ -39,6 +44,7 @@ interface ShiftDAO {
 
     @Query("SELECT * from account_shift WHERE shift_id = :shift_id")
     fun getListAccountShiftForSetListData(shift_id: String): LiveData<MutableList<AccountShiftEntity>>
+
     @Query("SELECT account.account_name from account_shift JOIN account ON account_shift.account_id = account.account_id WHERE shift_id LIKE :shift_id")
     fun getListAccountShift(shift_id: String): LiveData<MutableList<String>>
 

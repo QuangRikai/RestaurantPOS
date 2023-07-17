@@ -1,5 +1,7 @@
 package com.example.restaurantpos.ui.manager.home.shift
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.db.entity.ShiftEntity
@@ -9,6 +11,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ShiftViewModel : ViewModel() {
+
+    private val _isDuplicate: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val isDuplicate: LiveData<Boolean> = _isDuplicate
 
     fun addShift(shift: ShiftEntity) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -20,9 +28,23 @@ class ShiftViewModel : ViewModel() {
 
     fun getListShift() = DatabaseUtil.getListShift()
 
-    fun addAccountShift(accountShift: AccountShiftEntity) {
+/*    fun addAccountShift(accountShift: AccountShiftEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseUtil.shiftDAO.addAccountShift(accountShift)
+        }
+    }*/
+
+    fun addAccountShift(accountShift: AccountShiftEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val existingAccountShift = DatabaseUtil.shiftDAO.getShiftByNameAndShift(accountShift.shift_id, accountShift.account_id)
+
+            if (existingAccountShift == null) {
+                // Nếu tài khoản chưa tồn tại, thêm vào cơ sở dữ liệu
+                DatabaseUtil.shiftDAO.addAccountShift(accountShift)
+            } else {
+                // Nếu tài khoản đã tồn tại, xử lý tương ứng (ví dụ: hiển thị thông báo lỗi)
+                _isDuplicate.postValue(true)
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,10 +27,14 @@ class AddUserFragment : Fragment() {
         return binding.root
     }
 
-    /**
-     * Xử lý role trong spinner
-     */
+
+    private fun showMessage(content: String) {
+        Toast.makeText(requireContext(), content, Toast.LENGTH_SHORT).show()
+    }
+
+    /** Xử lý role trong spinner */
     private var role = 1
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,10 +42,14 @@ class AddUserFragment : Fragment() {
         /**  Xử lý role trong spinner  */
         handleUserRoleBySpinner()
 
-        /**\
-         * Khai báo viewModel --> Dùng phương thức addUser --> set ADD Button
-         */
+        /**  Khai báo viewModel --> Dùng phương thức addUser --> set ADD Button */
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+
+        viewModel.isDuplicate.observe(viewLifecycleOwner) {
+            if (it) showMessage("This account (username) is existing!")
+            else onBack()
+        }
+
         /** Device's Back Button*/
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -73,7 +82,7 @@ class AddUserFragment : Fragment() {
                         true
                     )
                 )
-                onBack()
+//                onBack()
             }
         }
     }

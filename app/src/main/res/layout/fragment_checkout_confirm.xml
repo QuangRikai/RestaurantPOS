@@ -356,7 +356,7 @@
                         android:layout_height="match_parent"
                         android:fontFamily="@font/inter_400"
                         android:gravity="center"
-                        android:text="$" />
+                        android:text="%" />
 
                 </LinearLayout>
 

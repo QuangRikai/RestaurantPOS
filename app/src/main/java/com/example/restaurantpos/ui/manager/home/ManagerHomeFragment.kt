@@ -1,18 +1,22 @@
 package com.example.restaurantpos.ui.manager.home
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentManagerHomeBinding
-import com.example.restaurantpos.network.WeatherAPIDataModel
-import com.example.restaurantpos.network.WeatherClient
+import com.example.restaurantpos.network.WeatherResponse
+import com.example.restaurantpos.network.WeatherRetrofitClient
 import com.example.restaurantpos.util.DataUtil
+import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.showToast
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
@@ -25,6 +29,9 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,6 +62,66 @@ class ManagerHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /** Device's Back Button*/
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+//                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+
+        /** Call API */
+
+        // Thực tế thì cần get vị trí hiện tại ==> Dùng Trình đọc địa chỉ của Gooogle ==> Liên quan đến Firebase
+        val call = WeatherRetrofitClient.weatherAPIInterface.getWeather(
+            35.6916,
+            139.768,
+            "381f382c474ccaadce8927aea11ac978"
+        )
+
+        // enqueue: Thêm một công việc mới vào cuối hàng đợi
+        // Mình đang dùng thằng callback thuần túy nhất\
+        // Thực chất chính là thằng này ở interface: Call<WeatherAPIDataModel>
+        // Chú ý import Callback của đúng thằng Retrofit2 nha.
+        call.enqueue(object : Callback<WeatherResponse> {
+
+            @SuppressLint("SetTextI18n")
+            override fun onResponse(
+                call: Call<WeatherResponse>,
+                response: Response<WeatherResponse>
+            ) {
+                val weatherData = response.body()?.main
+
+                if (weatherData != null) {
+                    val tempMax = weatherData.temp_max
+                    val tempCurrent = weatherData.temp
+                    val tempMin = weatherData.temp_min
+
+                    String.format("%.2f °C", tempMin - 273.15)
+
+                    binding.txtMinTemp.text = String.format("%.1f °C", tempMin - 273.15)
+                    binding.txtNowTemp.text = String.format("%.1f °C", tempCurrent - 273.15)
+                    binding.txtMaxTemp.text = String.format("%.1f °C", tempMax - 273.15)
+
+                    val weatherDescription = response.body()?.weather?.getOrNull(0)?.description
+                    binding.txtWeatherDescription.text = weatherDescription
+
+                    val weatherIcon = response.body()?.weather?.getOrNull(0)?.icon
+                    val weatherIconUrl = "http://openweathermap.org/img/w/$weatherIcon.png"
+                    Picasso.get().load(weatherIconUrl).into(binding.imgWeather)
+                }
+            }
+
+            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                context?.showToast("Failed to call the API: ${t.message}")
+                Log.d("Quanglt", "${t.message}")
+            }
+        })
+
+
+        /**=================================================================*/
         /** Shift */
         binding.btnShift.setOnClickListener {
             findNavController().navigate(R.id.action_mainManagerFragment_to_shiftFragment)
@@ -98,83 +165,49 @@ class ManagerHomeFragment : Fragment() {
 
         // Data đi cùng
 
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
+//        for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
+//            CoroutineScope(Dispatchers.IO).launch {
 //                revenue = DatabaseUtil.getRevenueOfDay("$nowYear/$nowMonth/$i")
 //                listRevenue.add(revenue)
 //            }
 //        }
 
 
-        listRevenue.add(5f)
-        listRevenue.add(8f)
-        listRevenue.add(10f)
-        listRevenue.add(51f)
-        listRevenue.add(5f)
-        listRevenue.add(53f)
-        listRevenue.add(5f)
-        listRevenue.add(56f)
-        listRevenue.add(35f)
-        listRevenue.add(45f)
-        listRevenue.add(5f)
-        listRevenue.add(15f)
-        listRevenue.add(15f)
-        listRevenue.add(15f)
-        listRevenue.add(25f)
-        listRevenue.add(25f)
-        listRevenue.add(21f)
-        listRevenue.add(21f)
-        listRevenue.add(21f)
-        listRevenue.add(15f)
-        listRevenue.add(15f)
-        listRevenue.add(15f)
-        listRevenue.add(15f)
-        listRevenue.add(11f)
-        listRevenue.add(11f)
-        listRevenue.add(11f)
-        listRevenue.add(11f)
-        listRevenue.add(21f)
-        listRevenue.add(21f)
-        listRevenue.add(21f)
-        listRevenue.add(21f)
+                listRevenue.add(5f)
+                listRevenue.add(8f)
+                listRevenue.add(10f)
+                listRevenue.add(51f)
+                listRevenue.add(5f)
+                listRevenue.add(53f)
+                listRevenue.add(5f)
+                listRevenue.add(56f)
+                listRevenue.add(35f)
+                listRevenue.add(45f)
+                listRevenue.add(5f)
+                listRevenue.add(15f)
+                listRevenue.add(15f)
+                listRevenue.add(15f)
+                listRevenue.add(25f)
+                listRevenue.add(25f)
+                listRevenue.add(21f)
+                listRevenue.add(21f)
+                listRevenue.add(21f)
+                listRevenue.add(15f)
+                listRevenue.add(15f)
+                listRevenue.add(15f)
+                listRevenue.add(15f)
+                listRevenue.add(11f)
+                listRevenue.add(11f)
+                listRevenue.add(11f)
+                listRevenue.add(11f)
+                listRevenue.add(21f)
+                listRevenue.add(21f)
+                listRevenue.add(21f)
+                listRevenue.add(21f)
 
         create_graph(binding.chart, graph_label, listRevenue)
 
         /**=================================================================*/
-        /** Call API */
-
-        // Thực tế thì cần get vị trí hiện tại ==> Dùng Trình đọc địa chỉ của Gooogle ==> Liên quan đến Firebase
-        val call = WeatherClient.weatherApiInterface.getWeather(
-            35.6916,
-            139.768,
-            "381f382c474ccaadce8927aea11ac978"
-        )
-
-        // enqueue: Thêm một công việc mới vào cuối hàng đợi
-        // Mình đang dùng thằng callback thuần túy nhất\
-        // Thực chất chính là thằng này ở interface: Call<WeatherAPIDataModel>
-        // Chú ý import Callback của đúng thằng Retrofit2 nha.
-        call.enqueue(object : Callback<WeatherAPIDataModel> {
-
-            override fun onResponse(
-                call: Call<WeatherAPIDataModel>,
-                response: Response<WeatherAPIDataModel>
-            ) {
-                val body = response.body()
-                binding.txtNowTemp.text = "${body?.main?.temp?.minus(273.15)} °C"
-
-                Picasso.get()
-                    .load("http://openweathermap.org/img/${body?.weather?.get(0)?.icon}.png")
-                    .into(binding.imgWeather)
-            }
-
-            override fun onFailure(call: Call<WeatherAPIDataModel>, t: Throwable) {
-                context?.showToast("Failed to call the API")
-            }
-        })
-
-
     }
 
     // Item của adapter là biểu đồ luôn cũng okay

@@ -13,6 +13,11 @@ import kotlinx.coroutines.launch
 
 class CategoryViewModel : ViewModel() {
 
+    private val _isDuplicate: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val isDuplicate: LiveData<Boolean> = _isDuplicate
 
 
     fun addCategory(data: CategoryEntity) {
@@ -21,9 +26,26 @@ class CategoryViewModel : ViewModel() {
         }
     }
 
-    fun addCategoryItem(categoryItem: ItemEntity) {
+
+  /*  fun addCategoryItem(categoryItem: ItemEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseUtil.addCategoryItem(categoryItem)
+        }
+    }*/
+
+    fun addCategoryItem(categoryItem: ItemEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val existingAccountShift =  DatabaseUtil.getItemByName(categoryItem.item_name)
+
+            if (existingAccountShift.isEmpty()) {
+                // Nếu tài khoản chưa tồn tại, thêm vào cơ sở dữ liệu
+                DatabaseUtil.addCategoryItem(categoryItem)
+            } else {
+                // Nếu tài khoản đã tồn tại, xử lý tương ứng (ví dụ: hiển thị thông báo lỗi)
+                _isDuplicate.postValue(true)
+            }
+
         }
     }
 

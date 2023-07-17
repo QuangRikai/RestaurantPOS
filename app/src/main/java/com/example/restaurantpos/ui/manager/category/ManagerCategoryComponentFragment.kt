@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -69,7 +70,16 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         viewModel.getListCategoryComponentItem(category.category_id).observe(viewLifecycleOwner) {
             adapter.setListData(it)
         }
+
+        viewModel.isDuplicate.observe(viewLifecycleOwner) {
+            if (it) showMessage("Duplication")
+        }
     }
+
+    private fun showMessage(content: String){
+        Toast.makeText(requireContext(), content, Toast.LENGTH_SHORT).show()
+    }
+
 
     @SuppressLint("SetTextI18n")
     private fun showAddCategoryItemDialog() {

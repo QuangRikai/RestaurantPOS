@@ -31,6 +31,10 @@ interface AccountDAO {
     @Query("SELECT * from account WHERE account_id = :account_id")
     fun getAccountById(account_id: Int): LiveData<MutableList<AccountEntity>>
 
+    // Qnew
+    @Query("SELECT * from account WHERE user_name = :username")
+    fun getAccountByUsername(username: String): AccountEntity
+
     @Query("SELECT * from account WHERE user_name = :user_name AND password = :password")
     fun checkLogin(user_name: String, password: String): List<AccountEntity>
 
@@ -49,7 +53,6 @@ interface AccountDAO {
 
     @Query("SELECT * from account WHERE account_name LIKE :staffName")
     fun getStaffByName(staffName: String): LiveData<MutableList<AccountEntity>>
-
 
 
 }
