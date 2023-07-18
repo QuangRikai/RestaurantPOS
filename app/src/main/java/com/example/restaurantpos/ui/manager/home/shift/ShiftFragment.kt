@@ -27,6 +27,7 @@ import com.example.restaurantpos.ui.manager.user.UserViewModel
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.gone
+import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
 import java.util.Calendar
 
@@ -60,10 +61,6 @@ class ShiftFragment : Fragment() {
         return binding.root
     }
 
-    // Qnew
-    private fun showMessage(content: String) {
-        Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,18 +68,6 @@ class ShiftFragment : Fragment() {
         /** ViewModel */
         viewModelShift = ViewModelProvider(this).get(ShiftViewModel::class.java)
         viewModelUser = ViewModelProvider(this).get(UserViewModel::class.java)
-        /*        viewModelShift.getListAccountShift(DateFormatUtil.getShiftId(year, month))
-            .observe(viewLifecycleOwner) {
-                adapterShift.setListData()
-            }
-            // Sao cứ phải làm việc khó khăn thế này. Xử lý bà nó trong Adapter luôn đi
-            15-45:00
-            */
-
-        // Qnew
-        viewModelShift.isDuplicate.observe(viewLifecycleOwner) {
-            if (it) showMessage("Duplication")
-        }
 
         /**---------------------------------------------------------------------------------------*/
         // Code for add Account_Shift
@@ -153,6 +138,12 @@ class ShiftFragment : Fragment() {
     }
 
 
+    /** Message check xem AccountShift đã tồn tại hay chưa */
+    private fun showMessage(content: String) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
+    }
+
+
     /** Add Accouont_Shift Dialog- ON TOP*/
     private val startYear = calendar.get(Calendar.YEAR)
     private val startMonth = calendar.get(Calendar.MONTH)
@@ -199,13 +190,14 @@ class ShiftFragment : Fragment() {
                     staffObject = itemStaff
                     edtAccount.setText(itemStaff.account_name)
                     accountID = itemStaff.account_id
+                    rcyAccountInner.gone()
                 }
             })
         rcyAccountInner.adapter = adapterStaffSelection
         // ------------------------------------------------------------
         // 2.2 Xử lý doOnTextChanged cho accountName
         edtAccount.doOnTextChanged { text3, _, _, _ ->
-            if (text3.toString().length >= 2) {
+            if (text3.toString().isNotEmpty()) {
                 viewModelUser.getAllUserActiveByName(text3.toString())
                     .observe(viewLifecycleOwner) {
                         if (it.size > 0) {
@@ -234,6 +226,19 @@ class ShiftFragment : Fragment() {
 
 
         // 4.  Add Account_Shift
+        // Check account đã tồn tại hay chưa
+        viewModelShift.isDuplicate.observe(viewLifecycleOwner) { isDuplicate ->
+            txtError.hide()
+            if (isDuplicate) {
+                txtError.text = "The staff you have selected \n is already assigned to this shift!"
+                txtError.show()
+//                showMessage("Duplication")
+            } else {
+                dialog.dismiss()
+            }
+        }
+
+
         btnAdd.setOnClickListener {
             shiftID = txtShiftDate?.text.toString() + "  $shiftName"
 
@@ -241,8 +246,9 @@ class ShiftFragment : Fragment() {
                 viewModelShift.addAccountShift(
                     AccountShiftEntity(0, shiftID, accountID)
                 )
-                dialog.dismiss()
+//                dialog.dismiss()
             } else {
+                txtError.text = "The staff or date you have selected \n may not be accurate!"
                 txtError.show()
             }
         }

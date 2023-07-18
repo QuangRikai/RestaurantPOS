@@ -83,7 +83,7 @@ class ManagerHomeFragment : Fragment() {
 
         // enqueue: Thêm một công việc mới vào cuối hàng đợi
         // Mình đang dùng thằng callback thuần túy nhất\
-        // Thực chất chính là thằng này ở interface: Call<WeatherAPIDataModel>
+        // Thực chất chính là thằng này ở interface: Call<WeatherResponse>
         // Chú ý import Callback của đúng thằng Retrofit2 nha.
         call.enqueue(object : Callback<WeatherResponse> {
 
@@ -155,15 +155,26 @@ class ManagerHomeFragment : Fragment() {
                 viewModelHome.getRevenueOfDayOfItem(1, "2023/07")*/
 
 
-        val graph_label = ArrayList<String>()
-        val listRevenue = ArrayList<Float>()
-
         // Title
+        val graph_label = ArrayList<String>()
         for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
             graph_label.add("Day $i")
         }
 
         // Data đi cùng
+        val listRevenue = ArrayList<Float>()
+        viewModelHome.isDuplicate.observe(viewLifecycleOwner){
+            if (it == -1f)
+                create_graph(binding.chart, graph_label, listRevenue)
+            else{
+
+                listRevenue.add(it)
+            }
+        }
+        val countDay = DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)
+
+        viewModelHome.getRevenueOfDay(nowYear, nowMonth)
+
 
 //        for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
 //            CoroutineScope(Dispatchers.IO).launch {
@@ -173,7 +184,7 @@ class ManagerHomeFragment : Fragment() {
 //        }
 
 
-                listRevenue.add(5f)
+/*                listRevenue.add(5f)
                 listRevenue.add(8f)
                 listRevenue.add(10f)
                 listRevenue.add(51f)
@@ -203,7 +214,7 @@ class ManagerHomeFragment : Fragment() {
                 listRevenue.add(21f)
                 listRevenue.add(21f)
                 listRevenue.add(21f)
-                listRevenue.add(21f)
+                listRevenue.add(21f)*/
 
         create_graph(binding.chart, graph_label, listRevenue)
 

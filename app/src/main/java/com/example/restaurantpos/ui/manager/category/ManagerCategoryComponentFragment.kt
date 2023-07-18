@@ -71,12 +71,9 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
             adapter.setListData(it)
         }
 
-        viewModel.isDuplicate.observe(viewLifecycleOwner) {
-            if (it) showMessage("Duplication")
-        }
     }
 
-    private fun showMessage(content: String){
+    private fun showMessage(content: String) {
         Toast.makeText(requireContext(), content, Toast.LENGTH_SHORT).show()
     }
 
@@ -115,13 +112,25 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
 
         // 4.  Code cho AddItem Button
+
+        viewModel.isDuplicate.observe(viewLifecycleOwner) {
+            if (it) {
+
+                txtInform.text = "This item's name may already exist \n in your category!"
+                txtInform.show()
+
+//                showMessage("Duplication")
+            }
+            else dialog.dismiss()
+        }
+
         btnAddItem.setOnClickListener {
             /**===========================================================*/
             txtInform.hide()
 
-            if (edtItemName.text.toString()
-                != "" && edtItemPrice.text.toString()
-                != "" && edtItemInventoryQuantity.text.toString() != ""
+            if (edtItemName.text.toString() != ""
+                && edtItemPrice.text.toString() != ""
+                && edtItemInventoryQuantity.text.toString() != ""
             ) {
 
 
@@ -142,7 +151,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                         category.category_id
                     )
                 )
-                dialog.dismiss()
+//                dialog.dismiss()
             } else {
 //                }
 

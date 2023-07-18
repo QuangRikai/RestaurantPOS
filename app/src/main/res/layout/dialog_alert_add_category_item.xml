@@ -40,7 +40,7 @@
         android:id="@+id/txtInform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Infomation below must not be empty!"
+        android:layout_marginTop="@dimen/_5sdp"
         android:textColor="@color/text_red"
         android:gravity="center"
         android:visibility="invisible"
@@ -54,7 +54,7 @@
         android:id="@+id/llItemName"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:layout_marginTop="@dimen/_22sdp"
+        android:layout_marginTop="@dimen/_35sdp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,10 +79,10 @@
             android:fontFamily="@font/inter_400"
             android:gravity="left"
             android:hint="Name"
-            android:maxLength="20"
+            android:maxLength="15"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_13sdp" />
     </LinearLayout>
 
 
@@ -119,7 +119,7 @@
             android:inputType="numberDecimal"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="@dimen/_13sdp"
             tools:ignore="RtlSymmetry" />
     </LinearLayout>
 
@@ -157,7 +157,7 @@
             android:hint="Inventory Quantity"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_13sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -202,8 +202,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llItemInventoryQuantity" />
 
-
     </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout"

@@ -73,6 +73,8 @@ class CheckoutFragment : Fragment() {
     var billAmount = 0.0f
     var change = 0.0f
 
+    var discount = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,6 +90,21 @@ class CheckoutFragment : Fragment() {
         setChange(binding.edtCash.text.toString())
 
         return binding.root
+    }
+
+
+    private fun calculateDiscountPercentage(listOrderOfCustomer: MutableList<OrderEntity>){
+        val sum = listOrderOfCustomer.sumOf { it -> it.payment_amount.toLong() }
+
+        if (sum > 2000){
+            discount = 5
+        }else if(sum > 5000){
+            discount = 10
+        }else if(sum > 10000){
+            discount = 15
+        }
+
+        binding.txtDiscountOnRank.text = discount.toString().plus("%")
     }
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")
@@ -114,6 +131,11 @@ class CheckoutFragment : Fragment() {
         orderObject =
             OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
 
+        // Qnew
+        viewModelCart.getListOrderByCustomerId(orderObject!!.customer_id)
+            .observe(viewLifecycleOwner) { listOrderOfCustomer ->
+                calculateDiscountPercentage(listOrderOfCustomer)
+            }
         /** ----------------------------------------------------------------------------------*/
         // Map(Key, Value)
         // Key: Item_id

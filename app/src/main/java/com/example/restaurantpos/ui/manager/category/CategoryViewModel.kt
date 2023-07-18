@@ -41,6 +41,7 @@ class CategoryViewModel : ViewModel() {
             if (existingAccountShift.isEmpty()) {
                 // Nếu tài khoản chưa tồn tại, thêm vào cơ sở dữ liệu
                 DatabaseUtil.addCategoryItem(categoryItem)
+                _isDuplicate.postValue(false)
             } else {
                 // Nếu tài khoản đã tồn tại, xử lý tương ứng (ví dụ: hiển thị thông báo lỗi)
                 _isDuplicate.postValue(true)

@@ -5,7 +5,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 
 // - - Retrofit2
@@ -58,11 +57,11 @@ object WeatherRetrofitClient {
 
 
     /**  1. Khai báo phương thức  */
-    private val retrofitclient : Retrofit.Builder by lazy {
+    private val retrofitClient: Retrofit.Builder by lazy {
 
         val levelType: HttpLoggingInterceptor.Level =
             if (BuildConfig.BUILD_TYPE.contentEquals("debug"))
-            HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+                HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
 
         val logging = HttpLoggingInterceptor()
         logging.setLevel(levelType)
@@ -81,8 +80,8 @@ object WeatherRetrofitClient {
     /**  2. Khai báo biến truy cập (Interface: Cũng giống như thằng DAO thôi)  */
 // Chóc nữa dùng thằng Interface này để giao tiếp
 
-    val weatherAPIInterface : WeatherAPIInterface by lazy {
-        retrofitclient.build().create(WeatherAPIInterface::class.java)
+    val weatherAPIInterface: WeatherAPIInterface by lazy {
+        retrofitClient.build().create(WeatherAPIInterface::class.java)
     }
 
 

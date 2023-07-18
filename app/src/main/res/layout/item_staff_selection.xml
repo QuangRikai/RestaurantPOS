@@ -24,7 +24,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginHorizontal="@dimen/_3sdp"
         android:src="@drawable/img_right_arrow"
         app:tint="@color/text_blue" />
 
@@ -38,6 +38,6 @@
         android:fontFamily="@font/inter_300"
         android:hint="Role"
         android:textColor="@color/black"
-        android:textSize="12sp" />
+        android:textSize="10sp" />
 
 </LinearLayout>
