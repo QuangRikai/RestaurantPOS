@@ -45,11 +45,6 @@ class AddUserFragment : Fragment() {
         /**  Khai báo viewModel --> Dùng phương thức addUser --> set ADD Button */
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
-        viewModel.isDuplicate.observe(viewLifecycleOwner) {
-            if (it) showMessage("This account (username) is existing!")
-            else onBack()
-        }
-
         /** Device's Back Button*/
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -66,8 +61,19 @@ class AddUserFragment : Fragment() {
             onBack()
         }
         /** ADD Button*/
+
+        viewModel.isDuplicate.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.txtError.text = "This username already exists. \n You may be trying to add an employee that already exists!"
+                binding.txtError.show()
+//              showMessage("This account (username) is existing!")
+            }
+            else onBack()
+        }
+
         binding.txtAdd.setOnClickListener {
             if (binding.edtAddUserName.text.isEmpty() || binding.edtAddAccountName.text.isEmpty()) {
+                binding.txtError.text = "Username and Staff's name must not be empty!"
                 binding.txtError.show()
             } else {
                 viewModel.addUser(

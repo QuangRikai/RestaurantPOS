@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingStart="@dimen/_8sdp"
-            android:text="Username and Staff's name must not be empty!"
+            android:gravity="center"
             android:textColor="@color/text_red"
             android:visibility="gone"
             tools:ignore="RtlSymmetry" />
