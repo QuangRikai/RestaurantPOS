@@ -5,6 +5,7 @@ import com.example.restaurantpos.db.dao.AccountDAO
 import com.example.restaurantpos.db.dao.AppDAO
 import com.example.restaurantpos.db.dao.CartItemDAO
 import com.example.restaurantpos.db.dao.CategoryDAO
+import com.example.restaurantpos.db.dao.CouponDAO
 import com.example.restaurantpos.db.dao.CustomerDAO
 import com.example.restaurantpos.db.dao.ItemDAO
 import com.example.restaurantpos.db.dao.OrderDAO
@@ -17,6 +18,7 @@ import com.example.restaurantpos.db.entity.AccountStatusEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.CartItemStatusEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
+import com.example.restaurantpos.db.entity.CouponEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.OrderEntity
@@ -31,6 +33,7 @@ object DatabaseUtil {
     lateinit var appDAO: AppDAO
     lateinit var accountDAO: AccountDAO
     lateinit var categoryDAO: CategoryDAO
+    lateinit var couponDAO: CouponDAO
     lateinit var itemDAO: ItemDAO
     lateinit var tableDAO: TableDAO
     lateinit var cartItemDAO: CartItemDAO
@@ -44,6 +47,7 @@ object DatabaseUtil {
         appDAO = PosRoomDatabase.getInstance(context).appDAO()
         accountDAO = PosRoomDatabase.getInstance(context).accountDAO()
         categoryDAO = PosRoomDatabase.getInstance(context).categoryDAO()
+        couponDAO = PosRoomDatabase.getInstance(context).couponDAO()
         itemDAO = PosRoomDatabase.getInstance(context).itemDAO()
         tableDAO = PosRoomDatabase.getInstance(context).tableDAO()
         cartItemDAO = PosRoomDatabase.getInstance(context).cartItemDAO()
@@ -207,6 +211,13 @@ object DatabaseUtil {
     /** 10. Checkout  */
 
     fun getSubTotal(orderId: String) = cartItemDAO.getSubTotal(orderId)
+
+    /** 11. Coupon  */
+    fun addCoupon(coupon: CouponEntity) = couponDAO.addCoupon(coupon)
+    fun deleteCoupon(coupon: CouponEntity) = couponDAO.deleteCoupon(coupon)
+
+    
+//    fun getCoupon(couponId: Int) = cartItemDAO.getCoupon(couponId)
 
 
 }

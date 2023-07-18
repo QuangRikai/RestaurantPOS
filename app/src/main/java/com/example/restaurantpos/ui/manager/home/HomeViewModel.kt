@@ -32,10 +32,12 @@ class HomeViewModel : ViewModel() {
 
     fun getRevenueOfDay(nowYear:Int, nowMonth: Int) {
         CoroutineScope(Dispatchers.IO).launch {
+            // Lấy số ngày ra
             val countDay = DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)
             for (i in 1..countDay) {
                 val amount = DatabaseUtil.getRevenueOfDay("$nowYear/$nowMonth/$i")
 
+                // Gửi lên UI,đưa vào biểu đồ
                 _isDuplicate.postValue(amount)
             }
             _isDuplicate.postValue(-1f)

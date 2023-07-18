@@ -117,11 +117,11 @@ class CheckoutConfirmFragment : Fragment() {
         binding.txtTable.text = billObject?.bill_table_name
         binding.txtCustomer.text = billObject?.bill_customer
         binding.txtStaff.text = billObject?.bill_staff
-        binding.txtSubTotal.text = billObject?.bill_subTotal.toString()
+        binding.txtSubTotal.text = String.format("%.1f", billObject?.bill_subTotal)
         binding.txtCoupon.text = billObject?.bill_coupon.toString()
         binding.txtCustomerRank.text = billObject?.bill_customer_rank_percent.toString()
         binding.txtTax.text = billObject?.bill_tax.toString()
-        binding.txtTotal.text = billObject?.bill_total.toString()
+        binding.txtTotal.text = String.format("%.1f", billObject?.bill_total)
         binding.txtCash.text = billObject?.bill_cash
         binding.txtChange.text = billObject?.bill_change
 
@@ -160,7 +160,7 @@ class CheckoutConfirmFragment : Fragment() {
 
             // Chốt Order này
             orderObject?.order_status_id = 2
-            orderObject?.payment_amount = billObject!!.bill_cash.toFloat()
+            orderObject?.bill_total = billObject!!.bill_total
             orderObject?.paid_time = DateFormatUtil.getTimeForOrderCreateTime()
             orderObject?.let {
                 viewModelCart.addOrder(it)

@@ -2,6 +2,7 @@ package com.example.restaurantpos.ui.staff.receptionist.order.moreOrder
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -39,6 +41,7 @@ import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import java.util.Calendar
+import java.util.stream.Collectors
 
 
 class AddMoreOrderFragment : Fragment() {
@@ -111,8 +114,20 @@ class AddMoreOrderFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /** Handle Customer */
+        viewModelCustomer.getListCustomer()
+            .observe(viewLifecycleOwner) { listCustomer ->
+                if (listCustomer.isNotEmpty()) {
+                    val customerEntity = listCustomer.stream().filter { it -> it.customer_id == orderObject?.customer_id }.collect(
+                        Collectors.toList()).get(0)
+                    binding.txtCustomerInOrder.text = customerEntity.customer_name
+                }
+            }
+
 
         /** Device's Back Button*/
         val callback = object : OnBackPressedCallback(true) {
@@ -191,7 +206,7 @@ class AddMoreOrderFragment : Fragment() {
             viewModelCart.addListCartItem(listCartItem)
             // Cập nhập trạng thái cho Table
             // Chú ý: 2 thằng không thể order cùng lúc cùng 1 cái bàn được
-            /** ------------------------------????????-------------------------*/
+
 /*            tableObject?.table_status_id = 2
             viewModelTable.addTable(requireContext(), tableObject!!)*/
 
@@ -404,7 +419,7 @@ class AddMoreOrderFragment : Fragment() {
                 // Có sẵn thì pick-up ra thôi
                 customerObject = itemCustomer
 
-                /**???*/
+
 //                orderObject?.customer_id = itemCustomer.customer_id
                 // Tìm cách đưa Customer's Name lên NewOrderFragment
                 binding.txtCustomerInOrder.text = itemCustomer.customer_name
@@ -453,7 +468,8 @@ class AddMoreOrderFragment : Fragment() {
                         0,
                         edtCustomerName.text.toString(),
                         edtPhoneNumber.text.toString(),
-                        txtCustomerBirthday.text.toString()
+                        txtCustomerBirthday.text.toString(),
+                        0.0
                     )
                 )
             }

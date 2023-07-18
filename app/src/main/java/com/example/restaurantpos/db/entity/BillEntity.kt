@@ -36,7 +36,7 @@ data class BillEntity constructor(
     var bill_customer_rank_percent: Int,
 
 //    @ColumnInfo(name = "bill_tax")
-    var bill_tax: Int,
+    var bill_tax: Float,
 
 //    @ColumnInfo(name = "bill_total")
     var bill_total: Float,

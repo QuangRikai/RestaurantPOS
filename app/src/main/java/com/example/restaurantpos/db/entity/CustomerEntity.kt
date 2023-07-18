@@ -23,7 +23,10 @@ data class CustomerEntity constructor(
     val phone: String,
 
     @ColumnInfo(name = "birthday")
-    val birthday: String
+    val birthday: String,
+
+    @ColumnInfo(name = "total_payment")
+    val total_payment: Double
 
 
     /*  Thêm để bổ trợ gì mới thêm chứ không thì thôi. Ví dụ khi tạo Customer có cần below không?--> NO

@@ -16,7 +16,6 @@ import com.example.restaurantpos.databinding.FragmentManagerHomeBinding
 import com.example.restaurantpos.network.WeatherResponse
 import com.example.restaurantpos.network.WeatherRetrofitClient
 import com.example.restaurantpos.util.DataUtil
-import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.showToast
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
@@ -29,9 +28,6 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -106,7 +102,10 @@ class ManagerHomeFragment : Fragment() {
                     binding.txtMaxTemp.text = String.format("%.1f °C", tempMax - 273.15)
 
                     val weatherDescription = response.body()?.weather?.getOrNull(0)?.description
-                    binding.txtWeatherDescription.text = weatherDescription
+                    val weatherMainDescription = response.body()?.weather?.getOrNull(0)?.main
+
+                    binding.txtWeatherDescription.text =
+                        "$weatherMainDescription: $weatherDescription"
 
                     val weatherIcon = response.body()?.weather?.getOrNull(0)?.icon
                     val weatherIconUrl = "http://openweathermap.org/img/w/$weatherIcon.png"
@@ -163,17 +162,18 @@ class ManagerHomeFragment : Fragment() {
 
         // Data đi cùng
         val listRevenue = ArrayList<Float>()
-        viewModelHome.isDuplicate.observe(viewLifecycleOwner){
+        viewModelHome.getRevenueOfDay(nowYear, nowMonth)
+        // Add vào và vẽ liên tục
+        // Đến gì = -1. Tức là add xong hết rồi
+        viewModelHome.isDuplicate.observe(viewLifecycleOwner) {
             if (it == -1f)
                 create_graph(binding.chart, graph_label, listRevenue)
-            else{
-
+            else {
                 listRevenue.add(it)
             }
         }
-        val countDay = DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)
 
-        viewModelHome.getRevenueOfDay(nowYear, nowMonth)
+
 
 
 //        for (i in 1..DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)) {
@@ -184,39 +184,39 @@ class ManagerHomeFragment : Fragment() {
 //        }
 
 
-/*                listRevenue.add(5f)
-                listRevenue.add(8f)
-                listRevenue.add(10f)
-                listRevenue.add(51f)
-                listRevenue.add(5f)
-                listRevenue.add(53f)
-                listRevenue.add(5f)
-                listRevenue.add(56f)
-                listRevenue.add(35f)
-                listRevenue.add(45f)
-                listRevenue.add(5f)
-                listRevenue.add(15f)
-                listRevenue.add(15f)
-                listRevenue.add(15f)
-                listRevenue.add(25f)
-                listRevenue.add(25f)
-                listRevenue.add(21f)
-                listRevenue.add(21f)
-                listRevenue.add(21f)
-                listRevenue.add(15f)
-                listRevenue.add(15f)
-                listRevenue.add(15f)
-                listRevenue.add(15f)
-                listRevenue.add(11f)
-                listRevenue.add(11f)
-                listRevenue.add(11f)
-                listRevenue.add(11f)
-                listRevenue.add(21f)
-                listRevenue.add(21f)
-                listRevenue.add(21f)
-                listRevenue.add(21f)*/
+        /*                listRevenue.add(5f)
+                        listRevenue.add(8f)
+                        listRevenue.add(10f)
+                        listRevenue.add(51f)
+                        listRevenue.add(5f)
+                        listRevenue.add(53f)
+                        listRevenue.add(5f)
+                        listRevenue.add(56f)
+                        listRevenue.add(35f)
+                        listRevenue.add(45f)
+                        listRevenue.add(5f)
+                        listRevenue.add(15f)
+                        listRevenue.add(15f)
+                        listRevenue.add(15f)
+                        listRevenue.add(25f)
+                        listRevenue.add(25f)
+                        listRevenue.add(21f)
+                        listRevenue.add(21f)
+                        listRevenue.add(21f)
+                        listRevenue.add(15f)
+                        listRevenue.add(15f)
+                        listRevenue.add(15f)
+                        listRevenue.add(15f)
+                        listRevenue.add(11f)
+                        listRevenue.add(11f)
+                        listRevenue.add(11f)
+                        listRevenue.add(11f)
+                        listRevenue.add(21f)
+                        listRevenue.add(21f)
+                        listRevenue.add(21f)
+                        listRevenue.add(21f)*/
 
-        create_graph(binding.chart, graph_label, listRevenue)
+//        create_graph(binding.chart, graph_label, listRevenue)
 
         /**=================================================================*/
     }

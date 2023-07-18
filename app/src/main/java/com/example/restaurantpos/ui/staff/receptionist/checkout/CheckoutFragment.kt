@@ -2,6 +2,8 @@ package com.example.restaurantpos.ui.staff.receptionist.checkout
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +13,15 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentCheckoutBinding
 import com.example.restaurantpos.db.entity.BillEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
@@ -39,6 +42,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.stream.Collectors
 
 
 class CheckoutFragment : Fragment() {
@@ -74,6 +78,8 @@ class CheckoutFragment : Fragment() {
     var change = 0.0f
 
     var discount = 0
+    var couponDiscount = 0
+
 
 
     override fun onCreateView(
@@ -93,15 +99,42 @@ class CheckoutFragment : Fragment() {
     }
 
 
-    private fun calculateDiscountPercentage(listOrderOfCustomer: MutableList<OrderEntity>){
-        val sum = listOrderOfCustomer.sumOf { it -> it.payment_amount.toLong() }
+    @SuppressLint("ResourceAsColor")
+    private fun calculateDiscountPercentage(listOrderOfCustomer: MutableList<OrderEntity>) {
+        val sum = listOrderOfCustomer.sumOf { it -> it.bill_total.toLong() }
 
-        if (sum > 2000){
+        val color0 =
+            ContextCompat.getColor(requireContext(), com.example.restaurantpos.R.color.text_rank_0)
+        val colorStateList0 = ColorStateList.valueOf(color0)
+
+        val color1 =
+            ContextCompat.getColor(requireContext(), com.example.restaurantpos.R.color.text_rank_1)
+        val colorStateList1 = ColorStateList.valueOf(color1)
+
+        val color2 =
+            ContextCompat.getColor(requireContext(), com.example.restaurantpos.R.color.text_rank_2)
+        val colorStateList2 = ColorStateList.valueOf(color2)
+
+        val color3 =
+            ContextCompat.getColor(requireContext(), com.example.restaurantpos.R.color.text_rank_3)
+        val colorStateList3 = ColorStateList.valueOf(color3)
+
+        if (sum >= 2000) {
             discount = 5
-        }else if(sum > 5000){
+            binding.imgRank.imageTintList = colorStateList1
+            binding.txtDiscountOnRank.setTextColor(com.example.restaurantpos.R.color.text_rank_1)
+        } else if (sum >= 5000) {
             discount = 10
-        }else if(sum > 10000){
+            binding.imgRank.imageTintList = colorStateList2
+            binding.txtDiscountOnRank.setTextColor(com.example.restaurantpos.R.color.text_rank_2)
+        } else if (sum >= 10000) {
             discount = 15
+            binding.imgRank.imageTintList = colorStateList3
+            binding.txtDiscountOnRank.setTextColor(com.example.restaurantpos.R.color.text_rank_3)
+        } else {
+            discount = 0
+            binding.imgRank.imageTintList = colorStateList0
+            binding.txtDiscountOnRank.setTextColor(com.example.restaurantpos.R.color.text_rank_0)
         }
 
         binding.txtDiscountOnRank.text = discount.toString().plus("%")
@@ -110,7 +143,6 @@ class CheckoutFragment : Fragment() {
     @SuppressLint("SetTextI18n", "ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         /** Adapter BILL */
         adapterItemCheckout = ItemCheckoutAdapter(requireContext(), ArrayList(), viewLifecycleOwner)
@@ -130,6 +162,18 @@ class CheckoutFragment : Fragment() {
         // viewModelCart.getOrderByTable(table.table_id).observe(viewLifecycleOwner) { order -> orderObject = order }
         orderObject =
             OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
+
+        /** Handle Customer */
+        viewModelCustomer.getListCustomer()
+            .observe(viewLifecycleOwner) { listCustomer ->
+                if (listCustomer.isNotEmpty()) {
+                    val customerObject = listCustomer.stream()
+                        .filter { it -> it.customer_id == orderObject?.customer_id }.collect(
+                        Collectors.toList()
+                    ).get(0)
+                    binding.txtCustomerInBill.text = customerObject.customer_name
+                }
+            }
 
         // Qnew
         viewModelCart.getListOrderByCustomerId(orderObject!!.customer_id)
@@ -158,26 +202,6 @@ class CheckoutFragment : Fragment() {
                             mergedMap[cartItem.item_id] = cartItem
                         }
                     }
-
-                    /*                    val newList = ArrayList<CartItemEntity>()
-                                        for (i in 0 until listCart.size)
-                                        {
-                                            if (newList.contains(listCart[i]))
-                                            {
-                                                for (j in 0 until newList.size)
-                                                {
-                                                    if(newList[j].cart_item_id == listCart[i].cart_item_id)
-                                                    {
-                                                        newList[j].order_quantity +=  listCart[i].order_quantity
-                    //                                    break
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                newList.add(listCart[i])
-                                            }
-                                        }*/
 
                     // Chuyển đổi map thành list đã gộp
                     val mergedList = ArrayList(mergedMap.values)
@@ -225,11 +249,12 @@ class CheckoutFragment : Fragment() {
                 billAmount = (subTotal * (1 - 10 / 100.0) * (1 + tax)).toFloat()
                 binding.txtBillAmount.text = String.format("%.1f", billAmount)
                 binding.txtAddCoupon.text = "Coupon was applied successfully! - 10%"
-                binding.txtAddCoupon.setTextColor(R.color.money)
+                couponDiscount = 10
+                binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.money)
             } else {
                 binding.txtAddCoupon.text = ""
                 binding.txtAddCoupon.text = "Failed to apply coupon!"
-                binding.txtAddCoupon.setTextColor(R.color.text_red)
+                binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.text_red)
             }
         }
 
@@ -262,8 +287,6 @@ class CheckoutFragment : Fragment() {
         }
 
 
-
-
         /** Code for CHECK OUT */
         binding.txtCheckout.setOnClickListener {
             if (binding.edtCash.text.isNotEmpty()) {
@@ -274,18 +297,19 @@ class CheckoutFragment : Fragment() {
                     billObject = BillEntity(
                         orderObject!!.order_id,
                         tableObject!!.table_name,
-                        "",
+                        binding.txtCustomerInBill.text.toString(),
                         SharedPreferencesUtils.getAccountName(),
                         subTotal,
-                        0,
-                        0,
-                        10,
+                        couponDiscount,
+                        discount,
+                        tax * 100,
                         billAmount,
                         binding.edtCash.text.toString().trim(),
                         binding.txtChange.text.toString()
                     )
                     findNavController().navigate(
-                        R.id.action_checkoutFragment_to_checkoutConfirmFragment, bundleOf(
+                        com.example.restaurantpos.R.id.action_checkoutFragment_to_checkoutConfirmFragment,
+                        bundleOf(
                             "tableObjectQ" to tableObject?.toJson(),
                             "orderObjectQ" to orderObject?.toJson(),
                             "billObjectQ" to billObject?.toJson()
@@ -337,18 +361,28 @@ class CheckoutFragment : Fragment() {
         // 1.  Build Dialog
         // 2.  Designed XML --> View
         // 3.  Set VIEW tra ve above --> Dialog
-        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
-        val view = layoutInflater.inflate(R.layout.dialog_alert_add_customer, null)
+        val build =
+            AlertDialog.Builder(requireActivity(), com.example.restaurantpos.R.style.ThemeCustom)
+        val view = layoutInflater.inflate(
+            com.example.restaurantpos.R.layout.dialog_alert_add_customer,
+            null
+        )
         build.setView(view)
         // 4.  Get Component of Dialog
-        val edtPhoneNumber = view.findViewById<EditText>(R.id.edtPhoneNumber)
-        val rcyCustomerInPhone = view.findViewById<RecyclerView>(R.id.rcyCustomerInPhone)
-        val edtCustomerName = view.findViewById<EditText>(R.id.edtCustomerName)
-        val txtCustomerBirthday = view.findViewById<TextView>(R.id.txtCustomerBirthday)
-        val btnAddCustomer = view.findViewById<Button>(R.id.btnAddCustomer)
-        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
-        val imgDate = view.findViewById<ImageView>(R.id.imgDate)
-        val imgCloseDialogCustomer = view.findViewById<ImageView>(R.id.imgCloseDialogCustomer)
+        val edtPhoneNumber =
+            view.findViewById<EditText>(com.example.restaurantpos.R.id.edtPhoneNumber)
+        val rcyCustomerInPhone =
+            view.findViewById<RecyclerView>(com.example.restaurantpos.R.id.rcyCustomerInPhone)
+        val edtCustomerName =
+            view.findViewById<EditText>(com.example.restaurantpos.R.id.edtCustomerName)
+        val txtCustomerBirthday =
+            view.findViewById<TextView>(com.example.restaurantpos.R.id.txtCustomerBirthday)
+        val btnAddCustomer =
+            view.findViewById<Button>(com.example.restaurantpos.R.id.btnAddCustomer)
+        val btnCancel = view.findViewById<Button>(com.example.restaurantpos.R.id.btnCancel)
+        val imgDate = view.findViewById<ImageView>(com.example.restaurantpos.R.id.imgDate)
+        val imgCloseDialogCustomer =
+            view.findViewById<ImageView>(com.example.restaurantpos.R.id.imgCloseDialogCustomer)
         // -----------------Code for Component----------------------------------------//
         // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
         adapterCustomerInner =
@@ -357,9 +391,7 @@ class CheckoutFragment : Fragment() {
                 override fun clickCustomerInner(itemCustomer: CustomerEntity) {
                     // Có sẵn thì pick-up ra thôi
                     customerObject = itemCustomer
-                    /**???*/
-//                orderObject?.customer_id = itemCustomer.customer_id
-                    // Tìm cách đưa Customer's Name lên NewOrderFragment
+
                     binding.txtCustomerInBill.text = itemCustomer.customer_name
                     dialog.dismiss()
                 }
@@ -406,7 +438,8 @@ class CheckoutFragment : Fragment() {
                         0,
                         edtCustomerName.text.toString(),
                         edtPhoneNumber.text.toString(),
-                        txtCustomerBirthday.text.toString()
+                        txtCustomerBirthday.text.toString(),
+                        0.0
                     )
                 )
             }

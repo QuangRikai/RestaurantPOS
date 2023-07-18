@@ -33,8 +33,8 @@ data class OrderEntity constructor(
     @ColumnInfo(name = "paid_time")
     var paid_time: String,
 
-    @ColumnInfo(name = "payment_amount")
-    var payment_amount: Float,
+    @ColumnInfo(name = "bill_total")
+    var bill_total: Float,
 
     @ColumnInfo(name = "order_status_id")
     var order_status_id: Int

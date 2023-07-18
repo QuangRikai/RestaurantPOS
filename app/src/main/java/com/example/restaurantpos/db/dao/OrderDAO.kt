@@ -25,7 +25,7 @@ interface OrderDAO {
     @Query("SELECT * FROM `order` WHERE order_id = :order_id")
     fun getOrder(order_id: String): LiveData<OrderEntity>
 
-    // Câu chuyện ORDER BY order_create_time DESC --> 13-51:00   Cần xem lại???
+
     @Query("SELECT * FROM `order` WHERE table_id = :table_id AND `order`.order_status_id = 1 ORDER BY order_create_time DESC")
     fun getOrderByTable(table_id : Int) : LiveData<OrderEntity>
 

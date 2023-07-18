@@ -89,7 +89,7 @@ class UpdateStaffInfoFragment : Fragment() {
                 }
             }
 
-        /** ??? Vì sao chỗ này lại so sánh được với 1 */
+
         // Value = 1 --> Receptionist gửi.
         // Value = 2 --> Kitchen gửi.
         // Value thì mình chọn thôi

@@ -2,6 +2,7 @@ package com.example.restaurantpos.ui.staff.receptionist.order.newOrder
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -35,6 +37,7 @@ import com.example.restaurantpos.util.gone
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import java.util.Calendar
+import java.util.stream.Collectors
 
 class NewOrderFragment : Fragment() {
 
@@ -60,6 +63,9 @@ class NewOrderFragment : Fragment() {
     private var customerObject: CustomerEntity? = null
     private var listCartItem = ArrayList<CartItemEntity>()
     private var listItemOfCategory = ArrayList<ItemEntity>()
+
+    // Để quản lý customer
+    var idCustomer: Long = 0L
 
     // Để so sánh với category_id
     var chooseCategory: Int = 1
@@ -98,6 +104,11 @@ class NewOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Lấy được customer khi thêm order mới thì
+        viewModelCustomer.getIDWhenInsertOrderSuccess.observe(viewLifecycleOwner){ customerId ->
+            idCustomer = customerId
+        }
 
         /** Device's Back Button*/
         val callback = object : OnBackPressedCallback(true) {
@@ -145,7 +156,7 @@ class NewOrderFragment : Fragment() {
             // Tạo trước 1 order default
             orderObject = OrderEntity(
                 DateFormatUtil.getTimeForOrderCreateTime(),
-                0,
+                idCustomer.toInt(),
                 table.table_id,
                 SharedPreferencesUtils.getAccountId(),
                 DateFormatUtil.getTimeForOrderCreateTime(),
@@ -168,13 +179,14 @@ class NewOrderFragment : Fragment() {
             // Add Order (Bill) vào OrderEntity, thay đôi status sang 1 (Đã được click order)
             orderObject?.let { order ->
                 order.order_status_id = 1
+                order.customer_id = idCustomer.toInt()
                 viewModelCart.addOrder(order)
             }
             // Add list Item_in_Cart into CartItemEntity. Lúc này mới viết vào Database!
             viewModelCart.addListCartItem(listCartItem)
             // Cập nhập trạng thái cho Table
             // Chú ý: 2 thằng không thể order cùng lúc cùng 1 cái bàn được
-            /** ------------------------------????????-------------------------*/
+            /** ----------------------------------------------------*/
             tableObject?.table_status_id = 2
             viewModelTable.addTable(requireContext(), tableObject!!)
 
@@ -346,8 +358,10 @@ class NewOrderFragment : Fragment() {
             override fun clickCustomerInner(itemCustomer: CustomerEntity) {
                 // Có sẵn thì pick-up ra thôi
                 customerObject = itemCustomer
+                // Lưu thằng customer_id lại để set cho Order
+                idCustomer = itemCustomer.customer_id.toLong()
 
-                /**???*/
+
 //                orderObject?.customer_id = itemCustomer.customer_id
                 // Tìm cách đưa Customer's Name lên NewOrderFragment
                 binding.txtCustomerInOrder.text = itemCustomer.customer_name
@@ -396,7 +410,8 @@ class NewOrderFragment : Fragment() {
                         0,
                         edtCustomerName.text.toString(),
                         edtPhoneNumber.text.toString(),
-                        txtCustomerBirthday.text.toString()
+                        txtCustomerBirthday.text.toString(),
+                        0.0
                     )
                 )
             }
