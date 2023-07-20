@@ -138,7 +138,7 @@ class CouponActivity : AppCompatActivity() {
 
                 } else {
                     binding.txtInform.text =
-                        "The Coupon Code needs to consist of 4 to 10 characters!"
+                        "The Coupon Code needs to consist of 4 to 8 characters!"
                     binding.txtInform.show()
                 }
 

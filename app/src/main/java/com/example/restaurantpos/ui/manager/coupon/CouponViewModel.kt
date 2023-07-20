@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.example.restaurantpos.db.entity.CouponEntity
 import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 import com.example.restaurantpos.util.DatabaseUtil
@@ -37,14 +39,29 @@ class CouponViewModel : ViewModel() {
 
     fun addCouponUpdate(couponQ: CouponEntity) {
         CoroutineScope(Dispatchers.IO).launch {
-                DatabaseUtil.addCoupon(couponQ)
+            DatabaseUtil.addCoupon(couponQ)
         }
     }
 
     fun getAllCoupon() = DatabaseUtil.getAllCoupon()
 
-    fun getAllCouponActive() =
-        CoroutineScope(Dispatchers.IO).launch { DatabaseUtil.getAllCouponActive() }
+    fun getAllCouponActive() = DatabaseUtil.getAllCouponActive()
+
+    private val _couponGetByCouponCode:  MutableLiveData<MutableList<CouponEntity>>  by lazy {
+        MutableLiveData<MutableList<CouponEntity>>()
+    }
+    val couponGetByCouponCode: MutableLiveData<MutableList<CouponEntity>> = _couponGetByCouponCode
+    fun getCouponByCouponCode(couponCode: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val couponGetByCouponCodeQ = DatabaseUtil.getCouponByCouponCode(couponCode)
+            if (couponGetByCouponCodeQ != null){
+                _couponGetByCouponCode.postValue(couponGetByCouponCodeQ)
+            }
+        }
+    }
+
+
+
 
 
 //    fun deleteCoupon(coupon: CouponEntity) = DatabaseUtil.couponDAO.deleteCoupon(coupon)

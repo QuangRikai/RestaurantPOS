@@ -3,8 +3,8 @@ package com.example.restaurantpos.ui.staff.receptionist.checkout
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +13,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
@@ -25,24 +25,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.databinding.FragmentCheckoutBinding
 import com.example.restaurantpos.db.entity.BillEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
+import com.example.restaurantpos.db.entity.CouponEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.TableEntity
 import com.example.restaurantpos.ui.manager.category.CategoryViewModel
+import com.example.restaurantpos.ui.manager.coupon.CouponViewModel
 import com.example.restaurantpos.ui.manager.customer.CustomerViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
+import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.gone
+import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
-import java.util.stream.Collectors
 
 
 class CheckoutFragment : Fragment() {
@@ -53,6 +56,8 @@ class CheckoutFragment : Fragment() {
     private lateinit var viewModelItem: CategoryViewModel
     private lateinit var viewModelTable: TableViewModel
     private lateinit var viewModelCustomer: CustomerViewModel
+    private lateinit var viewModelCoupon: CouponViewModel
+
 
     private lateinit var adapterItemCheckout: ItemCheckoutAdapter
 
@@ -81,7 +86,6 @@ class CheckoutFragment : Fragment() {
     var couponDiscount = 0
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,6 +96,8 @@ class CheckoutFragment : Fragment() {
         viewModelItem = ViewModelProvider(this).get(CategoryViewModel::class.java)
         viewModelTable = ViewModelProvider(this).get(TableViewModel::class.java)
         viewModelCustomer = ViewModelProvider(this).get(CustomerViewModel::class.java)
+        viewModelCoupon = ViewModelProvider(this).get(CouponViewModel::class.java)
+
 
         setChange(binding.edtCash.text.toString())
 
@@ -164,16 +170,16 @@ class CheckoutFragment : Fragment() {
             OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
 
         /** Handle Customer */
-        viewModelCustomer.getListCustomer()
-            .observe(viewLifecycleOwner) { listCustomer ->
-                if (listCustomer.isNotEmpty()) {
-                    val customerObject = listCustomer.stream()
-                        .filter { it -> it.customer_id == orderObject?.customer_id }.collect(
-                        Collectors.toList()
-                    ).get(0)
-                    binding.txtCustomerInBill.text = customerObject.customer_name
-                }
-            }
+        /*        viewModelCustomer.getListCustomer()
+                    .observe(viewLifecycleOwner) { listCustomer ->
+                        if (listCustomer.isNotEmpty()) {
+                            val customerObject = listCustomer.stream()
+                                .filter { it -> it.customer_id == orderObject?.customer_id }.collect(
+                                Collectors.toList()
+                            ).get(0)
+                            binding.txtCustomerInBill.text = customerObject.customer_name
+                        }
+                    }*/
 
         // Qnew
         viewModelCart.getListOrderByCustomerId(orderObject!!.customer_id)
@@ -229,38 +235,84 @@ class CheckoutFragment : Fragment() {
         /** ---------------------------------------------------------- */
         /** 2. COUPON --> BILL AMOUNT */
         // 1. Nhấp vào Apply Coupon --> Hiện ra để nhập
-        // 2. Đối chiếu xem đúng mã hay không --> Đúng thì apply thành công, sai thì hiện thông báo fail
-        // 3. Cancel thì trả lại trạng thái ban đầu
+        // 2. GetCoupon ra để đối chiếu nữa
+        // 3. Đối chiếu xem đúng mã hay không --> Đúng thì apply thành công, sai thì hiện thông báo fail
+        // 4. Cancel thì trả lại trạng thái ban đầu
 
 
         binding.txtAddCoupon.setOnClickListener {
             if (binding.llCoupon.visibility == View.VISIBLE) {
                 binding.llCoupon.visibility = View.GONE
                 binding.txtAddCoupon.text = "Apply Coupon?"
+                binding.txtAddCoupon.show()
             } else {
                 binding.llCoupon.visibility = View.VISIBLE
                 binding.txtAddCoupon.text = ""
+                binding.txtAddCoupon.show()
             }
         }
 
 
+        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(
+            binding.edtCoupon,
+            binding.txtAddCoupon
+        )
+        binding.txtAddCoupon.show()
+
+
+
+
         binding.txtApplyCoupon.setOnClickListener {
-            if (binding.edtCoupon.text.toString() == "Quang") {
-                billAmount = (subTotal * (1 - 10 / 100.0) * (1 + tax)).toFloat()
-                binding.txtBillAmount.text = String.format("%.1f", billAmount)
-                binding.txtAddCoupon.text = "Coupon was applied successfully! - 10%"
-                couponDiscount = 10
-                binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.money)
-            } else {
-                binding.txtAddCoupon.text = ""
-                binding.txtAddCoupon.text = "Failed to apply coupon!"
-                binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.text_red)
+            binding.edtCoupon.clearFocus()
+            binding.txtAddCoupon.hide()
+
+            viewModelCoupon.couponGetByCouponCode.value = mutableListOf<CouponEntity>()
+            viewModelCoupon.getCouponByCouponCode(binding.edtCoupon.text.toString().trim())
+
+            viewModelCoupon.couponGetByCouponCode.observe(viewLifecycleOwner){ couponGetByCouponCode->
+
+                // Nếu nhập mã 4~10 kí tự
+                if (binding.edtCoupon.text.length >= 4) {
+                    // Nếu tồn tại Coupon nhập vào
+                    if (!couponGetByCouponCode.isNullOrEmpty()) {
+                        Log.d("Quanglt", "$couponGetByCouponCode")
+                        // Nếu Coupon đấy còn hiêu lực
+                        if (binding.edtCoupon.text.toString() == couponGetByCouponCode[0].coupon_code && couponGetByCouponCode[0].coupon_status == 1) {
+
+                            billAmount =
+                                (subTotal * (1 - (couponGetByCouponCode[0].coupon_discount) / 100.0) * (1 + tax)).toFloat()
+                            binding.txtBillAmount.text = String.format("%.1f", billAmount)
+                            binding.txtAddCoupon.text =
+                                "Coupon was applied successfully! - ${couponGetByCouponCode[0].coupon_discount}%"
+                            binding.txtAddCoupon.show()
+                            couponDiscount = couponGetByCouponCode[0].coupon_discount
+                            binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.money)
+
+                        } else if (couponGetByCouponCode[0].coupon_status != 1) {
+                            binding.edtCoupon.clearFocus()
+                            binding.txtAddCoupon.text = ""
+                            binding.txtAddCoupon.text = "This coupon has expired."
+                            binding.txtAddCoupon.show()
+                            binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.text_rank_1)
+                        }
+                    } else {
+                        binding.edtCoupon.clearFocus()
+                        binding.txtAddCoupon.text = "This coupon is not valid!"
+                        binding.txtAddCoupon.show()
+                        binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.text_red)
+                    }
+                } else {
+                    binding.txtAddCoupon.text =
+                        "The Coupon Code needs to consist of 4 to 8 characters!"
+                    binding.txtAddCoupon.show()
+                }
             }
         }
 
         binding.txtCancelCoupon.setOnClickListener {
             binding.llCoupon.gone()
             binding.txtAddCoupon.text = "Apply Coupon?"
+            binding.txtAddCoupon.show()
             billAmount = (subTotal * (1.0f + tax))
             binding.txtBillAmount.text = String.format("%.1f", billAmount)
         }
@@ -324,6 +376,7 @@ class CheckoutFragment : Fragment() {
 
         }
 
+
         /** ----------------------------------------------------------------------------------*/
 
 
@@ -362,7 +415,10 @@ class CheckoutFragment : Fragment() {
         // 2.  Designed XML --> View
         // 3.  Set VIEW tra ve above --> Dialog
         val build =
-            AlertDialog.Builder(requireActivity(), com.example.restaurantpos.R.style.ThemeCustom)
+            AlertDialog.Builder(
+                requireActivity(),
+                com.example.restaurantpos.R.style.ThemeCustom
+            )
         val view = layoutInflater.inflate(
             com.example.restaurantpos.R.layout.dialog_alert_add_customer,
             null

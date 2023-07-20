@@ -20,7 +20,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         initListener()
     }
 
-
     private fun initListener() {
 
         DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(binding.edtUsername, binding.txtInformLogin)
@@ -31,9 +30,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 binding.edtUsername.text.toString().trim().isEmpty() ||
                 binding.edtPassword.text.toString().trim().isEmpty()
             ) {
+
+
                 CoroutineScope(Dispatchers.Main).launch {
                     showLoginInform()
                 }
+
+
             } else {
                 checkLogin(
                     binding.txtInformLogin,

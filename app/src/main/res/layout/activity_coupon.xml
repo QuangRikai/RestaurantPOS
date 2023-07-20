@@ -48,8 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:gravity="center"
-            android:text="
-The Coupon Code must have a length of 4 to 10 characters \n (including uppercase letters and optional numbers)."
+            android:text="The Coupon Code must have a length of 4 to 8 characters."
             android:textColor="@color/text_blue"
             android:visibility="visible"
             tools:ignore="RtlSymmetry" />
@@ -69,7 +68,7 @@ The Coupon Code must have a length of 4 to 10 characters \n (including uppercase
                 android:layout_weight="3"
                 android:background="@drawable/bg_edt_login"
                 android:gravity="center"
-                android:inputType="text|textCapCharacters"
+                android:inputType="text"
                 android:maxLength="10"
                 tools:ignore="RtlSymmetry" />
 

@@ -222,6 +222,7 @@ object DatabaseUtil {
 
     fun getAllCouponActive() = couponDAO.getAllCouponActive()
     fun getCouponActiveByCouponCode(couponCode: String) = couponDAO.getCouponActiveByCouponCode(couponCode)
+    fun getCouponByCouponCode(couponCode: String) = couponDAO.getCouponByCouponCode(couponCode)
 
 
 }

@@ -27,6 +27,9 @@ interface CouponDAO {
     @Query("SELECT * from coupon WHERE coupon_code = :couponCode AND coupon_status != 0")
     fun getCouponActiveByCouponCode(couponCode: String): CouponEntity
 
+    @Query("SELECT * from coupon WHERE coupon_code = :couponCode")
+    fun getCouponByCouponCode(couponCode: String): MutableList<CouponEntity>
+
 
     /*
         @Query("SELECT * from account WHERE account_id = :account_id")
