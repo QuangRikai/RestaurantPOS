@@ -1,5 +1,10 @@
 package com.example.restaurantpos.util
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import android.widget.TextView
+import com.example.restaurantpos.R
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.Calendar
@@ -146,7 +151,7 @@ object DataUtil {
     /** Token */
 
 
-    fun getDateToToken() : String {
+    fun getDateToToken(): String {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.AM_PM, 1)
         val nam = calendar.get(Calendar.YEAR)
@@ -160,7 +165,7 @@ object DataUtil {
         return String.format("%d_%02d_%02d_%02d_%02d", nam, thang, ngay, gio + 2, phut)
     }
 
-    fun getNowForToken() : String {
+    fun getNowForToken(): String {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.AM_PM, 1)
         val nam = calendar.get(Calendar.YEAR)
@@ -171,10 +176,11 @@ object DataUtil {
         return String.format("%d_%02d_%02d_%02d_%02d", nam, thang, ngay, gio, phut)
     }
 
-    fun getDateCreateToken() : String {
+    fun getDateCreateToken(): String {
         return convertToMD5(DateFormatUtil.getTimeForOrderCreateTime())
     }
-//    const val formatDateAndMore = "yyyy/MM/dd  HH:mm:ss"
+
+    //    const val formatDateAndMore = "yyyy/MM/dd  HH:mm:ss"
 //    Từ 1 thằng không trùng, lại tạo thêm 1 thằng không trùng, vậy nên không sợ bị trùng
     fun convertToMD5(input: String): String {
         val md = MessageDigest.getInstance("MD5")
@@ -183,6 +189,36 @@ object DataUtil {
 
 
     /** Ràng buộc dữ liệu: Không cho nhập kí tự đặc biệt */
-    
+    fun isSpecialCharacterOrSpace(char: Char): Boolean {
+        return char.isWhitespace() || char !in 'a'..'z' && char !in 'A'..'Z' && char !in '0'..'9'
+    }
+
+    fun setEditTextWithoutSpecialCharactersAndSpaces(editText: EditText, textView: TextView) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No action needed before text changed
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // No action needed on text changed
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    textView.setText(R.string.msg_special_and_space_character)
+                    val text = it.toString()
+                    val lastChar = text.lastOrNull()
+                    if (lastChar != null && isSpecialCharacterOrSpace(lastChar)) {
+                        // Remove the last character if it's a special character or space
+                        it.delete(it.length - 1, it.length)
+                        textView.show()
+                    } else {
+                        textView.hide()
+                    }
+                }
+            }
+        })
+    }
+
 
 }

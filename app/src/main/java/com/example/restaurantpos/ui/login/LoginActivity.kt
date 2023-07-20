@@ -22,6 +22,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
 
     private fun initListener() {
+
+        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(binding.edtUsername, binding.txtInformLogin)
+        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(binding.edtPassword, binding.txtInformLogin)
+
         binding.txtLogin.setOnClickListener {
             if (
                 binding.edtUsername.text.toString().trim().isEmpty() ||

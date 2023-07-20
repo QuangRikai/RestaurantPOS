@@ -11,6 +11,7 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.ActivityCouponBinding
 import com.example.restaurantpos.db.entity.CouponEntity
 import com.example.restaurantpos.ui.main.MainManagerActivity
+import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.DatabaseUtil
 import com.example.restaurantpos.util.DateFormatUtil
 import com.example.restaurantpos.util.hide
@@ -87,6 +88,9 @@ class CouponActivity : AppCompatActivity() {
         viewModelCoupon.getAllCoupon().observe(this) { allCoupon ->
             adapterCoupon.setListData(allCoupon)
         }
+        /**-----------------------------------------------------------------------*/
+        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(binding.edtCode, binding.txtInform)
+
 
         /**-----------------------------------------------------------------------*/
         viewModelCoupon.isDuplicate.observe(this@CouponActivity) {

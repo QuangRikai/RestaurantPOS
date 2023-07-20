@@ -36,4 +36,8 @@
     <string name="instruction_update_info">You can update only the necessary information.</string>
 
 
+   <!-- Inform Message -->
+    <string name="msg_special_and_space_character"> Special characters and spaces are not allowed!</string>
+
+
 </resources>
