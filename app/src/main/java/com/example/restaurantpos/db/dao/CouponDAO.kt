@@ -1,9 +1,12 @@
 package com.example.restaurantpos.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.CouponEntity
 
 @Dao
@@ -14,6 +17,15 @@ interface CouponDAO {
 
     @Delete
     fun deleteCoupon(coupon: CouponEntity): Int
+
+    @Query("SELECT * from coupon WHERE coupon_status < 2 ORDER BY coupon_status DESC")
+    fun getAllCoupon(): LiveData<MutableList<CouponEntity>>
+
+    @Query("SELECT * from coupon WHERE coupon_status != 0")
+    fun getAllCouponActive(): LiveData<MutableList<CouponEntity>>
+
+    @Query("SELECT * from coupon WHERE coupon_code = :couponCode AND coupon_status != 0")
+    fun getCouponActiveByCouponCode(couponCode: String): CouponEntity
 
 
     /*

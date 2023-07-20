@@ -9,6 +9,12 @@
         android:title="Update Info"
         tools:targetApi="o" />
 
+    <item android:id="@+id/menu_coupon"
+        android:icon="@drawable/ic_coupon"
+        android:iconTint="@color/text_blue"
+        android:title="Coupon"
+        tools:targetApi="o" />
+
     <item android:id="@+id/menu_logout"
         android:icon="@drawable/ic_exit"
         android:iconTint="@color/text_blue"

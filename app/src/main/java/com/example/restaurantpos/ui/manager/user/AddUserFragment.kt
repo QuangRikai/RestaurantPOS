@@ -72,10 +72,14 @@ class AddUserFragment : Fragment() {
         }
 
         binding.txtAdd.setOnClickListener {
+
             if (binding.edtAddUserName.text.isEmpty() || binding.edtAddAccountName.text.isEmpty()) {
                 binding.txtError.text = "Username and Staff's name must not be empty!"
                 binding.txtError.show()
             } else {
+
+                // Nếu đã tồn tại user thì sẽ không add mà sẽ post value (TRUE) cho isDuplicate
+                // Thông qua đó chạy đoạn code phía trên
                 viewModel.addUser(
                     requireActivity(), AccountEntity(
                         0,

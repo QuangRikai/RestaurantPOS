@@ -20,6 +20,11 @@ class CartItemInKitchenAdapter(
     val listenerClickCartItemInKitchen: EventClickCartItemInKitchenListener
 ) : RecyclerView.Adapter<CartItemInKitchenAdapter.ViewHolder>() {
 
+
+
+
+
+
     // class ViewHolder --> đại diện cho mỗi item view trong RecyclerView.
     // Thường chứa các thành phần của View --> Để hiển thị cho mỗi item
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -60,15 +65,18 @@ class CartItemInKitchenAdapter(
             listenerClickCartItemInKitchen.clickCartItemStatus(cartItem)
         }
 
-        showInfo(
+            showInfo(
 //            holder.txtTime,
-            holder.txtItemName,
-            holder.txtTableName,
-            holder.txtCartItemStatus,
-            cartItem.cart_item_status_id,
-            cartItem.order_id,
-            cartItem.item_id
-        )
+                holder.txtItemName,
+                holder.txtTableName,
+                holder.txtCartItemStatus,
+                cartItem.cart_item_status_id,
+                cartItem.order_id,
+                cartItem.item_id
+            )
+
+
+
     }
 
     // Những thông tin về Table, Item thì phải get bằng order_id, item_id nha

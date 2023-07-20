@@ -15,11 +15,18 @@ data class CouponEntity constructor(
     @ColumnInfo(name = "coupon_id")
     val coupon_id: Int,
 
+    @ColumnInfo(name = "coupon_add_date")
+    var coupon_add_date: String,
+
     @ColumnInfo(name = "coupon_code")
     var coupon_code: String,
 
     @ColumnInfo(name = "coupon_percent")
-    var coupon_percent: Int
+    var coupon_discount: Int,
+
+    @ColumnInfo(name = "coupon_status")
+    var coupon_status: Int
+
 
 
 ) : Parcelable {

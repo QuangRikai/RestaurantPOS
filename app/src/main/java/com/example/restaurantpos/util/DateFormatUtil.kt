@@ -32,6 +32,11 @@ object DateFormatUtil {
         return simpleDateFormat.format(Date())
     }
 
+    fun getDateForCoupon(): String {
+        val simpleDateFormat = SimpleDateFormat(formatDate, Locale.getDefault())
+        return simpleDateFormat.format(Date())
+    }
+
     fun getShiftId(year: Int, month: Int): String {
         return "${year}/${month}"
     }

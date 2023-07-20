@@ -53,6 +53,7 @@ class ShiftFragment : Fragment() {
     private var shiftName = 1
 
     private var staffObject: AccountEntity? = null
+    private var listAccountActive = ArrayList<AccountEntity>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -190,21 +191,36 @@ class ShiftFragment : Fragment() {
                     staffObject = itemStaff
                     edtAccount.setText(itemStaff.account_name)
                     accountID = itemStaff.account_id
-                    rcyAccountInner.gone()
                 }
             })
         rcyAccountInner.adapter = adapterStaffSelection
         // ------------------------------------------------------------
+
+
         // 2.2 Xử lý doOnTextChanged cho accountName
         edtAccount.doOnTextChanged { text3, _, _, _ ->
             if (text3.toString().isNotEmpty()) {
+
+                val filterList = ArrayList<AccountEntity>()
+
                 viewModelUser.getAllUserActiveByName(text3.toString())
-                    .observe(viewLifecycleOwner) {
-                        if (it.size > 0) {
-                            adapterStaffSelection.setListData(it as ArrayList<AccountEntity>)
+                    .observe(viewLifecycleOwner) { allAccountActive ->
+
+                        listAccountActive = allAccountActive as ArrayList<AccountEntity>
+
+                        listAccountActive.forEach { account ->
+                            if (account.account_name.contains(text3.toString())) {
+                                filterList.add(account)
+                            }
+                        }
+                        if (filterList.isNotEmpty()) {
+                            adapterStaffSelection.setListData(filterList)
                             rcyAccountInner.show()
+                        } else {
+                            rcyAccountInner.gone()
                         }
                     }
+
             } else {
                 rcyAccountInner.gone()
             }
@@ -215,6 +231,8 @@ class ShiftFragment : Fragment() {
 
         // 3. Pick-up-Date
         imgDate.setOnClickListener {
+            edtAccount.clearFocus()
+
             DatePickerDialog(
                 requireContext(),
                 DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -240,6 +258,8 @@ class ShiftFragment : Fragment() {
 
 
         btnAdd.setOnClickListener {
+            edtAccount.clearFocus()
+
             shiftID = txtShiftDate?.text.toString() + "  $shiftName"
 
             if (txtShiftDate.text.isNotEmpty() && edtAccount.text.isNotEmpty() && accountID != 0) {
@@ -261,6 +281,8 @@ class ShiftFragment : Fragment() {
         dialog = build.create()
         dialog.show()
     }
+
+
 
     /** handleShiftNameBySpinner */
     private fun handleShiftNameBySpinner(spnShift: Spinner) {

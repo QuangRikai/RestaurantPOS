@@ -13,6 +13,7 @@ import com.example.restaurantpos.db.entity.AccountRoleEntity
 import com.example.restaurantpos.db.entity.AccountStatusEntity
 import com.example.restaurantpos.db.entity.CartItemStatusEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
+import com.example.restaurantpos.db.entity.CouponEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.ItemEntity
 import com.example.restaurantpos.db.entity.OrderStatusEntity
@@ -42,9 +43,36 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         /** 1. Account */
         viewModel.addListAccount(
             listOf(
-                AccountEntity(1,"Quang Manager", "1995/03/02", "08010802100","quang0", DataUtil.convertToMD5("123"),0,true),
-                AccountEntity(2, "Quang Receptionist", "1995/03/02", "080101232100", "quang1", DataUtil.convertToMD5("123"), 1, true),
-                AccountEntity(3, "Quang Kitchen", "1995/03/02", "08010531100", "quang2", DataUtil.convertToMD5("123"), 2, true),
+                AccountEntity(
+                    1,
+                    "Quang Manager",
+                    "1995/03/02",
+                    "08010802100",
+                    "quang0",
+                    DataUtil.convertToMD5("123"),
+                    0,
+                    true
+                ),
+                AccountEntity(
+                    2,
+                    "Quang Receptionist",
+                    "1995/03/02",
+                    "080101232100",
+                    "quang1",
+                    DataUtil.convertToMD5("123"),
+                    1,
+                    true
+                ),
+                AccountEntity(
+                    3,
+                    "Quang Kitchen",
+                    "1995/03/02",
+                    "08010531100",
+                    "quang2",
+                    DataUtil.convertToMD5("123"),
+                    2,
+                    true
+                ),
             )
         )
         /** 1.1. Account_Role */
@@ -133,6 +161,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 ShiftEntity("3", "Night", "18:00", "22:00")
             )
         )
+
+
+        /** 7. Coupon  */
+
+        viewModel.addCoupon(CouponEntity(1, "2023/07/10", "QUANG1", 10, 1))
+        viewModel.addCoupon(CouponEntity(2, "2023/07/11", "QUANG2", 21, 0))
+        viewModel.addCoupon(CouponEntity(3, "2023/07/12", "QUANG3", 32, 1))
+        viewModel.addCoupon(CouponEntity(4, "2023/07/13", "QUANG4", 43, 0))
+        viewModel.addCoupon(CouponEntity(5, "2023/07/14", "QUANG5", 54, 1))
     }
 
     private fun startLoginActivity() {

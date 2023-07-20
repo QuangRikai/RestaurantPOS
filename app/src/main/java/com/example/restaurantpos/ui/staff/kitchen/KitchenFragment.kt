@@ -32,6 +32,7 @@ class KitchenFragment : Fragment() {
     lateinit var viewModelCart: CartViewModel
 
     lateinit var adapterCartItemInKitchen: CartItemInKitchenAdapter
+
     lateinit var dialog: AlertDialog
 
     /*
@@ -51,6 +52,7 @@ class KitchenFragment : Fragment() {
 
 //    var listCartItem = ArrayList<CartItemEntity>()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,6 +65,14 @@ class KitchenFragment : Fragment() {
 
 
         return binding.root
+    }
+
+
+    // Thêm một biến để kiểm soát việc sắp xếp danh sách
+    private var isSortingEnabled = true
+
+    fun pauseSorting() {
+        isSortingEnabled = false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -133,10 +143,14 @@ class KitchenFragment : Fragment() {
             object : CartItemInKitchenAdapter.EventClickCartItemInKitchenListener {
                 override fun clickCartItemStatus(cartItemInKitchen: CartItemEntity) {
                     if (cartItemInKitchen.cart_item_status_id == 1) {
+
                         showConfirmItemStatusDialog(cartItemInKitchen)
                     } else {
+                        // Kiểm soát vấn đề cart_item_status_id thay đổi thì Hàm SORT cũng thay đổi theo
+                        pauseSorting()
                         cartItemInKitchen.cart_item_status_id++
                         viewModelCart.addCartItem(cartItemInKitchen)
+
                     }
                 }
             })
@@ -179,26 +193,30 @@ class KitchenFragment : Fragment() {
                 0 -> sortByTable.value = 1
             }
 
-        /*    when (sortByTable.value) {
-                1 -> sortByTable.value = 2
-                2 -> sortByTable.value = 0
-                else -> sortByTable.value = 1
-            }*/
+            /*    when (sortByTable.value) {
+                    1 -> sortByTable.value = 2
+                    2 -> sortByTable.value = 0
+                    else -> sortByTable.value = 1
+                }*/
         }
 
         // 3. Theo STATUS
         binding.layoutTitleOfCartItemInKitchen.txtCondition.setOnClickListener {
+            isSortingEnabled = true
+            if (isSortingEnabled) {
+                sortByStatus.observe(viewLifecycleOwner) {
+                    viewModelCart.getListCartItemOfKitchenSortByStatus(sortByStatus.value!!)
+                        .observe(viewLifecycleOwner) {
 
-            sortByStatus.observe(viewLifecycleOwner) {
-                viewModelCart.getListCartItemOfKitchenSortByStatus(sortByStatus.value!!)
-                    .observe(viewLifecycleOwner) { listCart ->
-                        adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
-                    }
-            }
+                                listCart ->
+                            adapterCartItemInKitchen.setListData(listCart as ArrayList<CartItemEntity>)
+                        }
+                }
 
-            when (sortByStatus.value) {
-                1 -> sortByStatus.value = 0
-                0 -> sortByStatus.value = 1
+                when (sortByStatus.value) {
+                    1 -> sortByStatus.value = 0
+                    0 -> sortByStatus.value = 1
+                }
             }
         }
 
@@ -267,6 +285,7 @@ class KitchenFragment : Fragment() {
 
 
         btnDone.setOnClickListener {
+            pauseSorting()
             DatabaseUtil.getItemOfCategory(cartItemInKitchen.item_id)
                 .observe(viewLifecycleOwner) {
                     context?.showToast("Done ${it[0].item_name}. Send to Receptionist")
@@ -277,6 +296,7 @@ class KitchenFragment : Fragment() {
         }
 
         btnRevert.setOnClickListener {
+            pauseSorting()
             cartItemInKitchen.cart_item_status_id--
             viewModelCart.addCartItem(cartItemInKitchen)
             dialog.dismiss()

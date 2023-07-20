@@ -18,6 +18,22 @@ class ShiftViewModel : ViewModel() {
 
     val isDuplicate: LiveData<Boolean> = _isDuplicate
 
+    fun addAccountShift(accountShift: AccountShiftEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val existingAccountShift = DatabaseUtil.shiftDAO.getShiftByNameAndShift(accountShift.shift_id, accountShift.account_id)
+
+            if (existingAccountShift == null) {
+                // Nếu tài khoản chưa tồn tại, thêm vào cơ sở dữ liệu
+                DatabaseUtil.shiftDAO.addAccountShift(accountShift)
+                _isDuplicate.postValue(false)
+            } else {
+                // Nếu tài khoản đã tồn tại, xử lý tương ứng (ví dụ: hiển thị thông báo lỗi)
+                _isDuplicate.postValue(true)
+            }
+        }
+    }
+
+
     fun addShift(shift: ShiftEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseUtil.shiftDAO.addShift(shift)
@@ -34,20 +50,7 @@ class ShiftViewModel : ViewModel() {
         }
     }*/
 
-    fun addAccountShift(accountShift: AccountShiftEntity) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val existingAccountShift = DatabaseUtil.shiftDAO.getShiftByNameAndShift(accountShift.shift_id, accountShift.account_id)
 
-            if (existingAccountShift == null) {
-                // Nếu tài khoản chưa tồn tại, thêm vào cơ sở dữ liệu
-                DatabaseUtil.shiftDAO.addAccountShift(accountShift)
-                _isDuplicate.postValue(false)
-            } else {
-                // Nếu tài khoản đã tồn tại, xử lý tương ứng (ví dụ: hiển thị thông báo lỗi)
-                _isDuplicate.postValue(true)
-            }
-        }
-    }
 
     fun deleteAccountShift(accountShift: AccountShiftEntity) {
         CoroutineScope(Dispatchers.IO).launch {

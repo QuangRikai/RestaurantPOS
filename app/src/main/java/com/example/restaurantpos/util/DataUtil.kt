@@ -181,4 +181,8 @@ object DataUtil {
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
+
+    /** Ràng buộc dữ liệu: Không cho nhập kí tự đặc biệt */
+    
+
 }

@@ -1,6 +1,8 @@
 package com.example.restaurantpos.util
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.room.Query
 import com.example.restaurantpos.db.dao.AccountDAO
 import com.example.restaurantpos.db.dao.AppDAO
 import com.example.restaurantpos.db.dao.CartItemDAO
@@ -75,7 +77,7 @@ object DatabaseUtil {
 
     // Phục vụ cho việc add account_shift
     fun getAllUserActiveByName(name: String) =
-        accountDAO.getAllUserActiveByName("${name}%")
+        accountDAO.getAllUserActiveByName("%${name}%")
 
     fun getStaffByName(staffName: String) = accountDAO.getStaffByName("%${staffName}%")
 
@@ -216,8 +218,10 @@ object DatabaseUtil {
     fun addCoupon(coupon: CouponEntity) = couponDAO.addCoupon(coupon)
     fun deleteCoupon(coupon: CouponEntity) = couponDAO.deleteCoupon(coupon)
 
-    
-//    fun getCoupon(couponId: Int) = cartItemDAO.getCoupon(couponId)
+    fun getAllCoupon() = couponDAO.getAllCoupon()
+
+    fun getAllCouponActive() = couponDAO.getAllCouponActive()
+    fun getCouponActiveByCouponCode(couponCode: String) = couponDAO.getCouponActiveByCouponCode(couponCode)
 
 
 }

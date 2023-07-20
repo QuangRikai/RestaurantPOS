@@ -7,8 +7,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.ActivityMainManagerBinding
-import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.ui.login.LoginActivity
+import com.example.restaurantpos.ui.manager.coupon.CouponActivity
 import com.example.restaurantpos.ui.manager.UpdateAdminInfoActivity
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
@@ -44,6 +44,12 @@ class MainManagerActivity : AppCompatActivity() {
                     // Logout
                     R.id.menu_logout -> {
                         openActivity(LoginActivity::class.java, true)
+                        true
+                    }
+
+                    // Coupon
+                    R.id.menu_coupon -> {
+                        openActivity(CouponActivity::class.java)
                         true
                     }
 
