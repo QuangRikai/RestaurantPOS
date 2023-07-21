@@ -26,7 +26,10 @@ data class CustomerEntity constructor(
     val birthday: String,
 
     @ColumnInfo(name = "total_payment")
-    val total_payment: Double
+    var total_payment: Double,
+
+    @ColumnInfo(name = "customer_rank_id")
+    val customer_rank_id: Int
 
 
     /*  Thêm để bổ trợ gì mới thêm chứ không thì thôi. Ví dụ khi tạo Customer có cần below không?--> NO

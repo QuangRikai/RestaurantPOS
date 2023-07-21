@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CustomerViewModel: ViewModel() {
+class CustomerViewModel : ViewModel() {
 
     private val _getIDWhenInsertOrderSuccess: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>()
@@ -17,16 +17,20 @@ class CustomerViewModel: ViewModel() {
 
     val getIDWhenInsertOrderSuccess: LiveData<Long> = _getIDWhenInsertOrderSuccess
 
-    fun getListCustomerByPhoneForSearch(phone: String) = DatabaseUtil.getListCustomerByPhoneForSearch(phone)
-    fun getListCustomerByPhoneForAdd(phone: String) = DatabaseUtil.getListCustomerByPhoneForAdd(phone)
+    fun getListCustomerByPhoneForSearch(phone: String) =
+        DatabaseUtil.getListCustomerByPhoneForSearch(phone)
+
+    fun getListCustomerByPhoneForAdd(phone: String) =
+        DatabaseUtil.getListCustomerByPhoneForAdd(phone)
+
     fun getListCustomer() = DatabaseUtil.getListCustomer()
 
 
-/*    fun addCustomer(data: CustomerEntity) {
-        CoroutineScope(Dispatchers.IO).launch{
-            DatabaseUtil.addCustomer(data)
-        }
-    }*/
+    /*    fun addCustomer(data: CustomerEntity) {
+            CoroutineScope(Dispatchers.IO).launch{
+                DatabaseUtil.addCustomer(data)
+            }
+        }*/
 
 
     // Lắng nghe: Khi add Customer mới thì nó sẽ trả cho mình thêm 1 cái IdCustomer
@@ -38,5 +42,14 @@ class CustomerViewModel: ViewModel() {
         }
     }
 
-
+    // Qnew
+    fun updateCustomerTotalAndRank(customerId: Int, totalPayment: Double, customerRankId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseUtil.customerDAO.updateCustomerTotalAndRank(
+                customerId,
+                totalPayment,
+                customerRankId
+            )
+        }
+    }
 }

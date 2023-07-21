@@ -25,6 +25,7 @@ import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapte
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
 import com.example.restaurantpos.util.DateFormatUtil
 import java.util.Calendar
+import java.util.stream.Collectors
 
 class CheckoutConfirmFragment : Fragment() {
     lateinit var binding: FragmentCheckoutConfirmBinding
@@ -154,6 +155,14 @@ class CheckoutConfirmFragment : Fragment() {
                 }
         }
 
+        /** Handle Customer */
+        viewModelCustomer.getListCustomer()
+            .observe(viewLifecycleOwner) { listCustomer ->
+                if (listCustomer.isNotEmpty()) {
+                    customerObject = listCustomer.stream().filter { it -> it.customer_id == orderObject?.customer_id }.collect(
+                        Collectors.toList()).firstOrNull()
+                }
+            }
 
         /** Code for Done */
         binding.txtDone.setOnClickListener {
@@ -164,6 +173,22 @@ class CheckoutConfirmFragment : Fragment() {
             orderObject?.paid_time = DateFormatUtil.getTimeForOrderCreateTime()
             orderObject?.let {
                 viewModelCart.addOrder(it)
+
+
+                customerObject!!.total_payment += it.bill_total
+                var rank: Int = -1
+                if (customerObject!!.total_payment < 2000){
+                    rank = 0
+                } else if(customerObject!!.total_payment in 2000.0..10000.0){
+                    rank = 1
+                } else if(customerObject!!.total_payment > 10000 && customerObject!!.total_payment < 20000){
+                    rank = 2
+                }else{
+                    rank = 3
+                }
+
+                viewModelCustomer.updateCustomerTotalAndRank(customerObject!!.customer_id, customerObject!!.total_payment ,rank)
+
             }
 
             // Set lại Table is Empty and update Status on Database

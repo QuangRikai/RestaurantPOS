@@ -14,7 +14,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
@@ -46,6 +45,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.stream.Collectors
 
 
 class CheckoutFragment : Fragment() {
@@ -58,9 +58,7 @@ class CheckoutFragment : Fragment() {
     private lateinit var viewModelCustomer: CustomerViewModel
     private lateinit var viewModelCoupon: CouponViewModel
 
-
     private lateinit var adapterItemCheckout: ItemCheckoutAdapter
-
 
     private lateinit var adapterCustomerInner: CustomerInnerAdapter
 
@@ -85,7 +83,6 @@ class CheckoutFragment : Fragment() {
     var discount = 0
     var couponDiscount = 0
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,8 +103,8 @@ class CheckoutFragment : Fragment() {
 
 
     @SuppressLint("ResourceAsColor")
-    private fun calculateDiscountPercentage(listOrderOfCustomer: MutableList<OrderEntity>) {
-        val sum = listOrderOfCustomer.sumOf { it -> it.bill_total.toLong() }
+    private fun calculateDiscountPercentage(rank: Int) {
+//        val sum = listOrderOfCustomer.sumOf { it -> it.bill_total.toLong() }
 
         val color0 =
             ContextCompat.getColor(requireContext(), com.example.restaurantpos.R.color.text_rank_0)
@@ -125,15 +122,15 @@ class CheckoutFragment : Fragment() {
             ContextCompat.getColor(requireContext(), com.example.restaurantpos.R.color.text_rank_3)
         val colorStateList3 = ColorStateList.valueOf(color3)
 
-        if (sum >= 2000) {
+        if (rank == 1) {
             discount = 5
             binding.imgRank.imageTintList = colorStateList1
             binding.txtDiscountOnRank.setTextColor(com.example.restaurantpos.R.color.text_rank_1)
-        } else if (sum >= 5000) {
+        } else if (rank == 2) {
             discount = 10
             binding.imgRank.imageTintList = colorStateList2
             binding.txtDiscountOnRank.setTextColor(com.example.restaurantpos.R.color.text_rank_2)
-        } else if (sum >= 10000) {
+        } else if (rank == 3) {
             discount = 15
             binding.imgRank.imageTintList = colorStateList3
             binding.txtDiscountOnRank.setTextColor(com.example.restaurantpos.R.color.text_rank_3)
@@ -182,10 +179,39 @@ class CheckoutFragment : Fragment() {
                     }*/
 
         // Qnew
-        viewModelCart.getListOrderByCustomerId(orderObject!!.customer_id)
+      /*  viewModelCart.getListOrderByCustomerId(orderObject!!.customer_id)
             .observe(viewLifecycleOwner) { listOrderOfCustomer ->
                 calculateDiscountPercentage(listOrderOfCustomer)
+            }*/
+
+        viewModelCustomer.getListCustomer()
+            .observe(viewLifecycleOwner) { listCustomer ->
+                if (listCustomer.isNotEmpty()) {
+                    val customerObject = listCustomer.stream()
+                        .filter { customer -> customer.customer_id == orderObject?.customer_id }.collect(
+                            Collectors.toList()
+                        ).firstOrNull()
+
+                    binding.txtCustomerInBill.text = customerObject?.customer_name
+                    binding.tvTotalPayment.text = customerObject?.total_payment.toString()
+                    if (customerObject != null) {
+                        calculateDiscountPercentage(customerObject.customer_rank_id)
+                    }
+
+                    calculateTotalAmount()
+                }
             }
+
+        viewModelCustomer.getIDWhenInsertOrderSuccess.observe(viewLifecycleOwner){it ->
+            customerObject = customerObject?.copy(customer_id = it.toInt())
+
+            binding.txtCustomerInBill.text = customerObject?.customer_name
+            binding.tvTotalPayment.text = customerObject?.total_payment.toString()
+            customerObject?.let { c -> calculateDiscountPercentage(c.customer_rank_id) }
+
+            calculateTotalAmount()
+        }
+
         /** ----------------------------------------------------------------------------------*/
         // Map(Key, Value)
         // Key: Item_id
@@ -231,7 +257,6 @@ class CheckoutFragment : Fragment() {
 //            binding.txtChange.text = "0.0"
         }
 
-
         /** ---------------------------------------------------------- */
         /** 2. COUPON --> BILL AMOUNT */
         // 1. Nhấp vào Apply Coupon --> Hiện ra để nhập
@@ -252,14 +277,11 @@ class CheckoutFragment : Fragment() {
             }
         }
 
-
         DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(
             binding.edtCoupon,
             binding.txtAddCoupon
         )
         binding.txtAddCoupon.show()
-
-
 
 
         binding.txtApplyCoupon.setOnClickListener {
@@ -269,7 +291,7 @@ class CheckoutFragment : Fragment() {
             viewModelCoupon.couponGetByCouponCode.value = mutableListOf<CouponEntity>()
             viewModelCoupon.getCouponByCouponCode(binding.edtCoupon.text.toString().trim())
 
-            viewModelCoupon.couponGetByCouponCode.observe(viewLifecycleOwner){ couponGetByCouponCode->
+            viewModelCoupon.couponGetByCouponCode.observe(viewLifecycleOwner) { couponGetByCouponCode ->
 
                 // Nếu nhập mã 4~10 kí tự
                 if (binding.edtCoupon.text.length >= 4) {
@@ -279,13 +301,14 @@ class CheckoutFragment : Fragment() {
                         // Nếu Coupon đấy còn hiêu lực
                         if (binding.edtCoupon.text.toString() == couponGetByCouponCode[0].coupon_code && couponGetByCouponCode[0].coupon_status == 1) {
 
-                            billAmount =
+                            calculateTotalAmount()
+/*                            billAmount =
                                 (subTotal * (1 - (couponGetByCouponCode[0].coupon_discount) / 100.0) * (1 + tax)).toFloat()
-                            binding.txtBillAmount.text = String.format("%.1f", billAmount)
+                            binding.txtBillAmount.text = String.format("%.1f", billAmount)*/
                             binding.txtAddCoupon.text =
                                 "Coupon was applied successfully! - ${couponGetByCouponCode[0].coupon_discount}%"
                             binding.txtAddCoupon.show()
-                            couponDiscount = couponGetByCouponCode[0].coupon_discount
+//                            couponDiscount = couponGetByCouponCode[0].coupon_discount
                             binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.money)
 
                         } else if (couponGetByCouponCode[0].coupon_status != 1) {
@@ -402,6 +425,13 @@ class CheckoutFragment : Fragment() {
     }
 
     /** ----------------------------------------------------------*/
+    fun calculateTotalAmount(){
+        billAmount =
+            (subTotal * (1 - (couponDiscount) / 100.0) * (1 + tax) * (1 - (discount) / 100.0)).toFloat()
+        binding.txtBillAmount.text = String.format("%.1f", billAmount)
+    }
+
+    /** ----------------------------------------------------------*/
     /** Add Customer Dialog */
 
     val startYear = calendar.get(Calendar.YEAR) - 20
@@ -449,6 +479,12 @@ class CheckoutFragment : Fragment() {
                     customerObject = itemCustomer
 
                     binding.txtCustomerInBill.text = itemCustomer.customer_name
+
+                    binding.tvTotalPayment.text = customerObject!!.total_payment.toString()
+                    calculateDiscountPercentage(customerObject!!.customer_rank_id)
+
+                    calculateTotalAmount()
+
                     dialog.dismiss()
                 }
             })
@@ -495,8 +531,18 @@ class CheckoutFragment : Fragment() {
                         edtCustomerName.text.toString(),
                         edtPhoneNumber.text.toString(),
                         txtCustomerBirthday.text.toString(),
-                        0.0
+                        0.0,
+                        0
                     )
+                )
+
+                customerObject = CustomerEntity(
+                    0,
+                    edtCustomerName.text.toString(),
+                    edtPhoneNumber.text.toString(),
+                    txtCustomerBirthday.text.toString(),
+                    0.0,
+                    0
                 )
             }
 

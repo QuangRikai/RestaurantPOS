@@ -114,17 +114,19 @@ class AddMoreOrderFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         /** Handle Customer */
+        // Lấy ra toàn bộ Customer
         viewModelCustomer.getListCustomer()
             .observe(viewLifecycleOwner) { listCustomer ->
-                if (listCustomer.isNotEmpty()) {
+                if (!listCustomer.isNullOrEmpty()) {
                     val customerEntity = listCustomer.stream().filter { it -> it.customer_id == orderObject?.customer_id }.collect(
-                        Collectors.toList()).get(0)
-                    binding.txtCustomerInOrder.text = customerEntity.customer_name
+                        Collectors.toList()).firstOrNull()
+                    if (customerEntity != null) {
+                        binding.txtCustomerInOrder.text = customerEntity.customer_name
+                    }
                 }
             }
 
@@ -469,11 +471,11 @@ class AddMoreOrderFragment : Fragment() {
                         edtCustomerName.text.toString(),
                         edtPhoneNumber.text.toString(),
                         txtCustomerBirthday.text.toString(),
-                        0.0
+                        0.0,
+                        0
                     )
                 )
             }
-
 
             viewModelCustomer.getListCustomerByPhoneForAdd(edtPhoneNumber.text.toString())
                 .observe(viewLifecycleOwner) { listCustomer ->
