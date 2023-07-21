@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.manager.home.statistic.StatisticFragment">
 
@@ -22,8 +22,8 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_8sdp"
-            android:src="@drawable/img_back_arrow_circle"
             android:gravity="center_vertical"
+            android:src="@drawable/img_back_arrow_circle"
             app:tint="@color/text_blue" />
 
         <TextView
@@ -42,8 +42,8 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
             android:padding="@dimen/_8sdp"
-            android:visibility="invisible"
             android:src="@drawable/img_checkout"
+            android:visibility="invisible"
             app:tint="@color/text_blue" />
 
 
@@ -52,8 +52,8 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
             android:padding="@dimen/_8sdp"
-            android:visibility="invisible"
             android:src="@drawable/img_add_circle"
+            android:visibility="invisible"
             app:tint="@color/text_blue" />
 
     </LinearLayout>
@@ -69,45 +69,60 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
             android:fontFamily="@font/inter_500"
             android:gravity="center"
             android:text="Time:"
             android:textColor="@color/text_blue"
             android:textSize="@dimen/_15sdp" />
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Week"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_600"
-            android:background="@drawable/bg_txt_login"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Month"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_600"
-            android:background="@drawable/bg_txt_login"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Year"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_600"
-            android:background="@drawable/bg_txt_login"/>
 
+        <RadioGroup
+            android:id="@+id/rdg_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_txt_login"
+                android:fontFamily="@font/inter_600"
+                android:textSize="@dimen/_10sdp"
+                android:text="Week"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_txt_login"
+                android:fontFamily="@font/inter_600"
+                android:textSize="@dimen/_10sdp"
+                android:text="Month"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_txt_login"
+                android:fontFamily="@font/inter_600"
+                android:textSize="@dimen/_10sdp"
+                android:text="Year"
+                android:textColor="@color/white" />
+
+        </RadioGroup>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -119,84 +134,93 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
             android:fontFamily="@font/inter_500"
             android:gravity="center"
             android:text="Category:"
             android:textColor="@color/text_blue"
             android:textSize="@dimen/_15sdp" />
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Foods"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_600"
-            android:background="@drawable/bg_txt_login"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Drinks"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_600"
-            android:background="@drawable/bg_txt_login"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Desserts"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_600"
-            android:background="@drawable/bg_txt_login"/>
 
+        <RadioGroup
+            android:id="@+id/rdg_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_txt_login"
+                android:fontFamily="@font/inter_600"
+                android:textSize="@dimen/_10sdp"
+                android:text="Foods"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_txt_login"
+                android:fontFamily="@font/inter_600"
+                android:textSize="@dimen/_10sdp"
+                android:text="Drinks"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_txt_login"
+                android:fontFamily="@font/inter_600"
+                android:text="Desserts"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/white" />
+
+        </RadioGroup>
 
     </LinearLayout>
 
-
-
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:layout_marginHorizontal="@dimen/_4sdp"
-        android:background="@color/text_blue"/>
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/text_blue" />
 
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        android:background="@color/black"/>
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@color/text_blue" />
 
-
-
-    <View
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:background="@color/black"/>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:background="@color/text_blue"
-        android:layout_marginTop="@dimen/_15sdp"/>
+        android:layout_height="0dp"
+        android:background="@drawable/bg_edt_login"
+        android:layout_margin="@dimen/_3sdp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcyStatistic"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:layout_weight="1"
         android:clipToPadding="false"
+        android:orientation="horizontal"
         android:scrollbars="none"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:spanCount="1"
         tools:listitem="@layout/item_statistic_collumn" />
@@ -204,6 +228,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        android:background="@color/text_blue"/>
+        android:background="@color/text_blue" />
 
 </LinearLayout>

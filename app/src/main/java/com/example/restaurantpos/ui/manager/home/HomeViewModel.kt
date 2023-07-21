@@ -3,6 +3,7 @@ package com.example.restaurantpos.ui.manager.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.DatabaseUtil
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +31,7 @@ class HomeViewModel : ViewModel() {
         }
     }*/
 
-    fun getRevenueOfDay(nowYear:Int, nowMonth: Int) {
+/*    fun getRevenueOfDay(nowYear:Int, nowMonth: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             // Lấy số ngày ra
             val countDay = DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)
@@ -42,6 +43,42 @@ class HomeViewModel : ViewModel() {
             }
             _isDuplicate.postValue(-1f)
         }
+    }*/
+
+
+
+
+
+    // Qnew
+    private val _revenue : MutableLiveData<MutableList<Float>> by lazy {
+        MutableLiveData<MutableList<Float>>()
     }
+
+    val revenue: LiveData<MutableList<Float>> = _revenue
+
+/*    fun getAllOrder(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val carts: List<OrderEntity> = DatabaseUtil.getAllOrder()
+            val b = carts
+        }
+    }*/
+
+
+    fun getRevenueOfDay(nowYear:Int, nowMonth: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val countDay = DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)
+            // Đây là cái màn mình cần đưa vào Trục tung (Cho từng cột)
+            val listRevenue = ArrayList<Float>()
+
+            for (i in 1..countDay) {
+                val amount = DatabaseUtil.getAllOrder("$nowYear/0$nowMonth/$i")
+                listRevenue.add(amount)
+            }
+            // postValue update data (LiveData<MutableList<Float>>) để cập nhật dữ liệu
+            _revenue.postValue(listRevenue)
+        }
+    }
+
+
 
 }

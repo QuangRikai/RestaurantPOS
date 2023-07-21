@@ -160,7 +160,7 @@ class ManagerHomeFragment : Fragment() {
             graph_label.add("Day $i")
         }
 
-        // Data đi cùng
+/*        // Data đi cùng
         val listRevenue = ArrayList<Float>()
         viewModelHome.getRevenueOfDay(nowYear, nowMonth)
         // Add vào và vẽ liên tục
@@ -171,7 +171,17 @@ class ManagerHomeFragment : Fragment() {
             else {
                 listRevenue.add(it)
             }
+        }*/
+
+        // Data đi cùng
+        // Lấy từ revenue = _revenue.postValue(listRevenue)
+        viewModelHome.revenue.observe(viewLifecycleOwner){ listRevenue->
+            create_graph(binding.chart, graph_label, listRevenue)
         }
+
+        viewModelHome.getRevenueOfDay(nowYear, nowMonth)
+
+//        viewModelHome.getAllOrder()
 
 
 
@@ -256,7 +266,7 @@ class ManagerHomeFragment : Fragment() {
                 chart.data.notifyDataChanged()
                 chart.notifyDataSetChanged()
             } else {
-                set1 = BarDataSet(yVals1, "Revenue Of 2023/07")
+                set1 = BarDataSet(yVals1, "Revenue Of $nowYear/$nowMonth")
                 set1.color = Color.rgb(242, 15, 15)
                 val dataSets = ArrayList<IBarDataSet>()
                 dataSets.add(set1)

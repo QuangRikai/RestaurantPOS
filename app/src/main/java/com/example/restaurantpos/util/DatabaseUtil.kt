@@ -97,6 +97,13 @@ object DatabaseUtil {
     fun getItemOfCategory(item_id: Int) = itemDAO.getItemOfCategory(item_id)
     fun getItemByName(name: String) = itemDAO.getItemByName(name)
 
+    // Qnew
+    fun getAllOrder(time: String) =
+        cartItemDAO.getAllOrder("${time}%")
+
+    fun getAllOrder() =
+        cartItemDAO.getAllOrders()
+
 
     /** 3. TABLE MANAGEMENT  */
     fun addTable(data: TableEntity) = tableDAO.addTable(data)
