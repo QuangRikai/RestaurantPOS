@@ -4,6 +4,10 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -75,6 +79,7 @@ class CheckoutFragment : Fragment() {
 
     // Dialog cho Customer
     lateinit var dialog: AlertDialog
+    lateinit var dialog_choose_customer: AlertDialog
 
     val calendar = Calendar.getInstance()
 
@@ -98,7 +103,7 @@ class CheckoutFragment : Fragment() {
         viewModelCustomer = ViewModelProvider(this).get(CustomerViewModel::class.java)
         viewModelCoupon = ViewModelProvider(this).get(CouponViewModel::class.java)
 
-        setChange(binding.edtCash.text.toString())
+//        setChange(binding.edtCash.text.toString())
 
         return binding.root
     }
@@ -280,73 +285,79 @@ class CheckoutFragment : Fragment() {
             binding.txtAddCoupon.show()
         }
 
+
+        viewModelCoupon.couponGetByCouponCode.observe(viewLifecycleOwner){ couponGetByCouponCode->
+
+            // Nếu nhập mã 4~10 kí tự
+            if (binding.edtCoupon.text.length >= 4) {
+                // Nếu tồn tại Coupon nhập vào
+                if (!couponGetByCouponCode.isNullOrEmpty()) {
+                    Log.d("Quanglt", "$couponGetByCouponCode")
+                    // Nếu Coupon đấy còn hiêu lực
+                    if (binding.edtCoupon.text.toString() == couponGetByCouponCode[0].coupon_code && couponGetByCouponCode[0].coupon_status == 1) {
+                        couponDiscount = couponGetByCouponCode[0].coupon_discount
+
+                        calculateTotalAmount()
+
+                        viewModelCoupon.couponState = View.VISIBLE
+
+                        binding.txtAddCoupon.text =
+                            "Coupon was applied successfully! - ${couponGetByCouponCode[0].coupon_discount}%"
+
+                        viewModelCoupon.coupon = binding.edtCoupon.text.toString()
+
+                        Log.d("seachsadasd", binding.edtCash.text.toString())
+                        setChange(binding.edtCash.text.toString())
+
+                        viewModelCoupon.charnge = binding.txtChange.text.toString()
+                        binding.txtAddCoupon.show()
+                        binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.money)
+
+                    } else if (couponGetByCouponCode[0].coupon_status != 1) {
+                        binding.edtCoupon.clearFocus()
+                        binding.txtAddCoupon.text = ""
+                        binding.txtAddCoupon.text = "This coupon has expired."
+                        binding.txtAddCoupon.show()
+                        binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.text_rank_1)
+                    }
+                } else {
+                    binding.edtCoupon.clearFocus()
+                    binding.txtAddCoupon.text = "This coupon is not valid!"
+                    binding.txtAddCoupon.show()
+                    binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.text_red)
+                }
+            } else {
+                binding.txtAddCoupon.text =
+                    "The Coupon Code needs to consist of 4 to 8 characters!"
+                binding.txtAddCoupon.show()
+            }
+
+            viewModelCoupon.content = binding.txtAddCoupon.text.toString()
+        }
+
         binding.txtApplyCoupon.setOnClickListener {
             binding.edtCoupon.clearFocus()
 
-            viewModelCoupon.couponGetByCouponCode.value = mutableListOf<CouponEntity>()
             viewModelCoupon.getCouponByCouponCode(binding.edtCoupon.text.toString().trim())
-
-            viewModelCoupon.couponGetByCouponCode.observe(viewLifecycleOwner){ couponGetByCouponCode->
-
-                // Nếu nhập mã 4~10 kí tự
-                if (binding.edtCoupon.text.length >= 4) {
-                    // Nếu tồn tại Coupon nhập vào
-                    if (!couponGetByCouponCode.isNullOrEmpty()) {
-                        Log.d("Quanglt", "$couponGetByCouponCode")
-                        // Nếu Coupon đấy còn hiêu lực
-                        if (binding.edtCoupon.text.toString() == couponGetByCouponCode[0].coupon_code && couponGetByCouponCode[0].coupon_status == 1) {
-                            couponDiscount = couponGetByCouponCode[0].coupon_discount
-
-                            calculateTotalAmount()
-
-                            viewModelCoupon.couponState = View.VISIBLE
-
-                            binding.txtAddCoupon.text =
-                                "Coupon was applied successfully! - ${couponGetByCouponCode[0].coupon_discount}%"
-
-                            viewModelCoupon.coupon = binding.edtCoupon.text.toString()
-
-
-                            binding.txtAddCoupon.show()
-                            binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.money)
-
-                        } else if (couponGetByCouponCode[0].coupon_status != 1) {
-                            binding.edtCoupon.clearFocus()
-                            binding.txtAddCoupon.text = ""
-                            binding.txtAddCoupon.text = "This coupon has expired."
-                            binding.txtAddCoupon.show()
-                            binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.text_rank_1)
-                        }
-                    } else {
-                        binding.edtCoupon.clearFocus()
-                        binding.txtAddCoupon.text = "This coupon is not valid!"
-                        binding.txtAddCoupon.show()
-                        binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.text_red)
-                    }
-                } else {
-                    binding.txtAddCoupon.text =
-                        "The Coupon Code needs to consist of 4 to 8 characters!"
-                    binding.txtAddCoupon.show()
-                }
-
-                viewModelCoupon.content = binding.txtAddCoupon.text.toString()
-            }
         }
 
         binding.txtCancelCoupon.setOnClickListener {
             binding.llCoupon.gone()
             binding.txtAddCoupon.text = "Apply Coupon?"
             binding.txtAddCoupon.show()
+            couponDiscount = 0
             billAmount = (subTotal * (1.0f + tax))
             binding.txtBillAmount.text = String.format("%.1f", billAmount)
 
             viewModelCoupon.coupon = "Apply Coupon?"
             viewModelCoupon.couponState = View.GONE
+            setChange(binding.edtCash.text.toString())
 
         }
 
         /** 3. CASH --> CHANGE */
         binding.edtCash.doOnTextChanged { text, _, _, _ ->
+            Log.d("Quanglt", text.toString())
             setChange(text)
         }
 
@@ -385,11 +396,13 @@ class CheckoutFragment : Fragment() {
                         binding.txtChange.text.toString()
                     )
 
-                    val a = billObject
-                    val b = orderObject
 
                     viewModelCoupon.couponState = binding.llCoupon.visibility
-                    viewModelCoupon.coupon = binding.edtCoupon.text.toString()
+                    viewModelCoupon.coupon = binding.txtChange.text.toString()
+                    viewModelCoupon.charnge =  binding.txtChange.text.toString()
+
+                    val cashString = viewModelCoupon.charnge
+                    change = cashString.replace(",", "").toFloat()
 
                     findNavController().navigate(
                         com.example.restaurantpos.R.id.action_checkoutFragment_to_checkoutConfirmFragment,
@@ -436,9 +449,11 @@ class CheckoutFragment : Fragment() {
     // 再利用コード    Võ chỉ cho
     private fun setChange(text: CharSequence?) {
         if (text.toString().isNotEmpty()) {
-            val cash = text.toString().toFloat()
+            val cashString = text.toString()
+            val cash = cashString.replace(",", "").toFloat()
             if (cash > billAmount) {
                 change = cash - billAmount
+                Log.d("Quanglt", change.toString())
                 binding.txtChange.text = String.format("%.1f", change)
             } else {
                 binding.txtChange.text = "0.0"
@@ -583,7 +598,6 @@ class CheckoutFragment : Fragment() {
                 }
         }
 
-
         val spinner = view.findViewById<Spinner>(R.id.spn_customer)
 
         viewModelCustomer.getListCustomer().observe(viewLifecycleOwner){
@@ -615,8 +629,11 @@ class CheckoutFragment : Fragment() {
             }
         }
 
+
+
         tv_choose_customer.setOnClickListener {
-            llItem.visibility = View.VISIBLE
+            showDialogChooseCustomer()
+            dialog.dismiss()
         }
 
 
@@ -627,5 +644,72 @@ class CheckoutFragment : Fragment() {
         // End: Tao Dialog (Khi khai bao chua thuc hien) and Show len display
         dialog = build.create()
         dialog.show()
+    }
+
+    private val searchHandler = Handler(Looper.getMainLooper())
+    private val SEARCH_DELAY = 500L // Thời gian chờ trước khi thực hiện tìm kiếm (500ms)
+    @SuppressLint("SetTextI18n")
+    private fun showDialogChooseCustomer() {
+        val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_alert_choose_customer, null)
+        build.setView(view)
+        val edtPhoneNumber = view.findViewById<EditText>(R.id.edtPhoneNumberChooseCustomer)
+        val rcyCustomerInPhone = view.findViewById<RecyclerView>(R.id.rcyCustomerInPhoneChooseCustomer)
+        val imgCloseDialogCustomer = view.findViewById<ImageView>(R.id.imgCloseDialogCustomer)
+
+        // -----------------Code for Component----------------------------------------//
+        // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
+        var adapterCustomerInner: CustomerInnerAdapter =
+            CustomerInnerAdapter(requireParentFragment(), ArrayList(), object :
+                CustomerInnerAdapter.EventClickItemCustomerInnerListener {
+                override fun clickCustomerInner(itemCustomer: CustomerEntity) {
+                    customerObject = itemCustomer
+
+                    binding.txtCustomerInBill.text = itemCustomer.customer_name
+                    binding.tvTotalPayment.text = customerObject!!.total_payment.toString()
+                    calculateDiscountPercentage(customerObject!!.customer_rank_id)
+
+                    calculateTotalAmount()
+
+                    dialog_choose_customer.dismiss()
+                }
+            })
+
+        rcyCustomerInPhone.adapter = adapterCustomerInner
+
+        viewModelCustomer.getListCustomerObserver
+            .observe(viewLifecycleOwner) {
+                if (it.size > 0) {
+                    adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
+                }
+            }
+
+        viewModelCustomer.searchCustomerByKey("")
+
+        edtPhoneNumber.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Không làm gì
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Hủy các tìm kiếm trước đó và đặt lại Debouncing
+                searchHandler.removeCallbacksAndMessages(null)
+                searchHandler.postDelayed({
+                    // Thực hiện tìm kiếm sau khi người dùng không nhập thêm ký tự trong khoảng thời gian SEARCH_DELAY
+                    viewModelCustomer.searchCustomerByKey(s.toString())
+                }, SEARCH_DELAY)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Không làm gì
+            }
+        })
+
+
+        imgCloseDialogCustomer.setOnClickListener { dialog_choose_customer.dismiss() }
+
+        // End: Tao Dialog (Khi khai bao chua thuc hien) and Show len display
+        dialog_choose_customer = build.create()
+        dialog_choose_customer.show()
     }
 }

@@ -431,7 +431,7 @@ class AddMoreOrderFragment : Fragment() {
 
         // 2. Code for when staff types on edtPhoneNumber and contain >= 3 Chars. If exist --> Show for Picking-up
         // SetData for (1)
-        edtPhoneNumber.doOnTextChanged { text, start, before, count ->
+/*        edtPhoneNumber.doOnTextChanged { text, start, before, count ->
             if (text.toString().length >= 3) {
                 viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
                     .observe(viewLifecycleOwner) {
@@ -443,7 +443,7 @@ class AddMoreOrderFragment : Fragment() {
             } else {
                 rcyCustomerInPhone.gone()
             }
-        }
+        }*/
 
         // 3. Birthday
         imgDate.setOnClickListener {

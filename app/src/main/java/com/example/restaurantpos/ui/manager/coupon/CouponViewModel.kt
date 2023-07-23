@@ -19,6 +19,7 @@ class CouponViewModel : ViewModel() {
     var couponState: Int = View.GONE
     var coupon: String = ""
     var content: String = "Apply Coupon?"
+    var charnge: String = ""
 
     private val _isDuplicate: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
