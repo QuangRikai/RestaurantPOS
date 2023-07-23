@@ -8,9 +8,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -21,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentCheckoutBinding
 import com.example.restaurantpos.db.entity.BillEntity
 import com.example.restaurantpos.db.entity.CartItemEntity
@@ -68,12 +73,10 @@ class CheckoutFragment : Fragment() {
     private var customerObject: CustomerEntity? = null
     private var billObject: BillEntity? = null
 
-
     // Dialog cho Customer
     lateinit var dialog: AlertDialog
 
     val calendar = Calendar.getInstance()
-
 
     private val tax = 0.1f
     var subTotal = 0.0f
@@ -94,7 +97,6 @@ class CheckoutFragment : Fragment() {
         viewModelTable = ViewModelProvider(this).get(TableViewModel::class.java)
         viewModelCustomer = ViewModelProvider(this).get(CustomerViewModel::class.java)
         viewModelCoupon = ViewModelProvider(this).get(CouponViewModel::class.java)
-
 
         setChange(binding.edtCash.text.toString())
 
@@ -143,7 +145,8 @@ class CheckoutFragment : Fragment() {
         binding.txtDiscountOnRank.text = discount.toString().plus("%")
     }
 
-    @SuppressLint("SetTextI18n", "ResourceAsColor")
+
+    @SuppressLint("SetTextI18n", "ResourceAsColor", "SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -167,40 +170,40 @@ class CheckoutFragment : Fragment() {
             OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
 
         /** Handle Customer */
-        /*        viewModelCustomer.getListCustomer()
-                    .observe(viewLifecycleOwner) { listCustomer ->
-                        if (listCustomer.isNotEmpty()) {
-                            val customerObject = listCustomer.stream()
-                                .filter { it -> it.customer_id == orderObject?.customer_id }.collect(
-                                Collectors.toList()
-                            ).get(0)
-                            binding.txtCustomerInBill.text = customerObject.customer_name
-                        }
-                    }*/
-
-        // Qnew
-      /*  viewModelCart.getListOrderByCustomerId(orderObject!!.customer_id)
-            .observe(viewLifecycleOwner) { listOrderOfCustomer ->
-                calculateDiscountPercentage(listOrderOfCustomer)
-            }*/
-
         viewModelCustomer.getListCustomer()
             .observe(viewLifecycleOwner) { listCustomer ->
                 if (listCustomer.isNotEmpty()) {
-                    val customerObject = listCustomer.stream()
-                        .filter { customer -> customer.customer_id == orderObject?.customer_id }.collect(
+                    val list = listCustomer.stream()
+                        .filter { it -> it.customer_id == orderObject?.customer_id }.collect(
                             Collectors.toList()
-                        ).firstOrNull()
+                        )
 
-                    binding.txtCustomerInBill.text = customerObject?.customer_name
-                    binding.tvTotalPayment.text = customerObject?.total_payment.toString()
-                    if (customerObject != null) {
+                    var customerObject: CustomerEntity? = null
+                    if (!list.isEmpty()){
+                        customerObject = list.get(0)
+                    }
+
+                    if (customerObject != null){
+                        binding.txtCustomerInBill.text = customerObject.customer_name
+                        binding.tvTotalPayment.text = customerObject.total_payment.toString()
                         calculateDiscountPercentage(customerObject.customer_rank_id)
+                    }else{
+                        binding.txtCustomerInBill.text = "unknown"
+                        binding.tvTotalPayment.text = customerObject?.total_payment.toString()
+                        binding.tvTotalPayment.text = ""
+
+                        val color0 =
+                            ContextCompat.getColor(requireContext(), com.example.restaurantpos.R.color.text_rank_0)
+                        val colorStateList0 = ColorStateList.valueOf(color0)
+                        binding.imgRank.imageTintList = colorStateList0
+                        binding.txtDiscountOnRank.setTextColor(com.example.restaurantpos.R.color.text_rank_0)
+                        discount = 0;
                     }
 
                     calculateTotalAmount()
                 }
             }
+
 
         viewModelCustomer.getIDWhenInsertOrderSuccess.observe(viewLifecycleOwner){it ->
             customerObject = customerObject?.copy(customer_id = it.toInt())
@@ -212,6 +215,11 @@ class CheckoutFragment : Fragment() {
             calculateTotalAmount()
         }
 
+        // Qnew
+        //viewModelCart.getListOrderByCustomerId(orderObject!!.customer_id)
+        //  .observe(viewLifecycleOwner) { listOrderOfCustomer ->
+        //    calculateDiscountPercentage(listOrderOfCustomer)
+        //}
         /** ----------------------------------------------------------------------------------*/
         // Map(Key, Value)
         // Key: Item_id
@@ -257,6 +265,7 @@ class CheckoutFragment : Fragment() {
 //            binding.txtChange.text = "0.0"
         }
 
+
         /** ---------------------------------------------------------- */
         /** 2. COUPON --> BILL AMOUNT */
         // 1. Nhấp vào Apply Coupon --> Hiện ra để nhập
@@ -266,32 +275,18 @@ class CheckoutFragment : Fragment() {
 
 
         binding.txtAddCoupon.setOnClickListener {
-            if (binding.llCoupon.visibility == View.VISIBLE) {
-                binding.llCoupon.visibility = View.GONE
-                binding.txtAddCoupon.text = "Apply Coupon?"
-                binding.txtAddCoupon.show()
-            } else {
-                binding.llCoupon.visibility = View.VISIBLE
-                binding.txtAddCoupon.text = ""
-                binding.txtAddCoupon.show()
-            }
+            binding.llCoupon.visibility = View.VISIBLE
+            binding.txtAddCoupon.text = ""
+            binding.txtAddCoupon.show()
         }
-
-        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(
-            binding.edtCoupon,
-            binding.txtAddCoupon
-        )
-        binding.txtAddCoupon.show()
-
 
         binding.txtApplyCoupon.setOnClickListener {
             binding.edtCoupon.clearFocus()
-            binding.txtAddCoupon.hide()
 
             viewModelCoupon.couponGetByCouponCode.value = mutableListOf<CouponEntity>()
             viewModelCoupon.getCouponByCouponCode(binding.edtCoupon.text.toString().trim())
 
-            viewModelCoupon.couponGetByCouponCode.observe(viewLifecycleOwner) { couponGetByCouponCode ->
+            viewModelCoupon.couponGetByCouponCode.observe(viewLifecycleOwner){ couponGetByCouponCode->
 
                 // Nếu nhập mã 4~10 kí tự
                 if (binding.edtCoupon.text.length >= 4) {
@@ -300,16 +295,19 @@ class CheckoutFragment : Fragment() {
                         Log.d("Quanglt", "$couponGetByCouponCode")
                         // Nếu Coupon đấy còn hiêu lực
                         if (binding.edtCoupon.text.toString() == couponGetByCouponCode[0].coupon_code && couponGetByCouponCode[0].coupon_status == 1) {
-
                             couponDiscount = couponGetByCouponCode[0].coupon_discount
+
                             calculateTotalAmount()
-/*                            billAmount =
-                                (subTotal * (1 - (couponGetByCouponCode[0].coupon_discount) / 100.0) * (1 + tax)).toFloat()
-                            binding.txtBillAmount.text = String.format("%.1f", billAmount)*/
+
+                            viewModelCoupon.couponState = View.VISIBLE
+
                             binding.txtAddCoupon.text =
                                 "Coupon was applied successfully! - ${couponGetByCouponCode[0].coupon_discount}%"
+
+                            viewModelCoupon.coupon = binding.edtCoupon.text.toString()
+
+
                             binding.txtAddCoupon.show()
-//                            couponDiscount = couponGetByCouponCode[0].coupon_discount
                             binding.txtAddCoupon.setTextColor(com.example.restaurantpos.R.color.money)
 
                         } else if (couponGetByCouponCode[0].coupon_status != 1) {
@@ -330,6 +328,8 @@ class CheckoutFragment : Fragment() {
                         "The Coupon Code needs to consist of 4 to 8 characters!"
                     binding.txtAddCoupon.show()
                 }
+
+                viewModelCoupon.content = binding.txtAddCoupon.text.toString()
             }
         }
 
@@ -339,13 +339,15 @@ class CheckoutFragment : Fragment() {
             binding.txtAddCoupon.show()
             billAmount = (subTotal * (1.0f + tax))
             binding.txtBillAmount.text = String.format("%.1f", billAmount)
+
+            viewModelCoupon.coupon = "Apply Coupon?"
+            viewModelCoupon.couponState = View.GONE
+
         }
 
         /** 3. CASH --> CHANGE */
         binding.edtCash.doOnTextChanged { text, _, _, _ ->
-
             setChange(text)
-
         }
 
         /** ---------------------------------------------------------- */
@@ -361,7 +363,6 @@ class CheckoutFragment : Fragment() {
         binding.imgBack.setOnClickListener {
             findNavController().popBackStack()
         }
-
 
         /** Code for CHECK OUT */
         binding.txtCheckout.setOnClickListener {
@@ -383,6 +384,13 @@ class CheckoutFragment : Fragment() {
                         binding.edtCash.text.toString().trim(),
                         binding.txtChange.text.toString()
                     )
+
+                    val a = billObject
+                    val b = orderObject
+
+                    viewModelCoupon.couponState = binding.llCoupon.visibility
+                    viewModelCoupon.coupon = binding.edtCoupon.text.toString()
+
                     findNavController().navigate(
                         com.example.restaurantpos.R.id.action_checkoutFragment_to_checkoutConfirmFragment,
                         bundleOf(
@@ -400,6 +408,21 @@ class CheckoutFragment : Fragment() {
 
         }
 
+        val coupon = viewModelCoupon.coupon
+        val state = viewModelCoupon.couponState
+        val content = viewModelCoupon.content
+
+        if (state == View.VISIBLE){
+            binding.llCoupon.visibility = View.VISIBLE
+            binding.edtCoupon.setText(coupon)
+            binding.txtAddCoupon.text = content
+
+        }else{
+            binding.llCoupon.visibility = View.GONE
+            binding.edtCoupon.setText("")
+            binding.txtAddCoupon.visibility = View.VISIBLE
+            binding.txtAddCoupon.text = "Apply Coupon?"
+        }
 
         /** ----------------------------------------------------------------------------------*/
 
@@ -425,12 +448,12 @@ class CheckoutFragment : Fragment() {
         }
     }
 
-    /** ----------------------------------------------------------*/
     fun calculateTotalAmount(){
         billAmount =
             (subTotal * (1 - (couponDiscount) / 100.0) * (1 + tax) * (1 - (discount) / 100.0)).toFloat()
         binding.txtBillAmount.text = String.format("%.1f", billAmount)
     }
+
 
     /** ----------------------------------------------------------*/
     /** Add Customer Dialog */
@@ -470,6 +493,10 @@ class CheckoutFragment : Fragment() {
         val imgDate = view.findViewById<ImageView>(com.example.restaurantpos.R.id.imgDate)
         val imgCloseDialogCustomer =
             view.findViewById<ImageView>(com.example.restaurantpos.R.id.imgCloseDialogCustomer)
+
+        val tv_choose_customer = view.findViewById<TextView>(R.id.tv_choose_customer)
+        val llItem = view.findViewById<LinearLayout>(R.id.llItem)
+
         // -----------------Code for Component----------------------------------------//
         // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
         adapterCustomerInner =
@@ -480,7 +507,6 @@ class CheckoutFragment : Fragment() {
                     customerObject = itemCustomer
 
                     binding.txtCustomerInBill.text = itemCustomer.customer_name
-
                     binding.tvTotalPayment.text = customerObject!!.total_payment.toString()
                     calculateDiscountPercentage(customerObject!!.customer_rank_id)
 
@@ -494,17 +520,17 @@ class CheckoutFragment : Fragment() {
         // 2. Code for when staff types on edtPhoneNumber and contain >= 3 Chars. If exist --> Show for Picking-up
         // SetData for (1)
         edtPhoneNumber.doOnTextChanged { text, start, before, count ->
-            if (text.toString().length >= 3) {
-                viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
-                    .observe(viewLifecycleOwner) {
-                        if (it.size > 0) {
-                            adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
-                            rcyCustomerInPhone.show()
-                        }
-                    }
-            } else {
-                rcyCustomerInPhone.gone()
-            }
+            /* if (text.toString().length >= 3) {
+                 viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
+                     .observe(viewLifecycleOwner) {
+                         if (it.size > 0) {
+                             adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
+                             rcyCustomerInPhone.show()
+                         }
+                     }
+             } else {
+                 rcyCustomerInPhone.gone()
+             }*/
         }
 
         // 3. Birthday
@@ -533,7 +559,7 @@ class CheckoutFragment : Fragment() {
                         edtPhoneNumber.text.toString(),
                         txtCustomerBirthday.text.toString(),
                         0.0,
-                        0
+                        1
                     )
                 )
 
@@ -543,10 +569,9 @@ class CheckoutFragment : Fragment() {
                     edtPhoneNumber.text.toString(),
                     txtCustomerBirthday.text.toString(),
                     0.0,
-                    0
+                    1
                 )
             }
-
 
             viewModelCustomer.getListCustomerByPhoneForAdd(edtPhoneNumber.text.toString())
                 .observe(viewLifecycleOwner) { listCustomer ->
@@ -556,6 +581,42 @@ class CheckoutFragment : Fragment() {
                         dialog.dismiss()
                     }
                 }
+        }
+
+
+        val spinner = view.findViewById<Spinner>(R.id.spn_customer)
+
+        viewModelCustomer.getListCustomer().observe(viewLifecycleOwner){
+            // Tạo Adapter và gắn dữ liệu vào Spinner
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, it)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+
+        // Bắt sự kiện khi chọn dữ liệu trên Spinner
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedProduct = parent?.getItemAtPosition(position) as CustomerEntity
+                // Xử lý khi chọn dữ liệu trên Spinner
+                // Có sẵn thì pick-up ra thôi
+                customerObject = selectedProduct
+
+                binding.txtCustomerInBill.text = selectedProduct.customer_name
+                binding.tvTotalPayment.text = customerObject!!.total_payment.toString()
+                calculateDiscountPercentage(customerObject!!.customer_rank_id)
+
+                calculateTotalAmount()
+
+                //dialog.dismiss()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Xử lý khi không chọn gì cả trên Spinner
+            }
+        }
+
+        tv_choose_customer.setOnClickListener {
+            llItem.visibility = View.VISIBLE
         }
 
 

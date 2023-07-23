@@ -7,10 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -99,6 +104,9 @@ class NewOrderFragment : Fragment() {
         return binding.root
     }
 
+    fun showMessage(content: String){
+        Toast.makeText(requireContext(), content, Toast.LENGTH_SHORT).show()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -174,6 +182,12 @@ class NewOrderFragment : Fragment() {
 
         /** Code for Order Button */
         binding.txtOrder.setOnClickListener {
+
+            if (listCartItem.isEmpty()){
+                showMessage("cart empty!");
+                return@setOnClickListener
+            }
+
             // Add Order (Bill) vào OrderEntity, thay đôi status sang 1 (Đã được click order)
             orderObject?.let { order ->
                 order.order_status_id = 1
@@ -349,6 +363,9 @@ class NewOrderFragment : Fragment() {
         val btnCancel = view.findViewById<Button>(R.id.btnCancel)
         val imgDate = view.findViewById<ImageView>(R.id.imgDate)
         val imgCloseDialogCustomer = view.findViewById<ImageView>(R.id.imgCloseDialogCustomer)
+
+        val tv_choose_customer = view.findViewById<TextView>(R.id.tv_choose_customer)
+        val llItem = view.findViewById<LinearLayout>(R.id.llItem)
         // -----------------Code for Component----------------------------------------//
         // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
         adapterCustomerInner = CustomerInnerAdapter(requireParentFragment(), ArrayList(), object :
@@ -370,7 +387,7 @@ class NewOrderFragment : Fragment() {
 
         // 2. Code for when staff types on edtPhoneNumber and contain >= 3 Chars. If exist --> Show for Picking-up
         // SetData for (1)
-        edtPhoneNumber.doOnTextChanged { text, start, before, count ->
+/*        edtPhoneNumber.doOnTextChanged { text, start, before, count ->
             if (text.toString().length >= 3) {
                 viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
                     .observe(viewLifecycleOwner) {
@@ -382,7 +399,7 @@ class NewOrderFragment : Fragment() {
             } else {
                 rcyCustomerInPhone.gone()
             }
-        }
+        }*/
 
         // 3. Birthday
         imgDate.setOnClickListener {
@@ -424,6 +441,42 @@ class NewOrderFragment : Fragment() {
                     }
                 }
         }
+
+        val spinner = view.findViewById<Spinner>(R.id.spn_customer)
+
+        viewModelCustomer.getListCustomer().observe(viewLifecycleOwner){
+            // Tạo Adapter và gắn dữ liệu vào Spinner
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, it)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+
+        // Bắt sự kiện khi chọn dữ liệu trên Spinner
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedProduct = parent?.getItemAtPosition(position) as CustomerEntity
+                // Xử lý khi chọn dữ liệu trên Spinner
+                // Có sẵn thì pick-up ra thôi
+                customerObject = selectedProduct
+                // Lưu thằng customer_id lại để set cho Order
+                idCustomer = selectedProduct.customer_id.toLong()
+
+//                orderObject?.customer_id = itemCustomer.customer_id
+                // Tìm cách đưa Customer's Name lên NewOrderFragment
+                binding.txtCustomerInOrder.text = selectedProduct.customer_name
+
+                //dialog.dismiss()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Xử lý khi không chọn gì cả trên Spinner
+            }
+        }
+
+        tv_choose_customer.setOnClickListener {
+            llItem.visibility = View.VISIBLE
+        }
+
 
 
         // Other:  Dau X  &   Cancel Button

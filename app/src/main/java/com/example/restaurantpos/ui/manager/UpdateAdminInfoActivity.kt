@@ -11,6 +11,7 @@ import com.example.restaurantpos.ui.manager.user.UserViewModel
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.openActivity
+import com.example.restaurantpos.util.showToast
 
 class UpdateAdminInfoActivity : AppCompatActivity() {
     lateinit var binding: ActivityUpdateAccountInfoBinding
@@ -70,10 +71,11 @@ class UpdateAdminInfoActivity : AppCompatActivity() {
 
                         if (binding.edtPassword.text.toString() != "") {
                             admin[0].password =
-                                DataUtil.convertToMD5(binding.edtPassword.text.toString())
+                                DataUtil.convertToMD5(binding.edtPassword.text.toString()+ "aHiHiAddSalts")
                         }
 
                         viewModel.addUser(this@UpdateAdminInfoActivity, admin[0])
+                        showToast("Account' information was updated successfully!")
                         backToManager()
                     }
                 }

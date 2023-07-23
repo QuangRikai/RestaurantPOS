@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_30sdp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -35,7 +35,7 @@
             <TextView
                 android:id="@+id/txtInformLogin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:fontFamily="@font/inter_300"
                 android:gravity="center"
@@ -51,10 +51,11 @@
                 android:background="@drawable/bg_edt_login"
                 android:fontFamily="@font/inter_400"
                 android:hint="@string/username"
-                android:singleLine="true"
+                android:maxLength="14"
                 android:minHeight="48dp"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_5sdp"
+                android:singleLine="true"
                 android:textSize="@dimen/_18ssp" />
 
             <EditText
@@ -66,6 +67,7 @@
                 android:fontFamily="@font/inter_400"
                 android:hint="@string/password"
                 android:inputType="textPassword"
+                android:maxLength="14"
                 android:minHeight="48dp"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_5sdp"

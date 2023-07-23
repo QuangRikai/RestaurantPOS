@@ -316,9 +316,8 @@ class AddMoreOrderFragment : Fragment() {
 
         /** Code for Customer TextView */
         binding.txtCustomerInOrder.setOnClickListener {
-            showDialogCustomer()
+//            showDialogCustomer()
         }
-
     }
 
 

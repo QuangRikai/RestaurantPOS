@@ -141,7 +141,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 //                        txtInform.text = "This item already exists!"
 //                        txtInform.show()
 //                    } else {
-                viewModel.addCategoryItem(
+                viewModel.addCategoryItemAndCheckExisting(
                     ItemEntity(
                         0,
                         edtItemName?.text.toString(),

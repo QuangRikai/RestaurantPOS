@@ -27,11 +27,11 @@ class UserViewModel : ViewModel() {
     fun getAccountById(account_id: Int)  =DatabaseUtil.getAccountById(account_id)
 
 
-/*    fun addUser(context: Context, user: AccountEntity) {
+    fun addUser(context: Context, user: AccountEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             PosRoomDatabase.getInstance(context).accountDAO().addAccount(user)
         }
-    }*/
+    }
 
     private val _isDuplicate: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
@@ -39,7 +39,7 @@ class UserViewModel : ViewModel() {
 
     val isDuplicate: LiveData<Boolean> = _isDuplicate
 
-    fun addUser(context: Context, user: AccountEntity) {
+    fun addUserAndCheckExist(context: Context, user: AccountEntity) {
         CoroutineScope(Dispatchers.IO).launch {
 
             val existingAccountShift = PosRoomDatabase

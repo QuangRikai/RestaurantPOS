@@ -80,10 +80,10 @@ class UpdateStaffInfoFragment : Fragment() {
 
                         if (binding.edtPassword.text.toString() != "") {
                             admin[0].password =
-                                DataUtil.convertToMD5(binding.edtPassword.text.toString())
+                                DataUtil.convertToMD5(binding.edtPassword.text.toString()+ "aHiHiAddSalts")
                         }
 
-                        viewModel.addUser(requireContext(), admin[0])
+                        viewModel.addUserAndCheckExist(requireContext(), admin[0])
                         findNavController().popBackStack()
                     }
                 }

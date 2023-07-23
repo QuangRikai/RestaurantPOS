@@ -43,7 +43,9 @@ class LoginViewModel : ViewModel() {
                         txtInform.show()
                     }
 
-                }else{
+                }
+                else
+                {
                     when (acc.role_id) {
                         0 -> {
                             /*                       SharedPreferencesUtils.setUserName(acc.user_name)

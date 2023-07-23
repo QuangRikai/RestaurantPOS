@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantpos.R
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.util.hide
+import com.example.restaurantpos.util.show
 
 class ManagerUserAdapter(
     var context: Context,
@@ -48,11 +50,12 @@ class ManagerUserAdapter(
             "Kitchen"
         }
 
-        holder.imgLock.visibility = if (!itemUser.account_status_id){
-            View.VISIBLE
-        }  else {
-            View.INVISIBLE
-        }
+       if (!itemUser.account_status_id) {
+           holder.imgLock.show()
+        } else {
+           holder.imgLock.hide()
+
+       }
 
         holder.imgEditUser.setOnClickListener {
             listenerClickEditUser.clickEditUser(itemUser)

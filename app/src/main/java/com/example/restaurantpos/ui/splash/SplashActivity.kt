@@ -37,7 +37,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun initOnCreate() {
         viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
         /** Set Data for DB */
-        createDataFirst()
+//        createDataFirst()
         /** Start Login Screen */
         startLoginActivity()
     }
@@ -52,7 +52,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     "1995/03/02",
                     "08010802100",
                     "quang0",
-                    DataUtil.convertToMD5("123"),
+                    DataUtil.convertToMD5("123"+ "aHiHiAddSalts"),
                     0,
                     true
                 ),
@@ -62,7 +62,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     "1995/03/02",
                     "080101232100",
                     "quang1",
-                    DataUtil.convertToMD5("123"),
+                    DataUtil.convertToMD5("123"+ "aHiHiAddSalts"),
                     1,
                     true
                 ),
@@ -72,7 +72,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     "1995/03/02",
                     "08010531100",
                     "quang2",
-                    DataUtil.convertToMD5("123"),
+                    DataUtil.convertToMD5("123"+ "aHiHiAddSalts"),
                     2,
                     true
                 ),

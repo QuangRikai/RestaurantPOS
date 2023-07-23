@@ -27,13 +27,13 @@ class CategoryViewModel : ViewModel() {
     }
 
 
-  /*  fun addCategoryItem(categoryItem: ItemEntity) {
+    fun addCategoryItem(categoryItem: ItemEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseUtil.addCategoryItem(categoryItem)
         }
-    }*/
+    }
 
-    fun addCategoryItem(categoryItem: ItemEntity) {
+    fun addCategoryItemAndCheckExisting(categoryItem: ItemEntity) {
         CoroutineScope(Dispatchers.IO).launch {
 
             val existingAccountShift =  DatabaseUtil.getItemByName(categoryItem.item_name)

@@ -22,39 +22,45 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private fun initListener() {
 
-        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(binding.edtUsername, binding.txtInformLogin)
-        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(binding.edtPassword, binding.txtInformLogin)
+        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(
+            binding.edtUsername,
+            binding.txtInformLogin
+        )
+        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(
+            binding.edtPassword,
+            binding.txtInformLogin
+        )
 
         binding.txtLogin.setOnClickListener {
-            if (
-                binding.edtUsername.text.toString().trim().isEmpty() ||
+            // Nếu Empty
+            if (binding.edtUsername.text.toString().trim().isEmpty() ||
                 binding.edtPassword.text.toString().trim().isEmpty()
             ) {
-
-
-                CoroutineScope(Dispatchers.Main).launch {
-                    showLoginInform()
-                }
-
-
-            } else {
+                CoroutineScope(Dispatchers.Main).launch { showLoginInform("Username & password must not be empty!") }
+            } else
+            if (binding.edtUsername.text.length >= 3&& binding.edtPassword.text.length >= 3){
                 checkLogin(
                     binding.txtInformLogin,
                     binding.edtUsername.text.toString(),
-                    DataUtil.convertToMD5(binding.edtPassword.text.toString())
+                    DataUtil.convertToMD5(binding.edtPassword.text.toString() + "aHiHiAddSalts")
                 )
             }
+            else
+            {
+                CoroutineScope(Dispatchers.Main).launch { showLoginInform("Username & password \n needs to consist of 3 to 14 characters!") }
+            }
+
         }
     }
 
 
-    private fun showLoginInform() {
-        binding.txtInformLogin.text = "Username & password must not be empty!"
+    private fun showLoginInform(msg: String) {
+        binding.txtInformLogin.text = msg
         binding.txtInformLogin.show()
     }
 
     private fun checkLogin(txtInform: TextView, userName: String, password: String) {
-        viewModel.checkLogin(this@LoginActivity,txtInform, userName, password)
+        viewModel.checkLogin(this@LoginActivity, txtInform, userName, password)
     }
 
     // End

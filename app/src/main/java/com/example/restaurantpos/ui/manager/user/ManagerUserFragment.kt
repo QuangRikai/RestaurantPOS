@@ -1,6 +1,7 @@
 package com.example.restaurantpos.ui.manager.user
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog.show
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -13,20 +14,21 @@ import com.example.restaurantpos.base.BaseFragment
 import com.example.restaurantpos.databinding.FragmentManagerUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.util.DataUtil
+import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 
 class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
 
     private lateinit var viewModel: UserViewModel
-    lateinit var adapter: ManagerUserAdapter
+    lateinit var adapterUser: ManagerUserAdapter
     lateinit var dialog: AlertDialog
 
     /**
      * Show Account List onto Screen
      */
     override fun initCreate() {
-        adapter = ManagerUserAdapter(
+        adapterUser = ManagerUserAdapter(
             requireActivity(),
             ArrayList(),
             object : ManagerUserAdapter.EventClickItemUserListener {
@@ -34,12 +36,12 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
                     showEditDialog(itemUser)
                 }
             })
-        binding.rcyUserManagement.adapter = adapter
+        binding.rcyUserManagement.adapter = adapterUser
 
         /**  Set data getAllUser() for adapter  */
         viewModel = ViewModelProvider(this)[UserViewModel::class.java]
         viewModel.getAllUser().observe(viewLifecycleOwner) {
-            adapter.setListData(it)
+            adapterUser.setListData(it)
         }
         //it là một biến ngầm định trong lambda expression, đại diện cho dữ liệu mới nhận được từ LiveData
         // ADD --> Hiện ADD Fragment ra
@@ -67,6 +69,7 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
         val txtInform = view.findViewById<TextView>(R.id.txtInform)
 
         val imgClose = view.findViewById<ImageView>(R.id.imgClose)
+
         //------------------------------------------------------------------------------//
         // 5. Show Info
         txtAccountName.text = itemUser.account_name
@@ -76,7 +79,7 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
 
         // 5.  Handle Lock
         txtResetPassword?.setOnClickListener {
-            itemUser.password = DataUtil.convertToMD5("123")
+            itemUser.password = DataUtil.convertToMD5("123" + "aHiHiAddSalts")
             requireContext().showToast("Password was changed  into 123")
             viewModel.addUser(requireContext(), itemUser)
             dialog.dismiss()
@@ -87,15 +90,20 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
 
             if (itemUser.account_status_id) {
                 itemUser.account_status_id = false
-                requireContext().showToast("${itemUser.account_name} was locked!")
-//                itemUser.account_name = "(Locked) " + itemUser.account_name
                 viewModel.addUser(requireContext(), itemUser)
+
+                requireContext().showToast("${itemUser.account_name} was locked!")
+
+//                itemUser.account_name = "(Locked) " + itemUser.account_name
+
                 viewModel.getAllUser().observe(viewLifecycleOwner) {
-                    adapter.setListData(it)
+                    adapterUser.setListData(it)
                 }
 
                 dialog.dismiss()
-            }else{
+            }
+            else
+            {
                 txtInform.setText(R.string.account_disabled_message)
                 txtInform.show()
             }
@@ -105,12 +113,13 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
         txtUnlock?.setOnClickListener {
             if (!itemUser.account_status_id) {
                 itemUser.account_status_id = true
+
 //                itemUser.account_name = itemUser.account_name.substring(8)
                 viewModel.addUser(requireContext(), itemUser)
 
                 requireContext().showToast("${itemUser.account_name} was unlocked!")
                 viewModel.getAllUser().observe(viewLifecycleOwner) {
-                    adapter.setListData(it)
+                    adapterUser.setListData(it)
                 }
 
                 dialog.dismiss()

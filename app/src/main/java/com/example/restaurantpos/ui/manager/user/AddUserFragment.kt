@@ -80,14 +80,14 @@ class AddUserFragment : Fragment() {
 
                 // Nếu đã tồn tại user thì sẽ không add mà sẽ post value (TRUE) cho isDuplicate
                 // Thông qua đó chạy đoạn code phía trên
-                viewModel.addUser(
+                viewModel.addUserAndCheckExist(
                     requireActivity(), AccountEntity(
                         0,
                         binding.edtAddAccountName.text.toString().trim(),
                         "",
                         "",
                         binding.edtAddUserName.text.toString().trim(),
-                        DataUtil.convertToMD5("123"),
+                        DataUtil.convertToMD5("123"+ "aHiHiAddSalts"),
                         role,
                         true
                     )
