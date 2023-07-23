@@ -45,7 +45,7 @@ class CustomerOrderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Nếu Null--> Default UnknownCustomer
-        customerObject = CustomerEntity(0, "Unkown", "...", "...", 0.0, 0)
+        customerObject = CustomerEntity(0, "Unknown", "...", "...", 0.0, 0)
         // Còn không--> Lấy Customer từ Fragment trước đáp sang
         if (requireArguments().getString("customerObject").toString() != "") {
             customerObject = requireArguments().getString("customerObject")?.let {
@@ -53,6 +53,8 @@ class CustomerOrderFragment : Fragment() {
                     it
                 )
             }!!
+            binding.txtRank.text = "Rank " + customerObject.customer_rank_id
+            binding.txtTotalMoney.text = String.format("%.1f",customerObject.total_payment).plus("$")
         }
 
 

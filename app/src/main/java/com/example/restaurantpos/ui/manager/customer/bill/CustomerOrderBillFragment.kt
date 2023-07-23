@@ -66,6 +66,9 @@ class CustomerOrderBillFragment : Fragment() {
         if (requireArguments().getString("orderObject").toString() != "") {
             orderObject =
                 OrderEntity.toOrderObject(requireArguments().getString("orderObject").toString())
+
+            setDataForUI()
+
         } else {
             findNavController().popBackStack()
         }
@@ -95,6 +98,17 @@ class CustomerOrderBillFragment : Fragment() {
     }
 
     /**-------------------------------------------------------------------------*/
+    private fun setDataForUI() {
+        if (orderObject != null){
+            binding.txtSubTotal.text = String.format("%.1f",orderObject!!.sub_total).plus("$")
+            binding.txtCustomerRank.text = orderObject!!.customer_rank.toString().plus("%")
+            binding.txtTotal.text = String.format("%.1f",orderObject!!.bill_total).plus("$")
+            binding.txtCash.text = orderObject!!.cash.toString().plus("$")
+            binding.txtChange.text = orderObject!!.change.toString().plus("$")
+        }
+    }
+
+
     private fun showAmountOfMoney() {
         //Tạo UI rồi Show tien bằng cách call :      adapter.getTien()
 

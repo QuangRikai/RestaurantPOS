@@ -84,6 +84,8 @@
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/rdb_week"
+                android:checked="true"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_5sdp"
@@ -96,6 +98,7 @@
                 android:textColor="@color/white" />
 
             <RadioButton
+                android:id="@+id/rdb_month"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_5sdp"
@@ -108,6 +111,7 @@
                 android:textColor="@color/white" />
 
             <RadioButton
+                android:id="@+id/rdb_year"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_5sdp"
@@ -149,6 +153,8 @@
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/rdb_foods"
+                android:checked="true"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_5sdp"
@@ -161,6 +167,7 @@
                 android:textColor="@color/white" />
 
             <RadioButton
+                android:id="@+id/rdb_drink"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_5sdp"
@@ -173,6 +180,7 @@
                 android:textColor="@color/white" />
 
             <RadioButton
+                android:id="@+id/rdb_dessert"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_5sdp"

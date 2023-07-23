@@ -301,6 +301,7 @@ class CheckoutFragment : Fragment() {
                         // Nếu Coupon đấy còn hiêu lực
                         if (binding.edtCoupon.text.toString() == couponGetByCouponCode[0].coupon_code && couponGetByCouponCode[0].coupon_status == 1) {
 
+                            couponDiscount = couponGetByCouponCode[0].coupon_discount
                             calculateTotalAmount()
 /*                            billAmount =
                                 (subTotal * (1 - (couponGetByCouponCode[0].coupon_discount) / 100.0) * (1 + tax)).toFloat()

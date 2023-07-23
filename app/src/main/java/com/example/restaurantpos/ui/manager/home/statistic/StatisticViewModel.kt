@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.SortedMap
+import java.util.TreeMap
 
 class StatisticViewModel : ViewModel() {
     private val _getTotalRevenue: MutableLiveData<Map<String, Float>> by lazy {
@@ -22,23 +24,21 @@ class StatisticViewModel : ViewModel() {
 
     fun getTotalRevenueByTimeAndCategory(time: Int, category: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val res: List<ItemRevenue> = DatabaseUtil.orderDAO.getTotalRevenueByCategory(category)
+            val listItemRevenue: List<ItemRevenue> = DatabaseUtil.orderDAO.getTotalRevenueByCategory(category)
 
             // Week- Month- Year: 1- 2- 3
             // Foods- Drinks- Desserts: 1- 2- 3
 
-            if (time == Constant.WEEK_TIME) {
-                _getTotalRevenue.postValue(calculateTotalRevenueByWeek(res))
-            } else if (time == Constant.MONTH_TIME) {
-                _getTotalRevenue.postValue(calculateTotalRevenueByMonth(res))
-            } else {
-                _getTotalRevenue.postValue(calculateTotalRevenueByYear(res))
-            }
+            _getTotalRevenue.postValue(when (time) {
+                Constant.WEEK_TIME -> calculateTotalRevenueByWeek(listItemRevenue)
+                Constant.MONTH_TIME -> calculateTotalRevenueByMonth(listItemRevenue)
+                else -> calculateTotalRevenueByYear(listItemRevenue)
+            })
         }
     }
 
-    private fun calculateTotalRevenueByWeek(itemRevenueList: List<ItemRevenue>): Map<String, Float> {
-        val revenueByWeek = mutableMapOf<String, Float>()
+    fun calculateTotalRevenueByWeek(itemRevenueList: List<ItemRevenue>): SortedMap<String, Float> {
+        val revenueByWeek = TreeMap<String, Float>()
 
         for (itemRevenue in itemRevenueList) {
             val timeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())

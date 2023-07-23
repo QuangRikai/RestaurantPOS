@@ -56,8 +56,8 @@ class CustomerAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setListData(newListData: MutableList<CustomerEntity>) {
         listData.clear()
-        // Khách nào không muốn lưu lại thì dùng Unkown thôi.
-        listData.add(CustomerEntity(0, "Unkown","...","...", 0.0, 0))
+        // Khách nào không muốn lưu lại thì dùng Unknown thôi.
+        listData.add(CustomerEntity(0, "Unknown","...","...", 0.0, 0))
         listData.addAll(newListData)
         notifyDataSetChanged()
     }

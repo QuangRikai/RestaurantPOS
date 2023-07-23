@@ -6,12 +6,14 @@ import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.AccountRoleEntity
 import com.example.restaurantpos.db.entity.AccountShiftEntity
 import com.example.restaurantpos.db.entity.AccountStatusEntity
+import com.example.restaurantpos.db.entity.CartItemEntity
 import com.example.restaurantpos.db.entity.CartItemStatusEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.CouponEntity
 import com.example.restaurantpos.db.entity.CustomerEntity
 import com.example.restaurantpos.db.entity.CustomerRankEntity
 import com.example.restaurantpos.db.entity.ItemEntity
+import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.db.entity.OrderStatusEntity
 import com.example.restaurantpos.db.entity.ShiftEntity
 import com.example.restaurantpos.db.entity.TableEntity
@@ -129,5 +131,16 @@ class SplashViewModel: ViewModel() {
         }
     }
 
+    fun addOrder(order: OrderEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseUtil.orderDAO.addOrder(order)
+        }
+    }
+
+    fun addListCartItem(data: List<CartItemEntity>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseUtil.addListCartItem(data)
+        }
+    }
 
 }

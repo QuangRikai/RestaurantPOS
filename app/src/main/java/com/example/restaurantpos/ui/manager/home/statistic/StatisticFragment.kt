@@ -84,6 +84,7 @@ class StatisticFragment : Fragment() {
         adapterStatistic.setListData(listData)*/
 
 
+        statisticModel.getTotalRevenueByTimeAndCategory(time, category)
 
         initEvents()
 
@@ -103,7 +104,7 @@ class StatisticFragment : Fragment() {
     }
 
     private fun timeChangeListener() {
-        binding.rdgTime.setOnCheckedChangeListener( RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+        binding.rdgTime.setOnCheckedChangeListener( RadioGroup.OnCheckedChangeListener { _, i ->
             // This will get the radiobutton that has changed in its check state
             val checkedRadioButton =  binding.rdgTime.findViewById<RadioButton>(i)
             // This puts the value (true/false) into the variable
@@ -111,12 +112,10 @@ class StatisticFragment : Fragment() {
 
             // If the radiobutton that has changed in check state is now checked
             if (isChecked) {
-                if (checkedRadioButton.text.equals("Week")){
-                    time = Constant.WEEK_TIME
-                }else if(checkedRadioButton.text.equals("Month")){
-                    time = Constant.MONTH_TIME
-                }else{
-                    time = Constant.YEAR_TIME
+                time = when (checkedRadioButton.text) {
+                    "Week" -> Constant.WEEK_TIME  // 1
+                    "Month" -> Constant.MONTH_TIME // 2
+                    else -> Constant.YEAR_TIME  // 3
                 }
             }
 
@@ -131,14 +130,13 @@ class StatisticFragment : Fragment() {
             val isChecked = checkedRadioButton.isChecked
 
             if (isChecked) {
-                category = if (checkedRadioButton.text.equals("Foods")){
-                    Constant.FOODS_CATEGORY
-                }else if(checkedRadioButton.text.equals("Drinks")){
-                    Constant.DRINKS_CATEGORY
-                }else{
-                    Constant.DESSERTS_CATEGORY
+                category = when (checkedRadioButton.text) {
+                    "Foods" -> Constant.FOODS_CATEGORY  // 1
+                    "Drinks" -> Constant.DRINKS_CATEGORY  // 2
+                    else -> Constant.DESSERTS_CATEGORY  // 3
                 }
             }
+
 
             statisticModel.getTotalRevenueByTimeAndCategory(time, category)
         })

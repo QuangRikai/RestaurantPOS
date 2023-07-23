@@ -64,7 +64,7 @@ class HomeViewModel : ViewModel() {
     }*/
 
 
-    fun getRevenueOfDay(nowYear:Int, nowMonth: Int) {
+/*    fun getRevenueOfDay(nowYear:Int, nowMonth: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val countDay = DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)
             // Đây là cái màn mình cần đưa vào Trục tung (Cho từng cột)
@@ -75,6 +75,23 @@ class HomeViewModel : ViewModel() {
                 listRevenue.add(amount)
             }
             // postValue update data (LiveData<MutableList<Float>>) để cập nhật dữ liệu
+            _revenue.postValue(listRevenue)
+        }
+    }*/
+
+    fun getRevenueOfDay(nowYear:Int, nowMonth: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val countDay = DataUtil.getNumberOfDayInMonth(nowYear, nowMonth)
+            val listRevenue = ArrayList<Float>()
+            val monthString = if (nowMonth < 10) "0$nowMonth" else "$nowMonth"
+
+            for (i in 1..countDay) {
+                val dayString = if (i < 10) "0$i" else "$i"
+
+                val amount = DatabaseUtil.getAllOrder("$nowYear/$monthString/$dayString")
+                listRevenue.add(amount)
+            }
+
             _revenue.postValue(listRevenue)
         }
     }
