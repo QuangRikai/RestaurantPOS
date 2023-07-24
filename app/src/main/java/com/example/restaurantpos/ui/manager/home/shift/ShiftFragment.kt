@@ -186,18 +186,21 @@ class ShiftFragment : Fragment() {
 
         // 2.2 Xử lý doOnTextChanged cho accountName
         val spinner = view.findViewById<Spinner>(R.id.spn_customer)
-
-        viewModelUser.getAllUser().observe(viewLifecycleOwner){
-            // Tạo Adapter và gắn dữ liệu vào Spinner
+        // Set data cho Spinner. Này chính là Combobox mà Anh Mạnh nói
+        viewModelUser.getAllUserActive().observe(viewLifecycleOwner){
+            // Tạo Adapter và gắn dữ liệu vào Spinner. it Chính là Acccount toString.
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, it)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
 
         // Bắt sự kiện khi chọn dữ liệu trên Spinner
+        // Thằng dưới này chính là nguyên nhân dẫn đến mặt định "Thằng đầu tiên" trong spinner khi tìm kiếm
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
                 val account = parent?.getItemAtPosition(position) as AccountEntity
+                // For Shift_id
                 accountID = account.account_id
             }
 

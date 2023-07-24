@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,6 @@ import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import java.io.IOException
-import kotlin.math.round
 
 /**
  * Truyền vào position: Int để chuyển tab
@@ -101,9 +101,6 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         val imgClose = view.findViewById<ImageView>(R.id.imgCloseDialogAddItem)
 
-        /** Ràng buộc data */
-        DataUtil.setEditTextWithoutSpecialCharactersExcept(edtItemName, txtInform)
-
 
         // 2.  Code cho dau X & Cancel Button
         imgClose.setOnClickListener { dialog.dismiss() }
@@ -119,6 +116,9 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
 
         // 4.  Code cho AddItem Button
+
+        /** Ràng buộc data */
+        DataUtil.setEditTextWithoutSpecialCharactersExcept(edtItemName, txtInform)
 
         viewModel.isDuplicate.observe(viewLifecycleOwner) {
             if (it) {
@@ -136,7 +136,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                 && edtItemInventoryQuantity.text.toString() != ""
             ) {
                 // 2. Check Min-Max Length
-                if (edtItemName.text.length >= 3) {
+                if (edtItemName.text.length >= 2) {
                     // 3. Check Số lượng/giá Zero
                     if (edtItemPrice.text.toString()
                             .toFloat() != 0.0f && edtItemInventoryQuantity.text.toString()
@@ -145,7 +145,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                         viewModel.addCategoryItemAndCheckExisting(
                             ItemEntity(
                                 0,
-                                edtItemName?.text.toString(),
+                                edtItemName?.text?.trim().toString(),
                                 edtItemPrice?.text.toString().toFloat(),
                                 itemImagePath,
                                 edtItemInventoryQuantity?.text.toString().toInt(),
@@ -157,16 +157,25 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                         txtInform.text =
                             "Price should be different from 0.0$! \n Inventory Quantity should be different from 0!"
                         txtInform.show()
+                        edtItemName.clearFocus()
+                        edtItemPrice.clearFocus()
+                        edtItemInventoryQuantity.clearFocus()
                     }
 
                 } else {
-                    txtInform.text = "The Item Name needs to \n consist of 4 to 8 characters!"
+                    txtInform.text = "The Item Name needs to \n consist of 2 to 8 characters!"
                     txtInform.show()
+                    edtItemName.clearFocus()
+                    edtItemPrice.clearFocus()
+                    edtItemInventoryQuantity.clearFocus()
                 }
 
             } else {
                 txtInform.text = "Information below must not be empty!"
                 txtInform.show()
+                edtItemName.clearFocus()
+                edtItemPrice.clearFocus()
+                edtItemInventoryQuantity.clearFocus()
             }
         }
 
@@ -174,6 +183,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         dialog = build.create()
         dialog.show()
     }
+
     /**===========================================================*/
 
     override fun clickUpdateItem(itemCategory: ItemEntity) {
@@ -188,6 +198,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
     /** Update Item */
     @SuppressLint("SetTextI18n", "MissingInflatedId")
     private fun showChangeItemDialog(itemOfCategory: ItemEntity) {
+
         selectedImagePath = ""
         val build = AlertDialog.Builder(requireActivity(), R.style.ThemeCustom)
         val view = layoutInflater.inflate(R.layout.dialog_alert_change_category_item, null)
@@ -195,6 +206,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         // 1.  Get Component of Dialog
         val txtInform = view.findViewById<TextView>(R.id.txtInform)
+        txtInform.hide()
         val edtItemName = view.findViewById<EditText>(R.id.edtItemName)
         val edtItemPrice = view.findViewById<EditText>(R.id.edtItemPrice)
         val edtItemInventoryQuantity = view.findViewById<EditText>(R.id.edtItemInventoryQuantity)
@@ -208,17 +220,15 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         val txtUpdateItem = view.findViewById<TextView>(R.id.txtUpdateItem)
 
-        /** Ràng buộc data */
-        DataUtil.setEditTextWithoutSpecialCharacters(edtItemName, txtInform)
 
         // 2.  Code cho dau X & Cancel Button
         imgClose.setOnClickListener { dialog.dismiss() }
         btnCancel.setOnClickListener { dialog.dismiss() }
         txtUpdateItem.text = "Update " + itemOfCategory.item_name
 
-        edtItemName.hint = itemOfCategory.item_name
-        edtItemPrice.hint = round(itemOfCategory.price).toString()
-        edtItemInventoryQuantity.hint = itemOfCategory.inventory_quantity.toString()
+        edtItemName.setText(itemOfCategory.item_name)
+        edtItemPrice.setText(String.format("%.1f", itemOfCategory.price))
+        edtItemInventoryQuantity.setText(itemOfCategory.inventory_quantity.toString())
         imgShow.setImageBitmap(BitmapFactory.decodeFile(itemOfCategory.image))
 
         // 3.  Code for ChooseImage
@@ -229,21 +239,77 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
             startActivityForResult(Intent.createChooser(intent, "Select Photo Quang 1"), 102)
         }
         // 4.  Code cho AddItem Button
+        /** Ràng buộc data */
+        DataUtil.setEditTextWithoutSpecialCharacters(edtItemName, txtInform)
+
+
         btnUpdateItem.setOnClickListener {
-            if (edtItemName.text.toString() != "") {
-                itemOfCategory.item_name = edtItemName.text.toString()
-            }
-            if (edtItemPrice.text.toString() != "") {
-                itemOfCategory.price = edtItemPrice.text.toString().toFloat()
-            }
-            if (edtItemInventoryQuantity.text.toString() != "") {
-                itemOfCategory.inventory_quantity = edtItemInventoryQuantity.text.toString().toInt()
-            }
+
             if (selectedImagePath != "") {
                 itemOfCategory.image = selectedImagePath as String
             }
-            viewModel.addCategoryItem(itemOfCategory)
-            dialog.dismiss()
+
+            if (edtItemName.text.toString() != ""
+                && edtItemPrice.text.toString() != ""
+                && edtItemInventoryQuantity.text.toString() != ""
+            ) {
+                if (edtItemPrice.text.toString()
+                        .toFloat() != 0.0f && edtItemInventoryQuantity.text.toString()
+                        .toInt() != 0
+                ) {
+                    itemOfCategory.price = edtItemPrice.text.toString().toFloat()
+                    itemOfCategory.inventory_quantity =
+                        edtItemInventoryQuantity.text.toString().toInt()
+
+                    if (edtItemName.text.length >= 2) {
+
+                        if (edtItemName.text.trim().toString() == itemOfCategory.item_name) {
+                            Log.d("Quanglt", "$itemOfCategory")
+                            viewModel.addCategoryItem(itemOfCategory)
+                            dialog.dismiss()
+
+                        }
+                        else
+                        {
+                            viewModel.addCategoryItemAndCheckExisting(itemOfCategory)
+                            Log.d("Quanglt", "$itemOfCategory")
+                            viewModel.isDuplicate.observe(viewLifecycleOwner) {
+                                if (it) {
+                                    txtInform.text = "This item's name may already exist \n in your category!"
+                                    txtInform.show()
+                                } else {
+                                    itemOfCategory.item_name = edtItemName.text.trim().toString()
+                                    Log.d("Quanglt", "$itemOfCategory")
+                                    Log.d("Quanglt", edtItemName.text.trim().toString())
+
+                                    dialog.dismiss()
+                                }
+                            }
+                        }
+
+                    } else {
+                        txtInform.text = "The Item Name needs to \n consist of 2 to 8 characters!"
+                        txtInform.show()
+                        edtItemName.clearFocus()
+                        edtItemPrice.clearFocus()
+                        edtItemInventoryQuantity.clearFocus()
+                    }
+
+                } else {
+                    txtInform.text =
+                        "Price should be different from 0.0$! \n Inventory Quantity should be different from 0!"
+                    txtInform.show()
+                    edtItemName.clearFocus()
+                    edtItemPrice.clearFocus()
+                    edtItemInventoryQuantity.clearFocus()
+                }
+            } else {
+                txtInform.text = "Information below must not be empty!"
+                txtInform.show()
+                edtItemName.clearFocus()
+                edtItemPrice.clearFocus()
+                edtItemInventoryQuantity.clearFocus()
+            }
         }
 
         // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display

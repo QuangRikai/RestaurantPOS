@@ -54,7 +54,11 @@ data class AccountEntity constructor(
         return Gson().toJson(this)
     }
 
+    // Thiết lập cách hiển thị khi gọi toString. Không là nó hển thị full luôn.
     override fun toString(): String {
-        return account_name
+        return when (role_id) {
+            1 -> "Re- "
+            else -> "Ki- "
+        } + account_name
     }
 }
