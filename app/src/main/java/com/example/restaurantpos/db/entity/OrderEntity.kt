@@ -49,7 +49,7 @@ data class OrderEntity constructor(
     var sub_total: Float = 0f,
 
     @ColumnInfo(name = "cash")
-    var cash: Long = 0,
+    var cash: Float = 0.0f,
 
     @ColumnInfo(name = "change")
     var change: String = "0"

@@ -190,7 +190,7 @@ class CheckoutFragment : Fragment() {
 
                     if (customerObject != null){
                         binding.txtCustomerInBill.text = customerObject.customer_name
-                        binding.tvTotalPayment.text = customerObject.total_payment.toString()
+                        binding.tvTotalPayment.text = String.format("%.1f",customerObject.total_payment).plus("$")
                         calculateDiscountPercentage(customerObject.customer_rank_id)
                     }else{
                         binding.txtCustomerInBill.text = "Unknown"
@@ -306,7 +306,7 @@ class CheckoutFragment : Fragment() {
 
                         viewModelCoupon.coupon = binding.edtCoupon.text.toString()
 
-                        Log.d("seachsadasd", binding.edtCash.text.toString())
+                        Log.d("Quanglt", binding.edtCash.text.toString())
                         setChange(binding.edtCash.text.toString())
 
                         viewModelCoupon.charnge = binding.txtChange.text.toString()
@@ -379,7 +379,7 @@ class CheckoutFragment : Fragment() {
         binding.txtCheckout.setOnClickListener {
             if (binding.edtCash.text.isNotEmpty()) {
                 if (binding.txtChange.text != "0.0" && (binding.edtCash.text.toString()
-                        .toFloat() > billAmount)
+                        .toFloat() >= billAmount)
                 ) {
                     /** Put data for billObject  -----> BillFragment */
                     billObject = BillEntity(
@@ -451,7 +451,7 @@ class CheckoutFragment : Fragment() {
         if (text.toString().isNotEmpty()) {
             val cashString = text.toString()
             val cash = cashString.replace(",", "").toFloat()
-            if (cash > billAmount) {
+            if (cash >= billAmount) {
                 change = cash - billAmount
                 Log.d("Quanglt", change.toString())
                 binding.txtChange.text = String.format("%.1f", change)
@@ -512,6 +512,12 @@ class CheckoutFragment : Fragment() {
         val tv_choose_customer = view.findViewById<TextView>(R.id.tv_choose_customer)
         val llItem = view.findViewById<LinearLayout>(R.id.llItem)
 
+
+
+        /** Ràng buộc data */
+        val txtInform = view.findViewById<TextView>(R.id.txtInform)
+        DataUtil.setEditTextWithoutSpecialCharacters(edtCustomerName, txtInform)
+
         // -----------------Code for Component----------------------------------------//
         // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
         adapterCustomerInner =
@@ -534,19 +540,19 @@ class CheckoutFragment : Fragment() {
 
         // 2. Code for when staff types on edtPhoneNumber and contain >= 3 Chars. If exist --> Show for Picking-up
         // SetData for (1)
-        edtPhoneNumber.doOnTextChanged { text, start, before, count ->
-            /* if (text.toString().length >= 3) {
-                 viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
-                     .observe(viewLifecycleOwner) {
-                         if (it.size > 0) {
-                             adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
-                             rcyCustomerInPhone.show()
-                         }
-                     }
-             } else {
-                 rcyCustomerInPhone.gone()
-             }*/
-        }
+//        edtPhoneNumber.doOnTextChanged { text, start, before, count ->
+//            /* if (text.toString().length >= 3) {
+//                 viewModelCustomer.getListCustomerByPhoneForSearch(text.toString())
+//                     .observe(viewLifecycleOwner) {
+//                         if (it.size > 0) {
+//                             adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
+//                             rcyCustomerInPhone.show()
+//                         }
+//                     }
+//             } else {
+//                 rcyCustomerInPhone.gone()
+//             }*/
+//        }
 
         // 3. Birthday
         imgDate.setOnClickListener {
@@ -561,32 +567,35 @@ class CheckoutFragment : Fragment() {
 
         // 4.  Add Customer
         btnAddCustomer.setOnClickListener {
+            txtInform.hide()
+
             if (edtCustomerName.text.isEmpty() ||
                 edtPhoneNumber.text.isEmpty() ||
                 txtCustomerBirthday.text.isEmpty()
             ) {
-                context?.showToast("Information must not be empty!")
-            } else {
-                viewModelCustomer.addCustomer(
-                    CustomerEntity(
-                        0,
-                        edtCustomerName.text.toString(),
-                        edtPhoneNumber.text.toString(),
-                        txtCustomerBirthday.text.toString(),
-                        0.0,
-                        0
+                txtInform.text = "Information must not be empty!"
+                txtInform.show()
+            } else
+                if (edtPhoneNumber.text.length < 10){
+                    txtInform.text = "Phone number \n needs to consist of 10 or 11 characters!"
+                    txtInform.show()
+                }
+                else if (edtCustomerName.text.length < 2){
+                    txtInform.text = "Customer name \n needs to consist of 2 to 14 characters!"
+                    txtInform.show()
+                }
+                else{
+                    viewModelCustomer.addCustomer(
+                        CustomerEntity(
+                            0,
+                            edtCustomerName.text.toString(),
+                            edtPhoneNumber.text.toString(),
+                            txtCustomerBirthday.text.toString(),
+                            0.0,
+                            0
+                        )
                     )
-                )
-
-                customerObject = CustomerEntity(
-                    0,
-                    edtCustomerName.text.toString(),
-                    edtPhoneNumber.text.toString(),
-                    txtCustomerBirthday.text.toString(),
-                    0.0,
-                    0
-                )
-            }
+                }
 
             viewModelCustomer.getListCustomerByPhoneForAdd(edtPhoneNumber.text.toString())
                 .observe(viewLifecycleOwner) { listCustomer ->

@@ -22,7 +22,7 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/_8sdp"
-            android:src="@drawable/img_back"
+            android:src="@drawable/img_back_arrow_circle"
             android:gravity="center_vertical"
             app:tint="@color/white" />
 

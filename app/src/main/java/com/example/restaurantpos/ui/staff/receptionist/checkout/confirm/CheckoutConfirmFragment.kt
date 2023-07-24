@@ -117,7 +117,7 @@ class CheckoutConfirmFragment : Fragment() {
             orderObject!!.sub_total = billObject!!.bill_subTotal
             orderObject!!.coupon = billObject!!.bill_coupon
             orderObject!!.customer_rank = billObject!!.bill_customer_rank_percent
-            orderObject!!.cash = billObject!!.bill_cash.toLong()
+            orderObject!!.cash = billObject!!.bill_cash.toFloat()
             orderObject!!.change = billObject!!.bill_change
         }
 

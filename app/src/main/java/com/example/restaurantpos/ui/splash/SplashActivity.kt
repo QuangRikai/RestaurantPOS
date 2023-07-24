@@ -49,7 +49,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             listOf(
                 AccountEntity(
                     1,
-                    "Quang Admin",
+                    "Admin",
                     "1995/03/02",
                     "08010802100",
                     "admin",
@@ -62,7 +62,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     "Anh Thu",
                     "1995/03/02",
                     "080101232100",
-                    "thu",
+                    "anhthu",
                     DataUtil.convertToMD5("123"+ Constant.SECURITY_SALT),
                     1,
                     true
@@ -72,7 +72,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     "Anh Manh",
                     "1995/03/02",
                     "08010531100",
-                    "manh",
+                    "anhmanh",
                     DataUtil.convertToMD5("123"+ Constant.SECURITY_SALT),
                     2,
                     true
@@ -96,18 +96,17 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         )
 
         /** 2. Table */
-        viewModel.addTable(this, TableEntity(1, "TAKE AWAY", 4, 0))
-        viewModel.addTable(this, TableEntity(2, "Table 01", 4, 0))
-        viewModel.addTable(this, TableEntity(3, "Table 02", 4, 0))
-        viewModel.addTable(this, TableEntity(4, "Table 03", 4, 0))
-        viewModel.addTable(this, TableEntity(5, "Table 04", 4, 0))
-        viewModel.addTable(this, TableEntity(6, "Table 05", 4, 0))
-        viewModel.addTable(this, TableEntity(7, "Table 06", 4, 0))
-        viewModel.addTable(this, TableEntity(8, "Table 07", 4, 0))
-        viewModel.addTable(this, TableEntity(9, "Table 08", 4, 0))
-        viewModel.addTable(this, TableEntity(10, "Table 09", 4, 0))
-        viewModel.addTable(this, TableEntity(11, "Table 10", 4, 0))
-        viewModel.addTable(this, TableEntity(12, "Table 11", 4, 0))
+        viewModel.addTable(this, TableEntity(1, "Table 01", 4, 0))
+        viewModel.addTable(this, TableEntity(2, "Table 02", 4, 0))
+        viewModel.addTable(this, TableEntity(3, "Table 03", 4, 0))
+        viewModel.addTable(this, TableEntity(4, "Table 04", 4, 0))
+        viewModel.addTable(this, TableEntity(5, "Table 05", 4, 0))
+        viewModel.addTable(this, TableEntity(6, "Table 06", 4, 0))
+        viewModel.addTable(this, TableEntity(7, "Table 07", 4, 0))
+        viewModel.addTable(this, TableEntity(8, "Table 08", 4, 0))
+        viewModel.addTable(this, TableEntity(9, "Table 09", 4, 0))
+        viewModel.addTable(this, TableEntity(10, "Table 10", 4, 0))
+        viewModel.addTable(this, TableEntity(11, "Table 11", 4, 0))
 
         /** 2.1. Table_Status */
         viewModel.addListTableStatus(
@@ -125,12 +124,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         viewModel.addCategory(CategoryEntity(3, "DESSERTS"))
 
         /** 4. Item */
-        viewModel.addCategoryItem(ItemEntity(1, "Mon Nhau 1", 131.1f, "", 5, 1))
+/*        viewModel.addCategoryItem(ItemEntity(1, "Mon Nhau 1", 131.1f, "", 5, 1))
         viewModel.addCategoryItem(ItemEntity(2, "Mon Nhau 2", 1111.1f, "", 1, 1))
         viewModel.addCategoryItem(ItemEntity(3, "Mon Nhau 3", 22.1f, "", 3, 2))
         viewModel.addCategoryItem(ItemEntity(4, "Mon Nhau 5", 13.1f, "", 5, 2))
         viewModel.addCategoryItem(ItemEntity(5, "Mon Nhau 6", 15.1f, "", 1, 3))
-        viewModel.addCategoryItem(ItemEntity(6, "Mon Nhau 7", 111.1f, "", 3, 3))
+        viewModel.addCategoryItem(ItemEntity(6, "Mon Nhau 7", 111.1f, "", 3, 3))*/
 
         /** 4.1. Cart_Item_Status */
         viewModel.addListCartItemStatus(
@@ -183,7 +182,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         viewModel.addCustomerRank(CustomerRankEntity(4, "rank 3"))
 
         /** 9. order   */
-        OrderEntity(order_id="2023/07/22  16:20:04", customer_id=1, table_id=2, created_by_account_id=2, order_create_time="2023/07/22  16:20:04", paid_time="2023/07/22  16:20:40", bill_total=302.83002f, order_status_id=2, coupon=0, customer_rank=0, sub_total=275.30002f, cash=8000, change="7697,2")
+       /* OrderEntity(order_id="2023/07/22  16:20:04", customer_id=1, table_id=2, created_by_account_id=2, order_create_time="2023/07/22  16:20:04", paid_time="2023/07/22  16:20:40", bill_total=302.83002f, order_status_id=2, coupon=0, customer_rank=0, sub_total=275.30002f, cash=8000, change="7697,2")
         viewModel.addOrder(OrderEntity(order_id="2023/07/01  16:20:04", customer_id=1, table_id=2, created_by_account_id=2, order_create_time="2023/07/01  16:20:04", paid_time="2023/07/22  16:20:40", bill_total=100.83002f, order_status_id=2, coupon=0, customer_rank=0, sub_total=75.30002f, cash=8000, change="7697,2"))
         viewModel.addOrder(OrderEntity(order_id="2023/07/02  16:20:04", customer_id=1, table_id=2, created_by_account_id=2, order_create_time="2023/07/02  16:20:04", paid_time="2023/07/22  16:20:40", bill_total=105.83002f, order_status_id=2, coupon=0, customer_rank=0, sub_total=85.30002f, cash=8000, change="7697,2"))
         viewModel.addOrder(OrderEntity(order_id="2023/07/03  16:20:04", customer_id=1, table_id=2, created_by_account_id=2, order_create_time="2023/07/03  16:20:04", paid_time="2023/07/22  16:20:40", bill_total=200.83002f, order_status_id=2, coupon=0, customer_rank=0, sub_total=195.30002f, cash=8000, change="7697,2"))
@@ -217,7 +216,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         list.add(CartItemEntity(cart_item_id=21, item_id=8, order_id="2023/02/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
         list.add(CartItemEntity(cart_item_id=22, item_id=8, order_id="2023/01/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
 
-        viewModel.addListCartItem(list)
+        viewModel.addListCartItem(list)*/
 
     }
 

@@ -35,6 +35,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <TextView
+        android:id="@+id/txtInform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_400"
+        android:gravity="center"
+        android:textColor="@color/text_red"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/llCustomerName"
+        app:layout_constraintTop_toBottomOf="@+id/txtAddItem" />
+
+
     <LinearLayout
         android:id="@+id/llCustomerName"
         android:layout_width="match_parent"
@@ -43,7 +55,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAddItem">
+        app:layout_constraintTop_toBottomOf="@+id/txtInform">
 
 
         <ImageView
@@ -174,7 +186,7 @@
         android:layout_height="wrap_content"
         android:text="Already have an account?"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/llCustomerBirthday"
+        app:layout_constraintBottom_toTopOf="@+id/llButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/llCustomerBirthday"/>
@@ -218,6 +230,7 @@
 
 
     <LinearLayout
+        android:id="@+id/llButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"

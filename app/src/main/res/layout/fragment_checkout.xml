@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_3sdp"
             android:gravity="center_vertical"
-            android:src="@drawable/img_back"
+            android:src="@drawable/img_back_arrow_circle"
             app:tint="@color/white" />
 
         <TextView
@@ -136,16 +136,22 @@
                         android:id="@+id/tv_total_payment"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="2" />
+                        android:maxLength="10"
+                        android:textSize="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_400"
+                        android:gravity="center"
+                        android:layout_weight="3" />
 
                     <TextView
                         android:id="@+id/txtCustomerInBill"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="6"
+                        android:layout_weight="5"
                         android:background="@drawable/bg_edt_login"
                         android:gravity="center"
                         android:paddingHorizontal="@dimen/_8sdp"
+                        android:fontFamily="@font/inter_500"
+                        android:textSize="@dimen/_9sdp"
                         android:text="ADD Customer?"
                         app:drawableLeftCompat="@drawable/ic_menu_customers" />
 

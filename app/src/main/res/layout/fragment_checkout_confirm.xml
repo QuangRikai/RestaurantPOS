@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_3sdp"
             android:gravity="center_vertical"
-            android:src="@drawable/img_back"
+            android:src="@drawable/img_back_arrow_circle"
             app:tint="@color/white" />
 
         <TextView

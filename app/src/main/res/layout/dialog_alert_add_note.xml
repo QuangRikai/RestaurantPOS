@@ -64,7 +64,7 @@
             android:background="@drawable/bg_edt_login"
             android:fontFamily="@font/inter_400"
             android:gravity="start"
-            android:hint="Nhiều muối vào!"
+            android:hint="Less Ice!"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
             android:textSize="@dimen/_13sdp" />

@@ -40,9 +40,12 @@ import com.example.restaurantpos.ui.manager.customer.CustomerViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CustomerInnerAdapter
 import com.example.restaurantpos.ui.staff.receptionist.table.TableViewModel
+import com.example.restaurantpos.util.DataUtil
+import com.example.restaurantpos.util.DatabaseUtil.getItemOfCategory
 import com.example.restaurantpos.util.DateFormatUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 import com.example.restaurantpos.util.gone
+import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
 import com.example.restaurantpos.util.showToast
 import java.util.Calendar
@@ -370,6 +373,12 @@ class NewOrderFragment : Fragment() {
         val imgCloseDialogCustomer = view.findViewById<ImageView>(R.id.imgCloseDialogCustomer)
 
         val tv_choose_customer = view.findViewById<TextView>(R.id.tv_choose_customer)
+
+
+        /** Ràng buộc data */
+        val txtInform = view.findViewById<TextView>(R.id.txtInform)
+        DataUtil.setEditTextWithoutSpecialCharacters(edtCustomerName, txtInform)
+
 //        val llItem = view.findViewById<LinearLayout>(R.id.llItem)
         // -----------------Code for Component----------------------------------------//
         // 1.  Handle Adapter CustomerPhone + Code of clickCustomerInner (Get CustomerInfo and set to View in Order)
@@ -419,12 +428,24 @@ class NewOrderFragment : Fragment() {
 
         // 4.  Add Customer
         btnAddCustomer.setOnClickListener {
+            txtInform.hide()
+
             if (edtCustomerName.text.isEmpty() ||
                 edtPhoneNumber.text.isEmpty() ||
                 txtCustomerBirthday.text.isEmpty()
             ) {
-                context?.showToast("Information must not be empty!")
-            } else {
+                txtInform.text = "Information must not be empty!"
+                txtInform.show()
+            } else
+            if (edtPhoneNumber.text.length < 10){
+                txtInform.text = "Phone number \n needs to consist of 10 or 11 characters!"
+                txtInform.show()
+            }
+            else if (edtCustomerName.text.length < 2){
+                txtInform.text = "Customer name \n needs to consist of 2 to 14 characters!"
+                txtInform.show()
+            }
+            else{
                 viewModelCustomer.addCustomer(
                     CustomerEntity(
                         0,
