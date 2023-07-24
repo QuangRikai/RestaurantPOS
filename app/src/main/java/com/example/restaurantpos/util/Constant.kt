@@ -14,4 +14,6 @@ object Constant {
     const val WEEK_TIME = 1
     const val MONTH_TIME = 2
     const val YEAR_TIME = 3
+
+    const val SECURITY_SALT = "aHiHiHiSecurityPurposeAddSaltsHoHoHo"
 }

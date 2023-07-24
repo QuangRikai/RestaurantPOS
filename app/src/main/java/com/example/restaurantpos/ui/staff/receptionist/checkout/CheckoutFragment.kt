@@ -574,7 +574,7 @@ class CheckoutFragment : Fragment() {
                         edtPhoneNumber.text.toString(),
                         txtCustomerBirthday.text.toString(),
                         0.0,
-                        1
+                        0
                     )
                 )
 
@@ -584,7 +584,7 @@ class CheckoutFragment : Fragment() {
                     edtPhoneNumber.text.toString(),
                     txtCustomerBirthday.text.toString(),
                     0.0,
-                    1
+                    0
                 )
             }
 

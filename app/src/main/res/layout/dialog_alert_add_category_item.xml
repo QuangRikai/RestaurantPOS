@@ -79,7 +79,7 @@
             android:fontFamily="@font/inter_400"
             android:gravity="left"
             android:hint="Name"
-            android:maxLength="15"
+            android:maxLength="14"
             android:padding="@dimen/_4sdp"
             android:paddingStart="@dimen/_12sdp"
             android:textSize="@dimen/_13sdp" />

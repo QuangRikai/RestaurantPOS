@@ -13,6 +13,7 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.base.BaseFragment
 import com.example.restaurantpos.databinding.FragmentManagerUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.util.Constant
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
@@ -79,7 +80,7 @@ class ManagerUserFragment : BaseFragment<FragmentManagerUserBinding>() {
 
         // 5.  Handle Lock
         txtResetPassword?.setOnClickListener {
-            itemUser.password = DataUtil.convertToMD5("123" + "aHiHiAddSalts")
+            itemUser.password = DataUtil.convertToMD5("123" + Constant.SECURITY_SALT)
             requireContext().showToast("Password was changed  into 123")
             viewModel.addUser(requireContext(), itemUser)
             dialog.dismiss()

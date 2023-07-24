@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.manager.customer.bill.CustomerOrderBillFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="@drawable/bg_edt_login"
+        android:layout_marginTop="@dimen/_12sdp"
         android:id="@+id/rcyCartItemOnBill"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -39,8 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
                 android:text="Sub total:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
@@ -50,11 +52,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
                 android:fontFamily="@font/inter_400"
+                android:gravity="right|center_vertical"
                 android:hint="100 $"
-                android:textColor="@color/black"
+                android:paddingRight="@dimen/_50sdp"
                 android:textSize="@dimen/_14sdp" />
 
         </LinearLayout>
@@ -69,8 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
                 android:text="Customer rank:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
@@ -80,10 +81,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
                 android:fontFamily="@font/inter_400"
+                android:gravity="right|center_vertical"
                 android:hint="80 $"
+                android:paddingRight="@dimen/_50sdp"
                 android:textSize="@dimen/_14sdp" />
 
         </LinearLayout>
@@ -98,8 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
                 android:text="Tax:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
@@ -108,11 +109,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
                 android:fontFamily="@font/inter_400"
+                android:gravity="right|center_vertical"
                 android:hint="10 %"
-                android:textColor="@color/text_red"
+                android:paddingRight="@dimen/_50sdp"
                 android:textSize="@dimen/_14sdp" />
 
         </LinearLayout>
@@ -127,8 +127,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
                 android:text="Total:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
@@ -138,12 +138,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/bg_edt_login"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
                 android:fontFamily="@font/inter_400"
+                android:gravity="right|center_vertical"
                 android:hint="20 $"
-                android:textColor="@color/text_red"
+                android:paddingRight="@dimen/_50sdp"
                 android:textSize="@dimen/_14sdp" />
 
         </LinearLayout>
@@ -159,8 +157,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
                 android:text="Cash:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
@@ -170,11 +168,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
                 android:fontFamily="@font/inter_400"
+                android:gravity="right|center_vertical"
                 android:hint="20 $"
-                android:textColor="@color/text_red"
+                android:paddingRight="@dimen/_50sdp"
                 android:textSize="@dimen/_14sdp" />
 
         </LinearLayout>
@@ -183,14 +180,15 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:fontFamily="@font/inter_500"
+                android:gravity="center_vertical"
                 android:text="Change:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
@@ -200,11 +198,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:paddingRight="@dimen/_50sdp"
                 android:fontFamily="@font/inter_400"
+                android:gravity="right|center_vertical"
                 android:hint="20 $"
-                android:textColor="@color/text_red"
+                android:paddingRight="@dimen/_50sdp"
                 android:textSize="@dimen/_14sdp" />
 
         </LinearLayout>

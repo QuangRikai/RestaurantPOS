@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentUpdateStaffInfoBinding
 import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.ui.manager.user.UserViewModel
+import com.example.restaurantpos.util.Constant
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.SharedPreferencesUtils
 
@@ -80,7 +81,7 @@ class UpdateStaffInfoFragment : Fragment() {
 
                         if (binding.edtPassword.text.toString() != "") {
                             admin[0].password =
-                                DataUtil.convertToMD5(binding.edtPassword.text.toString()+ "aHiHiAddSalts")
+                                DataUtil.convertToMD5(binding.edtPassword.text.toString()+ Constant.SECURITY_SALT)
                         }
 
                         viewModel.addUserAndCheckExist(requireContext(), admin[0])

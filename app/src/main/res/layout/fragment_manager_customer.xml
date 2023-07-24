@@ -25,7 +25,7 @@
             android:layout_marginStart="@dimen/_48sdp"
             android:fontFamily="@font/inter_700"
             android:gravity="center"
-            android:text="Customer's Infomation"
+            android:text="Customer List"
             android:textColor="@color/text_blue"
             android:textSize="@dimen/_14sdp" />
 

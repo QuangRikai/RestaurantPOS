@@ -14,7 +14,6 @@ import com.example.restaurantpos.db.entity.OrderEntity
 import com.example.restaurantpos.ui.manager.customer.CustomerViewModel
 import com.example.restaurantpos.ui.staff.receptionist.order.CartViewModel
 
-
 class CustomerOrderBillFragment : Fragment() {
 
     lateinit var binding: FragmentCustomerOrderBillBinding
@@ -97,7 +96,6 @@ class CustomerOrderBillFragment : Fragment() {
         }
     }
 
-    /**-------------------------------------------------------------------------*/
     private fun setDataForUI() {
         if (orderObject != null){
             binding.txtSubTotal.text = String.format("%.1f",orderObject!!.sub_total).plus("$")
@@ -108,7 +106,7 @@ class CustomerOrderBillFragment : Fragment() {
         }
     }
 
-
+    /**-------------------------------------------------------------------------*/
     private fun showAmountOfMoney() {
         //Tạo UI rồi Show tien bằng cách call :      adapter.getTien()
 

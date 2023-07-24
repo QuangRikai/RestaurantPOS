@@ -188,7 +188,75 @@ object DataUtil {
     }
 
 
-    /** Ràng buộc dữ liệu: Không cho nhập kí tự đặc biệt */
+    /** Ràng buộc dữ liệu: Không cho nhập kí tự đặc biệt và nhưng cho phép nhập khoảng trắng */
+    fun isSpecialCharacter(char: Char): Boolean {
+        return char !in 'a'..'z' && char !in 'A'..'Z' && char !in '0'..'9' && char != ' '
+    }
+
+    fun setEditTextWithoutSpecialCharacters(editText: EditText, textView: TextView) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No action needed before text changed
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // No action needed on text changed
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    textView.setText(R.string.msg_special_character)
+                    val text = it.toString()
+                    val lastChar = text.lastOrNull()
+                    if (lastChar != null && isSpecialCharacter(lastChar)) {
+                        // Remove the last character if it's a special character or space
+                        it.delete(it.length - 1, it.length)
+                        textView.show()
+                    } else {
+                        textView.hide()
+                    }
+                }
+            }
+        })
+    }
+
+
+
+
+    /** Ràng buộc dữ liệu: Không cho nhập kí tự đặc biệt ngoại trừ  ( ) , .  */
+    fun isSpecialCharacterExcept(char: Char): Boolean {
+        return char !in 'a'..'z' && char !in 'A'..'Z' && char !in '0'..'9' &&
+                char != ' ' && char != '(' && char != ')' && char != ':' && char != ',' && char != '.'
+    }
+
+    fun setEditTextWithoutSpecialCharactersExcept(editText: EditText, textView: TextView) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No action needed before text changed
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // No action needed on text changed
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    textView.setText(R.string.msg_special_character_except)
+                    val text = it.toString()
+                    val lastChar = text.lastOrNull()
+                    if (lastChar != null && isSpecialCharacterExcept(lastChar)) {
+                        // Remove the last character if it's a special character or space
+                        it.delete(it.length - 1, it.length)
+                        textView.show()
+                    } else {
+                        textView.hide()
+                    }
+                }
+            }
+        })
+    }
+
+    /** Ràng buộc dữ liệu: Không cho nhập kí tự đặc biệt và khoảng trắng */
     fun isSpecialCharacterOrSpace(char: Char): Boolean {
         return char.isWhitespace() || char !in 'a'..'z' && char !in 'A'..'Z' && char !in '0'..'9'
     }

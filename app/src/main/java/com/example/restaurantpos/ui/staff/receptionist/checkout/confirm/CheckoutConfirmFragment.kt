@@ -186,7 +186,7 @@ class CheckoutConfirmFragment : Fragment() {
                 if (customer != null){
                     customerObject = customer
                 }else{
-                    customerObject = CustomerEntity(0, "Unknown", "", "", 0.0, 1)
+                    customerObject = CustomerEntity(0, "Unknown", "", "", 0.0, 0)
                 }
             }
 

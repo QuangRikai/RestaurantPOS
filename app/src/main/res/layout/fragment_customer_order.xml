@@ -34,7 +34,7 @@
             android:fontFamily="@font/inter_700"
             android:gravity="center"
             android:layout_marginRight="@dimen/_52sdp"
-            android:text="Customer's Bill History"
+            android:text="Customer Infomation"
             android:textColor="@color/text_blue"
             android:textSize="20sp" />
 

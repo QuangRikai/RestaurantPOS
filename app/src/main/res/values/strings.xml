@@ -37,6 +37,8 @@
 
 
    <!-- Inform Message -->
+    <string name="msg_special_character"> Special characters are not allowed!</string>
+    <string name="msg_special_character_except"> Special characters except ( ) , . are not allowed!</string>
     <string name="msg_special_and_space_character"> Special characters and spaces are not allowed!</string>
 
 

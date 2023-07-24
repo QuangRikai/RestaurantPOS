@@ -21,6 +21,7 @@ import com.example.restaurantpos.R
 import com.example.restaurantpos.databinding.FragmentManagerCategoryComponentBinding
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.ItemEntity
+import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.RealPathUtil
 import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
@@ -71,12 +72,14 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
             adapter.setListData(it)
         }
 
+
     }
 
     private fun showMessage(content: String) {
         Toast.makeText(requireContext(), content, Toast.LENGTH_SHORT).show()
     }
 
+    /** Add Item */
 
     @SuppressLint("SetTextI18n")
     private fun showAddCategoryItemDialog() {
@@ -98,6 +101,10 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         val imgClose = view.findViewById<ImageView>(R.id.imgCloseDialogAddItem)
 
+        /** Ràng buộc data */
+        DataUtil.setEditTextWithoutSpecialCharactersExcept(edtItemName, txtInform)
+
+
         // 2.  Code cho dau X & Cancel Button
         imgClose.setOnClickListener { dialog.dismiss() }
         btnCancel.setOnClickListener { dialog.dismiss() }
@@ -115,59 +122,59 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
 
         viewModel.isDuplicate.observe(viewLifecycleOwner) {
             if (it) {
-
                 txtInform.text = "This item's name may already exist \n in your category!"
                 txtInform.show()
-
 //                showMessage("Duplication")
-            }
-            else dialog.dismiss()
+            } else dialog.dismiss()
         }
-
+        /**===========================================================*/
         btnAddItem.setOnClickListener {
-            /**===========================================================*/
             txtInform.hide()
-
+            // 1. Check Empty
             if (edtItemName.text.toString() != ""
                 && edtItemPrice.text.toString() != ""
                 && edtItemInventoryQuantity.text.toString() != ""
             ) {
-
-
-//                val listItem = viewModel.getItemByName(edtItemName.text.toString())
-//
-//                if (listItem.isEmpty()) {
-//                    if (listItem[0].item_name == edtItemName.text.toString()) {
-//                        txtInform.text = "This item already exists!"
-//                        txtInform.show()
-//                    } else {
-                viewModel.addCategoryItemAndCheckExisting(
-                    ItemEntity(
-                        0,
-                        edtItemName?.text.toString(),
-                        edtItemPrice?.text.toString().toFloat(),
-                        itemImagePath,
-                        edtItemInventoryQuantity?.text.toString().toInt(),
-                        category.category_id
-                    )
-                )
+                // 2. Check Min-Max Length
+                if (edtItemName.text.length >= 3) {
+                    // 3. Check Số lượng/giá Zero
+                    if (edtItemPrice.text.toString()
+                            .toFloat() != 0.0f && edtItemInventoryQuantity.text.toString()
+                            .toInt() != 0
+                    ) {
+                        viewModel.addCategoryItemAndCheckExisting(
+                            ItemEntity(
+                                0,
+                                edtItemName?.text.toString(),
+                                edtItemPrice?.text.toString().toFloat(),
+                                itemImagePath,
+                                edtItemInventoryQuantity?.text.toString().toInt(),
+                                category.category_id
+                            )
+                        )
 //                dialog.dismiss()
-            } else {
-//                }
+                    } else {
+                        txtInform.text =
+                            "Price should be different from 0.0$! \n Inventory Quantity should be different from 0!"
+                        txtInform.show()
+                    }
 
-//        } else {
+                } else {
+                    txtInform.text = "The Item Name needs to \n consist of 4 to 8 characters!"
+                    txtInform.show()
+                }
+
+            } else {
                 txtInform.text = "Information below must not be empty!"
                 txtInform.show()
             }
-
-
-            /**===========================================================*/
         }
 
         // End. Tao Dialog (Khi khai bao chua thuc hien) and Show len display
         dialog = build.create()
         dialog.show()
     }
+    /**===========================================================*/
 
     override fun clickUpdateItem(itemCategory: ItemEntity) {
         showChangeItemDialog(itemCategory)
@@ -177,6 +184,8 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         showDeleteItemDialog(itemCategory)
     }
 
+
+    /** Update Item */
     @SuppressLint("SetTextI18n", "MissingInflatedId")
     private fun showChangeItemDialog(itemOfCategory: ItemEntity) {
         selectedImagePath = ""
@@ -185,6 +194,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         build.setView(view)
 
         // 1.  Get Component of Dialog
+        val txtInform = view.findViewById<TextView>(R.id.txtInform)
         val edtItemName = view.findViewById<EditText>(R.id.edtItemName)
         val edtItemPrice = view.findViewById<EditText>(R.id.edtItemPrice)
         val edtItemInventoryQuantity = view.findViewById<EditText>(R.id.edtItemInventoryQuantity)
@@ -197,6 +207,9 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         val imgClose = view.findViewById<ImageView>(R.id.imgCloseDialogAddItem)
 
         val txtUpdateItem = view.findViewById<TextView>(R.id.txtUpdateItem)
+
+        /** Ràng buộc data */
+        DataUtil.setEditTextWithoutSpecialCharacters(edtItemName, txtInform)
 
         // 2.  Code cho dau X & Cancel Button
         imgClose.setOnClickListener { dialog.dismiss() }

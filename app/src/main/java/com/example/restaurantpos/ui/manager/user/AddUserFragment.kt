@@ -12,7 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.restaurantpos.databinding.FragmentAddUserBinding
 import com.example.restaurantpos.db.entity.AccountEntity
+import com.example.restaurantpos.util.Constant
 import com.example.restaurantpos.util.DataUtil
+import com.example.restaurantpos.util.hide
 import com.example.restaurantpos.util.show
 
 class AddUserFragment : Fragment() {
@@ -60,24 +62,33 @@ class AddUserFragment : Fragment() {
         binding.imgBack.setOnClickListener {
             onBack()
         }
+
+        /** Ràng buộc data */
+        DataUtil.setEditTextWithoutSpecialCharacters(binding.edtAddAccountName, binding.txtError)
+        DataUtil.setEditTextWithoutSpecialCharactersAndSpaces(
+            binding.edtAddUserName,
+            binding.txtError
+        )
+
         /** ADD Button*/
 
         viewModel.isDuplicate.observe(viewLifecycleOwner) {
             if (it) {
-                binding.txtError.text = "This username already exists. \n You may be trying to add an employee that already exists!"
+                binding.txtError.text =
+                    "This username already exists. \n You may be trying to add an employee that already exists!"
                 binding.txtError.show()
 //              showMessage("This account (username) is existing!")
-            }
-            else onBack()
+            } else onBack()
         }
 
         binding.txtAdd.setOnClickListener {
-
+            // Nếu empty thì
             if (binding.edtAddUserName.text.isEmpty() || binding.edtAddAccountName.text.isEmpty()) {
                 binding.txtError.text = "Username and Staff's name must not be empty!"
                 binding.txtError.show()
-            } else {
-
+            } else
+                // Nếu min Okay thì
+            if (binding.edtAddUserName.text.length >= 3 && binding.edtAddAccountName.text.length >= 3){
                 // Nếu đã tồn tại user thì sẽ không add mà sẽ post value (TRUE) cho isDuplicate
                 // Thông qua đó chạy đoạn code phía trên
                 viewModel.addUserAndCheckExist(
@@ -87,12 +98,18 @@ class AddUserFragment : Fragment() {
                         "",
                         "",
                         binding.edtAddUserName.text.toString().trim(),
-                        DataUtil.convertToMD5("123"+ "aHiHiAddSalts"),
+                        DataUtil.convertToMD5("123" + Constant.SECURITY_SALT),
                         role,
                         true
                     )
                 )
 //                onBack()
+            }
+            else
+            {
+                // Nếu min NG thì
+                binding.txtError.text = "Staff's name & Staff's login username \n needs to consist of 3 to 14 characters!"
+                binding.txtError.show()
             }
         }
     }
@@ -108,6 +125,7 @@ class AddUserFragment : Fragment() {
                 id: Long
             ) {
                 role = position + 1
+                binding.txtError.hide()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

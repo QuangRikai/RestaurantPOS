@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.restaurantpos.base.BaseActivity
 import com.example.restaurantpos.databinding.ActivityLoginBinding
+import com.example.restaurantpos.util.Constant
 import com.example.restaurantpos.util.DataUtil
 import com.example.restaurantpos.util.show
 import kotlinx.coroutines.CoroutineScope
@@ -38,11 +39,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             ) {
                 CoroutineScope(Dispatchers.Main).launch { showLoginInform("Username & password must not be empty!") }
             } else
-            if (binding.edtUsername.text.length >= 3&& binding.edtPassword.text.length >= 3){
+            if (binding.edtUsername.text.length >= 3 && binding.edtPassword.text.length >= 3){
                 checkLogin(
                     binding.txtInformLogin,
                     binding.edtUsername.text.toString(),
-                    DataUtil.convertToMD5(binding.edtPassword.text.toString() + "aHiHiAddSalts")
+                    DataUtil.convertToMD5(binding.edtPassword.text.toString() + Constant.SECURITY_SALT)
                 )
             }
             else
