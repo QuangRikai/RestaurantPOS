@@ -48,10 +48,10 @@ class UpdateAdminInfoActivity : AppCompatActivity() {
         viewModel.getAccountById(accountId)
             .observe(this) { admin: MutableList<AccountEntity> ->
                 if (admin.isNotEmpty()) {
-                    binding.edtAdminName.hint = admin[0].account_name
-                    binding.edtBirthday.hint = admin[0].account_birthday
-                    binding.edtPhone.hint = admin[0].account_phone
-                    binding.edtUserName.hint = admin[0].user_name
+                    binding.edtAdminName.setText(admin[0].account_name)
+                    binding.edtBirthday.setText(admin[0].account_birthday)
+                    binding.edtPhone.setText(admin[0].account_phone)
+                    binding.edtUserName.setText(admin[0].user_name)
                     /** Update Button */
                     binding.txtUpdate.setOnClickListener {
                         if (binding.edtAdminName.text.toString() != "") {
