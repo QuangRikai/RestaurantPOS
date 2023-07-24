@@ -53,9 +53,9 @@ class CustomerOrderBillFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         /** imgBack */
-//        binding.imgBack.setOnClickListener {
-//            findNavController().popBackStack()
-//        }
+        binding.imgBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
         /**-------------------------------------------------------------------------*/
         /** ViewModel */
         viewModelCustomer = ViewModelProvider(this).get(CustomerViewModel::class.java)

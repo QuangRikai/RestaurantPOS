@@ -49,30 +49,30 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             listOf(
                 AccountEntity(
                     1,
-                    "Quang Manager",
+                    "Quang Admin",
                     "1995/03/02",
                     "08010802100",
-                    "quang0",
+                    "admin",
                     DataUtil.convertToMD5("123"+ Constant.SECURITY_SALT),
                     0,
                     true
                 ),
                 AccountEntity(
                     2,
-                    "Quang Receptionist",
+                    "Anh Thu",
                     "1995/03/02",
                     "080101232100",
-                    "quang1",
+                    "thu",
                     DataUtil.convertToMD5("123"+ Constant.SECURITY_SALT),
                     1,
                     true
                 ),
                 AccountEntity(
                     3,
-                    "Quang Kitchen",
+                    "Anh Manh",
                     "1995/03/02",
                     "08010531100",
-                    "quang2",
+                    "manh",
                     DataUtil.convertToMD5("123"+ Constant.SECURITY_SALT),
                     2,
                     true
@@ -152,10 +152,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         )
 
         /** 5. Customer  */
-        viewModel.addCustomer(CustomerEntity(1, "Quang 1", "08034931491", "1995/03/02", 0.0, 0))
-        viewModel.addCustomer(CustomerEntity(2, "Quang 2", "09034931492", "1995/03/03", 3000.0, 1))
-        viewModel.addCustomer(CustomerEntity(3, "Quang 3", "07034931493", "1995/03/04", 11000.0, 2))
-        viewModel.addCustomer(CustomerEntity(4, "Quang 4", "07034931422", "1995/03/04", 22000.0, 3))
+        viewModel.addCustomer(CustomerEntity(1, "Quang", "08034931491", "1995/03/02", 0.0, 0))
+        viewModel.addCustomer(CustomerEntity(2, "Chuong", "09034931492", "1995/03/03", 3000.0, 1))
+        viewModel.addCustomer(CustomerEntity(3, "Anh Bang", "07034931493", "1995/03/04", 11000.0, 2))
+        viewModel.addCustomer(CustomerEntity(4, "Chi Trang", "07034931422", "1995/03/04", 22000.0, 3))
 
         /** 6. Shift  */
 
@@ -192,30 +192,30 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         viewModel.addOrder(OrderEntity(order_id="2023/07/08  16:20:04", customer_id=1, table_id=2, created_by_account_id=2, order_create_time="2023/07/06  16:20:04", paid_time="2023/07/22  16:20:40", bill_total=290.83002f, order_status_id=2, coupon=0, customer_rank=0, sub_total=285.30002f, cash=8000, change="7697,2"))
 
         val list = ArrayList<CartItemEntity>()
-        list.add(CartItemEntity(cart_item_id=0, item_id=5, order_id="2023/07/01  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=5, order_id="2023/07/02  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=5, order_id="2023/07/03  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/07/04  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/07/05  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=8, order_id="2023/07/06  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=8, order_id="2023/07/07  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=8, order_id="2023/07/08  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/07/09  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/07/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=1, item_id=5, order_id="2023/07/01  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=2, item_id=5, order_id="2023/07/02  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=3, item_id=5, order_id="2023/07/03  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=4, item_id=1, order_id="2023/07/04  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=5, item_id=1, order_id="2023/07/05  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=6, item_id=8, order_id="2023/07/06  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=7, item_id=8, order_id="2023/07/07  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=8, item_id=8, order_id="2023/07/08  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=9, item_id=1, order_id="2023/07/09  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=10, item_id=1, order_id="2023/07/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
 
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/06/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/05/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/04/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/03/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/02/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=1, order_id="2023/01/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=11, item_id=1, order_id="2023/06/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=12, item_id=1, order_id="2023/05/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=13, item_id=1, order_id="2023/04/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=14, item_id=1, order_id="2023/03/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=15, item_id=1, order_id="2023/02/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=16, item_id=1, order_id="2023/01/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
 
-        list.add(CartItemEntity(cart_item_id=0, item_id=5, order_id="2023/06/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=5, order_id="2023/05/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=5, order_id="2023/04/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=8, order_id="2023/03/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=8, order_id="2023/02/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
-        list.add(CartItemEntity(cart_item_id=0, item_id=8, order_id="2023/01/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=17, item_id=5, order_id="2023/06/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=18, item_id=5, order_id="2023/05/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=19, item_id=5, order_id="2023/04/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=20, item_id=8, order_id="2023/03/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=21, item_id=8, order_id="2023/02/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
+        list.add(CartItemEntity(cart_item_id=22, item_id=8, order_id="2023/01/10  16:36:41", order_quantity=2, note= "", cart_order_time="16:36:42", cart_item_status_id=2))
 
         viewModel.addListCartItem(list)
 

@@ -7,8 +7,44 @@
     android:orientation="vertical"
     tools:context=".ui.manager.customer.bill.CustomerOrderBillFragment">
 
+    <LinearLayout
+        android:id="@+id/llUserListTitle1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:src="@drawable/img_back"
+            app:tint="@color/text_blue" />
+
+        <TextView
+            android:id="@+id/txtBillDetail"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_700"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/_52sdp"
+            android:text="Bill Detail"
+            android:textColor="@color/text_blue"
+            android:textSize="20sp" />
+
+
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:background="@drawable/bg_edt_login"
+        android:layout_marginHorizontal="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:id="@+id/rcyCartItemOnBill"
         android:layout_width="match_parent"

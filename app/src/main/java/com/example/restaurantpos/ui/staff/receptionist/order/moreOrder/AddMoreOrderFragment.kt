@@ -127,6 +127,10 @@ class AddMoreOrderFragment : Fragment() {
                     if (customerEntity != null) {
                         binding.txtCustomerInOrder.text = customerEntity.customer_name
                     }
+                    else
+                    {
+                        binding.txtCustomerInOrder.text = "Unknown"
+                    }
                 }
             }
 

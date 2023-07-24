@@ -193,7 +193,7 @@ class CheckoutFragment : Fragment() {
                         binding.tvTotalPayment.text = customerObject.total_payment.toString()
                         calculateDiscountPercentage(customerObject.customer_rank_id)
                     }else{
-                        binding.txtCustomerInBill.text = "unknown"
+                        binding.txtCustomerInBill.text = "Unknown"
                         binding.tvTotalPayment.text = customerObject?.total_payment.toString()
                         binding.tvTotalPayment.text = ""
 

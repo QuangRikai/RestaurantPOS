@@ -67,7 +67,7 @@ class TableFragment : Fragment(), TableAdapter.EventClickTableListener {
         // 2. Logout Button
         binding.imgMenuToolBar.setOnClickListener { it ->
             val popupMenu = PopupMenu(requireContext(), it)
-            popupMenu.inflate(R.menu.popup_menu_main_manager)
+            popupMenu.inflate(R.menu.popup_menu_staff)
             popupMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_logout -> {
