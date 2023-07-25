@@ -378,7 +378,8 @@ class CheckoutFragment : Fragment() {
         /** Code for CHECK OUT */
         binding.txtCheckout.setOnClickListener {
             if (binding.edtCash.text.isNotEmpty()) {
-                if (binding.txtChange.text != "0.0" && (binding.edtCash.text.toString()
+//                if (binding.txtChange.text != "0.0" && (binding.edtCash.text.toString()
+                if ((binding.edtCash.text.toString()
                         .toFloat() >= billAmount)
                 ) {
                     /** Put data for billObject  -----> BillFragment */
