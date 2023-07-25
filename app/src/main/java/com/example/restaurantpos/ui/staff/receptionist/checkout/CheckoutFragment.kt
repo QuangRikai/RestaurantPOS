@@ -396,7 +396,8 @@ class CheckoutFragment : Fragment() {
                         binding.txtChange.text.toString()
                     )
 
-
+                    // Lưu data ở ViewModel. Quá là hay.
+                    // CheckoutFramgnet không lưu đầy đủ trạng thái nên cần xử lý như này.
                     viewModelCoupon.couponState = binding.llCoupon.visibility
                     viewModelCoupon.coupon = binding.txtChange.text.toString()
                     viewModelCoupon.charnge =  binding.txtChange.text.toString()
@@ -421,10 +422,13 @@ class CheckoutFragment : Fragment() {
 
         }
 
+        // Khi từ màn Confirm (Receipt) Back trở lại thì sẽ lôi mớ data đẫ lưu ra để set lại. Đỉnh
+
         val coupon = viewModelCoupon.coupon
         val state = viewModelCoupon.couponState
         val content = viewModelCoupon.content
 
+        // Khi mà user đã từng add coupon
         if (state == View.VISIBLE){
             binding.llCoupon.visibility = View.VISIBLE
             binding.edtCoupon.setText(coupon)
@@ -450,6 +454,7 @@ class CheckoutFragment : Fragment() {
     private fun setChange(text: CharSequence?) {
         if (text.toString().isNotEmpty()) {
             val cashString = text.toString()
+            // toFloat() dính dấu , sẽ sinh Lỗi.
             val cash = cashString.replace(",", "").toFloat()
             if (cash >= billAmount) {
                 change = cash - billAmount
@@ -463,6 +468,7 @@ class CheckoutFragment : Fragment() {
         }
     }
 
+    // また再利用コード
     fun calculateTotalAmount(){
         billAmount =
             (subTotal * (1 - (couponDiscount) / 100.0) * (1 + tax) * (1 - (discount) / 100.0)).toFloat()
@@ -690,6 +696,8 @@ class CheckoutFragment : Fragment() {
             .observe(viewLifecycleOwner) {
                 if (it.size > 0) {
                     adapterCustomerInner.setListData(it as ArrayList<CustomerEntity>)
+                }else{
+                    adapterCustomerInner.setListData(ArrayList<CustomerEntity>())
                 }
             }
 
@@ -705,6 +713,7 @@ class CheckoutFragment : Fragment() {
                 searchHandler.removeCallbacksAndMessages(null)
                 searchHandler.postDelayed({
                     // Thực hiện tìm kiếm sau khi người dùng không nhập thêm ký tự trong khoảng thời gian SEARCH_DELAY
+                    // Chứ không Search liền
                     viewModelCustomer.searchCustomerByKey(s.toString())
                 }, SEARCH_DELAY)
             }

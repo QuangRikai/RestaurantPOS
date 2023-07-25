@@ -1,11 +1,14 @@
 package com.example.restaurantpos.ui.manager.category
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.restaurantpos.db.entity.AccountEntity
 import com.example.restaurantpos.db.entity.CategoryEntity
 import com.example.restaurantpos.db.entity.ItemEntity
+import com.example.restaurantpos.db.roomdb.PosRoomDatabase
 import com.example.restaurantpos.util.DatabaseUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +52,38 @@ class CategoryViewModel : ViewModel() {
 
         }
     }
+
+    // Check Duplicate Except chính nó
+    private val _isDuplicateQ: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val isDuplicateQ: LiveData<Boolean> = _isDuplicateQ
+
+    fun addCategoryItemAndCheckExistingQ(categoryItem: ItemEntity, isChinhNo: Boolean = false) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val existingItemName = DatabaseUtil.getItemByName(categoryItem.item_name)
+
+                if (isChinhNo){
+                    DatabaseUtil.addCategoryItem(categoryItem)
+                    _isDuplicateQ.postValue(false)
+                    return@launch
+                }
+
+                if (existingItemName.isEmpty()) {
+                    // Nếu tài khoản chưa tồn tại, thêm vào cơ sở dữ liệu
+                    DatabaseUtil.addCategoryItem(categoryItem)
+                    _isDuplicate.postValue(false)
+                } else {
+                    // Nếu tài khoản đã tồn tại, xử lý tương ứng (ví dụ: hiển thị thông báo lỗi)
+                    _isDuplicate.postValue(true)
+                }
+            }
+        }
+    }
+
 
     fun deleteItemOfCategory(itemOfCategory: ItemEntity) {
         CoroutineScope(Dispatchers.IO).launch {

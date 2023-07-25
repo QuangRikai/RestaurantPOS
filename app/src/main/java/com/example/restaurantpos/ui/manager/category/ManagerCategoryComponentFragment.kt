@@ -1,6 +1,7 @@
 package com.example.restaurantpos.ui.manager.category
 
 import android.annotation.SuppressLint
+import android.content.ClipData
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -43,6 +44,7 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
     private var itemImagePath = ""
 
     private var selectedImagePath: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,8 +73,6 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         viewModel.getListCategoryComponentItem(category.category_id).observe(viewLifecycleOwner) {
             adapter.setListData(it)
         }
-
-
     }
 
     private fun showMessage(content: String) {
@@ -231,6 +231,17 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         edtItemInventoryQuantity.setText(itemOfCategory.inventory_quantity.toString())
         imgShow.setImageBitmap(BitmapFactory.decodeFile(itemOfCategory.image))
 
+//        var itemName = ""
+        viewModel.isDuplicate.observe(viewLifecycleOwner) {
+            if (it) {
+                txtInform.text = "This item's name may already exist \n in your category!"
+//                edtItemName.setText(itemName)
+                txtInform.show()
+            } else {
+                dialog.dismiss()
+            }
+        }
+
         // 3.  Code for ChooseImage
         btnChoseImage.setOnClickListener {
             val intent = Intent()
@@ -242,7 +253,6 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
         /** Ràng buộc data */
         DataUtil.setEditTextWithoutSpecialCharacters(edtItemName, txtInform)
 
-
         btnUpdateItem.setOnClickListener {
 
             if (selectedImagePath != "") {
@@ -253,13 +263,17 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                 && edtItemPrice.text.toString() != ""
                 && edtItemInventoryQuantity.text.toString() != ""
             ) {
-                if (edtItemPrice.text.toString()
-                        .toFloat() != 0.0f && edtItemInventoryQuantity.text.toString()
-                        .toInt() != 0
-                ) {
-                    itemOfCategory.price = edtItemPrice.text.toString().toFloat()
-                    itemOfCategory.inventory_quantity =
-                        edtItemInventoryQuantity.text.toString().toInt()
+
+                val priceString = edtItemPrice.text.toString()
+                val price = priceString.replace(",", ".").toFloat()
+
+                val quantityString = edtItemInventoryQuantity.text.toString()
+                val quantity = quantityString.replace(",", ".0").toFloat()
+
+                if (price != 0.0f && quantity.toInt() != 0) {
+
+                    itemOfCategory.price = price
+                    itemOfCategory.inventory_quantity = quantity.toInt()
 
                     if (edtItemName.text.length >= 2) {
 
@@ -267,24 +281,13 @@ class ManagerCategoryComponentFragment(position: Int, var category: CategoryEnti
                             Log.d("Quanglt", "$itemOfCategory")
                             viewModel.addCategoryItem(itemOfCategory)
                             dialog.dismiss()
-
                         }
-                        else
-                        {
+                        else {
+                            itemOfCategory.item_name = edtItemName.text.trim().toString()
+//                            itemName = edtItemName.text.trim().toString()
                             viewModel.addCategoryItemAndCheckExisting(itemOfCategory)
                             Log.d("Quanglt", "$itemOfCategory")
-                            viewModel.isDuplicate.observe(viewLifecycleOwner) {
-                                if (it) {
-                                    txtInform.text = "This item's name may already exist \n in your category!"
-                                    txtInform.show()
-                                } else {
-                                    itemOfCategory.item_name = edtItemName.text.trim().toString()
-                                    Log.d("Quanglt", "$itemOfCategory")
-                                    Log.d("Quanglt", edtItemName.text.trim().toString())
 
-                                    dialog.dismiss()
-                                }
-                            }
                         }
 
                     } else {

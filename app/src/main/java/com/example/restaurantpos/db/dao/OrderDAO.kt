@@ -30,7 +30,7 @@ interface OrderDAO {
     @Query("SELECT * FROM `order` WHERE table_id = :table_id AND `order`.order_status_id = 1 ORDER BY order_create_time DESC")
     fun getOrderByTable(table_id : Int) : LiveData<OrderEntity>
 
-    @Query("SELECT * FROM `order` WHERE customer_id = :customerId ORDER BY order_create_time DESC")
+    @Query("SELECT * FROM `order` WHERE customer_id = :customerId AND order_status_id = 2 ORDER BY order_create_time DESC")
     fun getListOrderByCustomerId(customerId: Int): LiveData<MutableList<OrderEntity>>
 
     // Qnew

@@ -171,6 +171,7 @@ class CheckoutConfirmFragment : Fragment() {
                 }
             }*/
 
+        // stream cũng như for thôi
         viewModelCustomer.getListCustomer()
             .observe(viewLifecycleOwner) { listCustomer ->
                 val list = listCustomer.stream()
@@ -178,11 +179,14 @@ class CheckoutConfirmFragment : Fragment() {
                         Collectors.toList()
                     )
 
+                // Filter Stream trên và Lấy đúng 1 thằng thôi
                 var customer: CustomerEntity? = null
                 if (!list.isEmpty()){
                     customer = list.get(0)
                 }
 
+                // Không filter ra được bé Khách nào thì cho nó Default
+                // Ra thì set cho customerObject
                 if (customer != null){
                     customerObject = customer
                 }else{

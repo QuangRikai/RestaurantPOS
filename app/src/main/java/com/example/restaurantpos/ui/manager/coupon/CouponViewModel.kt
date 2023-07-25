@@ -16,7 +16,9 @@ import kotlinx.coroutines.launch
 
 class CouponViewModel : ViewModel() {
 
+    // Lưu lại 4 bé trạng thái này để xử lý
     var couponState: Int = View.GONE
+    // discount
     var coupon: String = ""
     var content: String = "Apply Coupon?"
     var charnge: String = ""

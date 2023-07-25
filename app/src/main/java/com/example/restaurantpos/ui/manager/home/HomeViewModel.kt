@@ -85,6 +85,7 @@ class HomeViewModel : ViewModel() {
             val listRevenue = ArrayList<Float>()
             val monthString = if (nowMonth < 10) "0$nowMonth" else "$nowMonth"
 
+            // Lưu ý DAY, MONTH lưu trong database
             for (i in 1..countDay) {
                 val dayString = if (i < 10) "0$i" else "$i"
 

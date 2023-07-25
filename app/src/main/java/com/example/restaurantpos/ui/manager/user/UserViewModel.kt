@@ -58,4 +58,38 @@ class UserViewModel : ViewModel() {
         }
     }
 
+
+
+    private val _isDuplicateQ: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val isDuplicateQ: LiveData<Boolean> = _isDuplicateQ
+
+    fun addUserAndCheckExistQ(context: Context, user: AccountEntity, isNoEditUsername: Boolean = false) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val existingAccountShift = PosRoomDatabase
+                .getInstance(context)
+                .accountDAO()
+                .getAccountByUsername(user.user_name)
+
+            if (isNoEditUsername){
+                PosRoomDatabase.getInstance(context).accountDAO().addAccount(user)
+                _isDuplicateQ.postValue(false)
+                return@launch
+            }
+
+            if (existingAccountShift == null) {
+                // Nếu tài khoản chưa tồn tại, thêm vào cơ sở dữ liệu
+                PosRoomDatabase.getInstance(context).accountDAO().addAccount(user)
+                _isDuplicateQ.postValue(false)
+            } else {
+                // Nếu tài khoản đã tồn tại, xử lý tương ứng (ví dụ: hiển thị thông báo lỗi)
+                _isDuplicateQ.postValue(true)
+            }
+        }
+    }
+
+
+
 }
